@@ -19,10 +19,10 @@ class SizeFactory extends Factory
     public function definition(): array
     {
         return [
-       /*     'size' => Str::random(10),
-            'unit' => Str::random(10),*/
-            'size' => $this->faker->numberBetween(1, 100), // Ensure size is an integer
-            'unit' => $this->faker->word(), // Generate a random word for unit
+            'size' => Str::random(10),
+            'unit' => Str::random(10),
+           // 'size' => $this->faker->numberBetween(1, 100),
+            //'unit' => $this->faker->word(), 
 
         ];
     }

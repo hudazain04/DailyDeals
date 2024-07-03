@@ -11,7 +11,9 @@ use App\Models\Customer;
 class Favorite extends Model
 {
     use HasFactory;
-    protected $fillable = ['customer_id', 'branch_id'];
+    protected $table ="favorites";
+    protected $primaryKey="id";
+    protected $fillable = ['branch_id','customer_id'];
 
     public function branch()
     {

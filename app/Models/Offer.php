@@ -14,8 +14,9 @@ use App\Models\Percentage_Offer;
 class Offer extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['type', 'value', 'expiration_date'];
+    protected $table ="offers";
+    protected $primaryKey="id";
+    protected $fillable = ['type','price_before','price_after','image','active','period'];
 
     public function branches()
     {

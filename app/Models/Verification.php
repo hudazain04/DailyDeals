@@ -11,6 +11,8 @@ use App\Models\Store;
 class Verification extends Model
 {
     use HasFactory;
+    protected $table ="verifications";
+    protected $primaryKey="id";
     protected $fillable = ['commercial_record', 'merchant_id', 'store_id'];
 
     public function merchant()

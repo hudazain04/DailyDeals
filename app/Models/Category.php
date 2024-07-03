@@ -12,7 +12,9 @@ use App\Models\Product;
 class Category extends Model
 {
     use HasFactory;
-    protected $fillable = ['category', 'parent_category', 'visible', 'priority'];
+    protected $table ="categories";
+    protected $primaryKey="id";
+    protected $fillable = ['category','parent_category','visible','priority'];
 
     public function branches()
     {

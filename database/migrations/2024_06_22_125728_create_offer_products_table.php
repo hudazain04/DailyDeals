@@ -11,22 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category__requests', function (Blueprint $table) {
+        Schema::create('offer_products', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
-            $table->string('admin_name')->nullable();
-            $table->enum('status',['accepted','rejected','pending']);
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('offer_id')->constrained('offers')->onDelete('cascade');
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->integer('price_after')->nullable();
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('category__requests');
+        Schema::dropIfExists('offer__products');
     }
 };

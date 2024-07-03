@@ -12,9 +12,11 @@ use App\Models\User;
 class Advertisement extends Model
 {
     use HasFactory;
-/*    protected $fillable = ['image', 'status', 'user_id'];*/
-
-    protected $guarded=[];
+    protected $table ="advertisements";
+    protected $primaryKey="id";
+    protected $fillable = ['description','image','user_id','approved','period',
+    'price','shown','invoice','phone_number'];
+    
     public function user()
     {
         return $this->belongsTo(User::class);

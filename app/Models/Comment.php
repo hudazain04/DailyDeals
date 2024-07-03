@@ -13,6 +13,8 @@ use App\Models\Customer;
 class Comment extends Model
 {
     use HasFactory;
+    protected $table ="comments";
+    protected $primaryKey="id";
     protected $fillable = ['comment', 'customer_id','offer_id'];
 
     public function customer()

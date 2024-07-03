@@ -11,8 +11,9 @@ use App\Models\Color;
 class Image extends Model
 {
     use HasFactory;
-    protected $fillable = ['image', 'product_id','color_id'];
-
+    protected $table ="images";
+    protected $primaryKey="id";
+    protected $fillable = ['image','product_id','color_id'];
     public function color()
     {
         return $this->belongsTo(Color::class);

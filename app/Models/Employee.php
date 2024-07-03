@@ -10,9 +10,11 @@ use App\Models\Merchant;
 use App\Models\Branch;
 
 class Employee extends Model
-{
+{   
     use HasFactory;
-    protected $fillable = ['user_id', 'code', 'branch_id', 'merchant_id'];
+    protected $table ="employees";
+    protected $primaryKey="id";
+    protected $fillable = ['code','branch_id','user_id','merchant_id'];
 
     public function user()
     {

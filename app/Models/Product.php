@@ -15,8 +15,9 @@ use App\Models\Product_Info;
 class Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'price', 'category_id', 'visible', 'store_id'];
-
+    protected $table ="products";
+    protected $primaryKey="id";
+    protected $fillable = ['visible','name','category_id','store_id'];
 
     public function gift_offers()
     {

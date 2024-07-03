@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Image;
 
 class Color extends Model
-{
+{    
     use HasFactory;
+    protected $table ="colors";
+    protected $primaryKey="id";
     protected $fillable = ['color'];
 
     public function images()

@@ -11,7 +11,9 @@ use App\Models\User;
 class Category_Request extends Model
 {
     use HasFactory;
-    protected $fillable = ['category', 'admin_name', 'status', 'user_id'];
+    protected $table ="category_requests";
+    protected $primaryKey="id";
+    protected $fillable = ['category','admin_name','status','user_id'];
 
     public function user()
     {

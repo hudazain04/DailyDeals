@@ -10,7 +10,9 @@ use App\Models\Branch;
 class Number extends Model
 {
     use HasFactory;
-    protected $fillable = ['phone_number', 'branch_id'];
+    protected $table ="numbers";
+    protected $primaryKey="id";
+    protected $fillable = ['phone_number','branch_id'];
 
     public function branch()
     {

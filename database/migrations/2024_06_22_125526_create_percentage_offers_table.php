@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('discount__offers', function (Blueprint $table) {
+        Schema::create('percentage_offers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('offer_id')->constrained('offers')->onDelete('cascade');
-            $table->integer('discount');
+            $table->integer('percentage');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('discount__offers');
+        Schema::dropIfExists('percentage__offers');
     }
 };

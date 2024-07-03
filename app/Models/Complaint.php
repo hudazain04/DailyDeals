@@ -11,6 +11,8 @@ use App\Models\Customer;
 class Complaint extends Model
 {
     use HasFactory;
+    protected $table ="complaints";
+    protected $primaryKey="id";
     protected $fillable = ['branch_id', 'customer_id', 'complaint'];
 
 

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Size extends Model
 {
     use HasFactory;
+    protected $table ="sizes";
+    protected $primaryKey="id";
     protected $fillable = ['size', 'unit'];
 
     public function product_infos()

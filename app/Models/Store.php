@@ -12,7 +12,9 @@ use App\Models\Verification;
 class Store extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'type', 'description', 'merchant_id', 'visible'];
+    protected $table ="stores";
+    protected $primaryKey="id";
+    protected $fillable = ['name','description','type','visible','merchant_id'];
 
     public function branches()
     {

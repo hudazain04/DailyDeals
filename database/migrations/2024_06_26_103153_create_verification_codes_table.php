@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('verification__codes', function (Blueprint $table) {
+        Schema::create('verification_codes', function (Blueprint $table) {
             $table->id();
             $table->integer('code');
             $table->enum('type',[VerificationCodeType::register_code,VerificationCodeType::password_code]);

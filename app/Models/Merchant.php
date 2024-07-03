@@ -13,7 +13,9 @@ use App\Models\Verification;
 class Merchant extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'verified'];
+    protected $table ="merchants";
+    protected $primaryKey="id";
+    protected $fillable = ['verified','user_id'];
 
     public function user()
     {

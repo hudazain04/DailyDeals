@@ -11,6 +11,8 @@ use App\Models\Conversation;
 class Message extends Model
 {
     use HasFactory;
+    protected $table ="messages";
+    protected $primaryKey="id";
     protected $fillable = ['message', 'sender_id', 'receiver_id', 'conversation_id'];
 
     public function sender()

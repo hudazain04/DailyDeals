@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Branch_Product extends Model
 {
     use HasFactory;
-    protected $fillable = ['branch_id', 'product_id', 'visible'];
+    protected $table ="branch_products";
+    protected $primaryKey="id";
+    protected $fillable = ['visible','branch_id','product_id'];
 
     public function branch()
     {
