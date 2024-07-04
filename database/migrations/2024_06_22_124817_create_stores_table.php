@@ -17,7 +17,7 @@ return new class extends Migration
             $table->enum('type', ['free vendor', 'verified vendor']);
             $table->string('description');
             $table->boolean('visible')->default(true);
-            $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade');
+            $table->foreignId('merchant_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
 
         });

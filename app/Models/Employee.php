@@ -14,7 +14,7 @@ class Employee extends Model
     use HasFactory;
     protected $table ="employees";
     protected $primaryKey="id";
-    protected $fillable = ['code','branch_id','user_id','merchant_id'];
+    protected $fillable = ['code','branch_id','merchant_id'];
 
     public function user()
     {
@@ -23,10 +23,6 @@ class Employee extends Model
     public function branch()
     {
         return $this->belongsTo(Branch::class);
-    }
-    public function merchant()
-    {
-        return $this->belongsTo(Merchant::class);
     }
     public function conversations()
     {

@@ -20,7 +20,6 @@ class EmployeeFactory extends Factory
             'code' => $this->faker->numberBetween(11111, 99999),
             'branch_id' => $this->faker->numberBetween(1, 10),
             'user_id' => $this->faker->numberBetween(1, 10),
-            'merchant_id' => $this->faker->numberBetween(1, 10),
 
         ];
     }

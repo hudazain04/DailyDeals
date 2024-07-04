@@ -56,17 +56,6 @@ class User extends Authenticatable
         return $this->hasMany(Type_Of_Offer_Request::class);
     }
 
-
-    public function customer()
-    {
-        return $this->hasOne(Customer::class);
-    }
-
-    public function merchant()
-    {
-        return $this->hasOne(Merchant::class);
-    }
-
     public function employee()
     {
         return $this->hasOne(Employee::class);
