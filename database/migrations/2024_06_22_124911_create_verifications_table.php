@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade');
+            $table->foreignId('merchant_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('store_id')->constrained('stores')->onDelete('cascade');
             $table->string('commercial_record');
             $table->timestamps();

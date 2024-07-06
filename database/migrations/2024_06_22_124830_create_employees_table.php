@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('branch_id')->constrained('branches')->onDelete('cascade');
-            $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade');
             $table->integer('code')->unique();
             $table->timestamps();
         });

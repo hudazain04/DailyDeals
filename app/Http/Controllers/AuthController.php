@@ -56,14 +56,7 @@ class AuthController extends Controller
             $data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number', 'role']);
             $data['image'] = $imageUrl;
             $user = User::create($data);
-            switch ($request['role']) {
-                case UserType::Customer:
-                    $role=Customer::create(['user_id' => $user->id]);
-                    break;
-                case UserType::Merchant:
-                    $role=Merchant::create(['user_id' => $user->id, 'verified' => false]);
-                    break;
-            }
+
             $code=$this->SendVerificationCode($user,VerificationCodeType::register_code);
             DB::commit();
             return $this->success(['user' => UserResource::make($user),'role'=>$user->role,'verification code'=>$code],"registered successfully");
