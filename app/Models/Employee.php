@@ -14,7 +14,7 @@ class Employee extends Model
     use HasFactory;
     protected $table ="employees";
     protected $primaryKey="id";
-    protected $fillable = ['code','branch_id','merchant_id'];
+    protected $fillable = ['code','branch_id','user_id'];
 
     public function user()
     {
