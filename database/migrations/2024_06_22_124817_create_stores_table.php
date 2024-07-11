@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['free vendor', 'verified vendor']);
+            $table->enum('type', ['free_vendor', 'verified_vendor']);
             $table->string('description');
             $table->boolean('visible')->default(true);
-            $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade');
+            $table->boolean('verified')->default(false);
+            $table->foreignId('merchant_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
 
         });

@@ -10,11 +10,12 @@ use App\Models\Offer;
 class Discount_Offer extends Model
 {
     use HasFactory;
-    protected $table = 'offers';
+    protected $table ="discount_offers";
+    protected $primaryKey="id";
     protected $fillable=['discount','offer_id'];
-    /* public function offer()
+    public function offer()
      {
-         return $this->belongsTo(Offer::class);
-     }*/
+     return $this->belongsTo(Offer::class);
+     }
 }
 

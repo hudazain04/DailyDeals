@@ -10,13 +10,13 @@ use App\Models\Product;
 class Extra_Offer extends Model
 {
     use HasFactory;
-    protected $table = 'offers';
-
-    protected $fillable=['product_id','offer_id','product_count','extra_count'];
-   /* public function offer()
+    protected $table ="extra_offers";
+    protected $primaryKey="id";
+    protected $fillable = ['product_count','extra_count','product_id','offer_id'];
+    public function offer()
     {
         return $this->belongsTo(Offer::class);
-    }*/
+    }
     public function product()
     {
         return $this->belongsTo(Product::class);

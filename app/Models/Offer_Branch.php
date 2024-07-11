@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Offer_Branch extends Model
 {
     use HasFactory;
-    protected $fillable = ['offer_id', 'branch_id'];
+    protected $table ="offer_branches";
+    protected $primaryKey="id";
+    protected $fillable = ['active','branch_id','offer_id'];
 
     public function offer()
     {

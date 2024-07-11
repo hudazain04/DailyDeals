@@ -13,11 +13,13 @@ use App\Models\Customer;
 class Comment extends Model
 {
     use HasFactory;
+    protected $table ="comments";
+    protected $primaryKey="id";
     protected $fillable = ['comment', 'customer_id','offer_id'];
 
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(User::class,'customer_id');
     }
     public function offer()
     {

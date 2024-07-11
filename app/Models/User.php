@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use Illuminate\Database\Eloquent\SoftDeletes;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -10,7 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -34,6 +35,10 @@ class User extends Authenticatable
         'blocked',
         'verified',
     ];
+    public function getFullNameAttribute()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
     public function advertisements()
     {
         return $this->hasMany(Advertisement::class);
@@ -56,17 +61,6 @@ class User extends Authenticatable
         return $this->hasMany(Type_Of_Offer_Request::class);
     }
 
-
-    public function customer()
-    {
-        return $this->hasOne(Customer::class);
-    }
-
-    public function merchant()
-    {
-        return $this->hasOne(Merchant::class);
-    }
-
     public function employee()
     {
         return $this->hasOne(Employee::class);
@@ -83,6 +77,42 @@ class User extends Authenticatable
     public function devices()
     {
         return $this->hasMany(Device::class);
+    }
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+    public function complaints()
+    {
+        return $this->hasMany(Complaint::class);
+    }
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
+    public function notifieds()
+    {
+        return $this->hasMany(Notified::class);
+    }
+    public function rates()
+    {
+        return $this->hasMany(Rate::class);
+    }
+    public function conversations()
+    {
+        return $this->hasMany(Conversation::class);
+    }
+    public function employees()
+    {
+        return $this->hasMany(Employee::class);
+    }
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
+    }
+    public function verifications()
+    {
+        return $this->hasMany(Verification::class);
     }
 
 

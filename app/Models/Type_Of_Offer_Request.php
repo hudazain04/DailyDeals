@@ -10,7 +10,10 @@ use App\Models\User;
 class Type_Of_Offer_Request extends Model
 {
     use HasFactory;
-    protected $fillable = ['type','description', 'user_id'];
+    protected $table ="type_of_offer_requests";
+    protected $primaryKey="id";
+    protected $fillable = ['description','type','user_id'];
+
 
     public function user()
     {

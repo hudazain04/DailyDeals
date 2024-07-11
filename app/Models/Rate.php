@@ -11,6 +11,8 @@ use App\Models\Customer;
 class Rate extends Model
 {
     use HasFactory;
+    protected $table ="rates";
+    protected $primaryKey="id";
     protected $fillable = ['rate', 'customer_id', 'branch_id'];
 
     public function branch()
@@ -19,6 +21,6 @@ class Rate extends Model
     }
     public function customer()
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(User::class,'customer_id');
     }
 }

@@ -1,4 +1,4 @@
-/.phpunit.cache
+  /.phpunit.cache
 /node_modules
 /public/build
 /public/hot
@@ -18,3 +18,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+database/factories/CustomerFactory.php
+database/migrations/2024_07_03_120413_create_logs_table.php

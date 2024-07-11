@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Percentage_Offer extends Model
 {
     use HasFactory;
-    protected $table = 'offers';
-    protected $fillable=['percentage','offer_id'];
+    protected $table ="percentage_offers";
+    protected $primaryKey="id";
+    protected $fillable = ['percentage','offer_id'];
 
-   /* public function offer()
+    public function offer()
     {
         return $this->belongsTo(Offer::class);
-    }*/
+    }
 }

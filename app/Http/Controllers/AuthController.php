@@ -52,21 +52,13 @@ class AuthController extends Controller
             $request['password'] = Hash::make($request['password']);
 //            $data=$request->only(['first_name','last_name','email','password', 'phone_number','role', 'image'=> $this->UploadImage($request)
 //            ]);
-            $imageUrl = $this->UploadImage($request);
+            $imageUrl = AuthController::UploadImage($request);
             $data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number', 'role']);
             $data['image'] = $imageUrl;
             $user = User::create($data);
-            switch ($request['role']) {
-                case UserType::Customer:
-                    $role=Customer::create(['user_id' => $user->id]);
-                    break;
-                case UserType::Merchant:
-                    $role=Merchant::create(['user_id' => $user->id, 'verified' => false]);
-                    break;
-            }
             $code=$this->SendVerificationCode($user,VerificationCodeType::register_code);
             DB::commit();
-            return $this->success(['user' => UserResource::make($user),'role'=>$user->role,'verification code'=>$code],"registered successfully");
+            return $this->success(['user' => UserResource::make($user),'verification code'=>$code],"registered successfully");
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -88,7 +80,7 @@ class AuthController extends Controller
         $code=Verification_Code::create(['code'=>$verificationCode,'type'=>$codeType,'user_id'=>$user->id]);
         return $code;
     }
-    public function UploadImage(RegisterRequest $request){
+    public  static function UploadImage(Request $request){
     if($request['image']){
 
             $image=$request->file('image');
@@ -142,7 +134,7 @@ class AuthController extends Controller
                 ]);
             }
             DB::commit();
-            return $this->success(['user'=> UserResource::make($user),'token' =>$token] ,'user verified successfully');
+            return $this->success(['user'=> UserResource::make($user),'access_token' =>$token] ,'user verified successfully');
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -155,7 +147,7 @@ class AuthController extends Controller
                 return $this->error('user not found',404);
             }
             $code=$this->sendVerificationCode($user,VerificationCodeType::register_code);
-            return $this->success(['user' => UserResource::make($user),'verification code'=>$code] ,'code sent');
+            return $this->success(['user' => UserResource::make($user),'verification_code'=>$code] ,'code sent');
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }
@@ -175,7 +167,7 @@ class AuthController extends Controller
             if ($user->blocked) {
                 return $this->error('this user is blocked', 403);
             }
-            if (!$user->verified) {
+            if (($user->role==UserType::Merchant||$user->role==UserType::Customer)&&!$user->verified) {
                 $this->sendVerificationCode($user, 'Register');
                 return $this->error('account is not verified', 403);
             }
@@ -309,7 +301,7 @@ class AuthController extends Controller
 //                    $token=$device->token;
 //                    PersonalAccessToken::findToken($token)->delete();
                 }
-                return $this->success(UserResource::make($user), 'password changed successfully');
+                return $this->success(['user'=>UserResource::make($user)], 'password changed successfully');
 
             }
 
@@ -329,7 +321,7 @@ class AuthController extends Controller
                 return $this->error('user not found',404);
             }
             $code = $this->SendVerificationCode($user , VerificationCodeType::password_code);
-            return $this->success(['user' => UserResource::make($user),'verification code'=>$code] , 'reset password code sent');
+            return $this->success(['user' => UserResource::make($user),'verification_code'=>$code] , 'reset password code sent');
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }
@@ -341,7 +333,7 @@ class AuthController extends Controller
                 return $this->error('user not found',404);
             }
            $code= $this->SendVerificationCode($user,VerificationCodeType::password_code);
-            return $this->success(['user' => UserResource::make($user),'verification code'=>$code] ,'code sent');
+            return $this->success(['user' => UserResource::make($user),'verification_code'=>$code] ,'code sent');
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }
@@ -374,7 +366,7 @@ class AuthController extends Controller
                 return $this->error('user not found',404);
             }
             $user->update($request->only(['password']));
-            return $this->success(UserResource::make($user) ,'password changed');
+            return $this->success(['user'=>UserResource::make($user)] ,'password changed');
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }

@@ -11,13 +11,14 @@ use App\Models\Product;
 class Gift_Offer extends Model
 {
     use HasFactory;
-    protected $table = 'offers';
+    protected $table ="gift_offers";
+    protected $primaryKey="id";
+    protected $fillable = ['product_id','offer_id'];
 
-    protected $fillable=['product_id','offer_id'];
-    /*  public function offer()
+      public function offer()
       {
           return $this->belongsTo(Offer::class);
-      }*/
+      }
     public function product()
     {
         return $this->belongsTo(Product::class);

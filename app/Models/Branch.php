@@ -19,7 +19,10 @@ use App\Models\Rate;
 class Branch extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'location', 'google_maps', 'store_id', 'category_id', 'visible', 'image'];
+    protected $table ="branches";
+    protected $primaryKey="id";
+    protected $fillable = ['name','location','google_maps','store_id','category_id','visible','image'];
+
 
     public function store()
     {

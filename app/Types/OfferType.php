@@ -11,8 +11,8 @@ class OfferType
     {
         //
     }
-    public const Percentage="Percentage offer";
-    public const Discount="Discount Offer";
-    public const Extra="Extra Offer";
-    public const Gift="Gift Offer";
+    public const Percentage="Percentage_offer";
+    public const Discount="Discount_Offer";
+    public const Extra="Extra_Offer";
+    public const Gift="Gift_Offer";
 }

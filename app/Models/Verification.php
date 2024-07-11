@@ -11,12 +11,16 @@ use App\Models\Store;
 class Verification extends Model
 {
     use HasFactory;
-    protected $fillable = ['commercial_record', 'merchant_id', 'store_id'];
+    protected $table ="verifications";
+    protected $primaryKey="id";
+    protected $fillable = ['commercial_record', 'merchant_id', 'store_id','status'];
 
     public function merchant()
     {
-        return $this->belongsTo(Merchant::class);
+        return $this->belongsTo(User::class,'merchant_id');
     }
+    
+
     public function store()
     {
         return $this->belongsTo(Store::class);

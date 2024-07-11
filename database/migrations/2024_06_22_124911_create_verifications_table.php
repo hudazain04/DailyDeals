@@ -1,5 +1,6 @@
 <?php
 
+use App\Types\RequestType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,10 @@ return new class extends Migration
     {
         Schema::create('verifications', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('merchant_id')->constrained('merchants')->onDelete('cascade');
+            $table->foreignId('merchant_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('store_id')->constrained('stores')->onDelete('cascade');
             $table->string('commercial_record');
+            $table->enum('status',[RequestType::Accepted,RequestType::Rejected,RequestType::Pending]);
             $table->timestamps();
         });
     }

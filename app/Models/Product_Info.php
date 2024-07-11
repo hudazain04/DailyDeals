@@ -10,7 +10,9 @@ use App\Models\Product;
 class Product_Info extends Model
 {
     use HasFactory;
-    protected $fillable = ['color_id', 'size_id', 'product_id'];
+    protected $table ="product__infos";
+    protected $primaryKey="id";
+    protected $fillable = ['product_id','color_id','size_id','price'];
 
     public function product()
     {

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('blocked')->default(false);
             $table->boolean('verified')->default(false);
             $table->string('image')->nullable();
+            $table->softDeletes();
             $table->rememberToken();
             $table->timestamps();
         });

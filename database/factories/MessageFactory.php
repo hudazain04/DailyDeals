@@ -19,8 +19,10 @@ class MessageFactory extends Factory
         return [
             'message' => $this->faker->text(100),
             'time' => $this->faker->dateTime,
-            'user_id' => $this->faker->numberBetween(1, 10),
             'conversation_id' => $this->faker->numberBetween(1, 10),
+            'sender_id' => $this->faker->numberBetween(1, 10),
+            'receiver_id' => $this->faker->numberBetween(1, 10),
+            'read' => 0,
 
 
         ];
