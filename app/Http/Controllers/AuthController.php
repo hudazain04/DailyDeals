@@ -206,8 +206,7 @@ class AuthController extends Controller
         }
         $user=User::where('id',$employee->user_id)->first();
         $token=$user->createToken('auth_token')->plainTextToken;
-            \Log::info('Generated Token: ' . $token); // Log the token for debugging
-            $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
+        $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
         if ($currentdevice){
             $currentdevice->update([
                 "token" => $token,
