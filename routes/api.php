@@ -35,8 +35,6 @@ Route::middleware(['check.blocked'])->group(function () {
         Route::post('restore_my_account',[ProfileController::class,'restore_my_account']);
         Route::get('get_faq',[FaqController::class ,'get_faq']);
         Route::post('store_byID',[StoreController::class ,'store_byID']);
-
-
     });
 });
 
@@ -130,3 +128,5 @@ Route::middleware(['auth:sanctum','Admin','check.blocked'])->group(function ()
     Route::get('list_all_stores',[StoreController::class ,'list_all_stores']);
     Route::get('list_admin_branches',[BranchController::class ,'list_admin_branches']);
 });
+
+
