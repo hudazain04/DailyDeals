@@ -277,4 +277,15 @@ class BranchController extends Controller
         }
     }
 
+    public function Branch_byID (Request $request)
+    {
+        $branches = Branch::where('id',$request->id)->get();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'branches',
+            'data' => BranchResource::collection($branches),
+        ]);
+    }
+
 }
