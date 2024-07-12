@@ -1,5 +1,5 @@
 <?php
-
+//test merge
 namespace App\Http\Controllers;
 use App\Http\Requests\BranchRequest;
 use App\Http\Resources\BranchResource;
