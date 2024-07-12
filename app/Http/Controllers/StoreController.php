@@ -110,7 +110,7 @@ class StoreController extends Controller
 
     public function list_visible_stores()
     {
-        $visible_stores = Store::where('visible',1)->get();
+        $visible_stores = Store::orderBy('verified', 'desc')->where('visible', 1)->get();
 
         return response()->json([
             'status' => 200,
@@ -143,7 +143,7 @@ class StoreController extends Controller
 
     public function list_all_stores()
     {
-        $all_stores = Store::get();
+        $all_stores = Store::orderBy('verified', 'desc')->get();
 
         return response()->json([
             'status' => 200,
@@ -154,12 +154,12 @@ class StoreController extends Controller
 
     public function store_byID (Request $request)
     {
-        $merchant_stores = Store::where('merchant_id',$request->merchant_id)->get();
+        $stores = Store::where('id',$request->id)->get();
 
         return response()->json([
             'status' => 200,
-            'message' => 'merchant stores',
-            'data' => StoreResource::collection($merchant_stores),
+            'message' => 'stores',
+            'data' => StoreResource::collection($stores),
         ]);
     }
 }

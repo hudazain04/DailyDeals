@@ -20,6 +20,7 @@ class StoreResource extends JsonResource
             'type' => $this->type,
             'description' => $this->description,
             'visible' => $this->visible,
+            'verified' => $this->verified,
             'merchant_id' => $this->merchant->id,
             'merchant' => $this->merchant->first_name ." ".$this->merchant->last_name,
         ];
