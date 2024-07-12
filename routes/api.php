@@ -35,6 +35,8 @@ Route::middleware(['check.blocked'])->group(function () {
         Route::post('restore_my_account',[ProfileController::class,'restore_my_account']);
         Route::get('get_faq',[FaqController::class ,'get_faq']);
         Route::post('store_byID',[StoreController::class ,'store_byID']);
+        Route::post('Branch_byID',[BranchController::class ,'Branch_byID']);
+        
     });
 });
 
