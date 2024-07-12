@@ -19,18 +19,15 @@ Route::get('/', function () {
 
 Route::prefix('auth')->group(function (){
 
-    Route::middleware(MerchantMiddleware::class)->group(function (){
         Route::post('register', [AuthController::class, 'Register']);
         Route::post('verifyEmail', [AuthController::class, 'VerifyEmail']);
         Route::post('resendVerifyEmailCode',[AuthController::class,'ResendVerifyEmailCode']);
-    });
-    Route::middleware('roles:[Merchant,Admin]')->group(function (){
         Route::post('login', [AuthController::class, 'Login']);
         Route::post('forgetPassword',[AuthController::class, 'ForgetPassword']);
         Route::post('resendForgetPasswordVerifyCode',[AuthController::class, 'ResendForgetPasswordCode']);
         Route::post('forgetPasswordVerify', [AuthController::class, 'ForgetPasswordVerify']);
         Route::post('forgetPasswordChange',[AuthController::class, 'ForgetPasswordChange']);
-    });
+
 
     Route::post('loginEmployee',[AuthController::class,'LoginEmployee'])->middleware(EmployeeMiddleware::class);
 

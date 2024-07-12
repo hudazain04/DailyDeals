@@ -40,61 +40,77 @@ Route::middleware(['check.blocked'])->group(function () {
 
 Route::middleware('auth:sanctum','check.blocked')->group(function () {
 
-    Route::prefix('auth')->group(function (){
-        Route::post('changePassword',[AuthController::class,'ChangePassword']);
+    Route::prefix('auth')->group(function () {
+        Route::post('changePassword', [AuthController::class, 'ChangePassword']);
         Route::post('logout', [AuthController::class, 'Logout']);
-        Route::get('get_my_profile',[ProfileController::class,'get_my_profile']);
-        Route::post('update_my_profile',[ProfileController::class,'update_my_profile']);
-        Route::post('soft_delete_my_account',[ProfileController::class,'soft_delete_my_account']);
-        Route::post('hard_delete_my_account',[ProfileController::class,'hard_delete_my_account']);
-        Route::get('get_all_admins',[ProfileController::class,'get_all_admins']);
-        Route::get('get_all_customers',[ProfileController::class,'get_all_customers']);
-        Route::get('get_all_merchants',[ProfileController::class,'get_all_merchants']);
-        Route::get('get_all_employees',[ProfileController::class,'get_all_employees']);
-        Route::post('update_branch',[BranchController::class ,'update_branch']);
+        Route::get('get_my_profile', [ProfileController::class, 'get_my_profile']);
+        Route::post('update_my_profile', [ProfileController::class, 'update_my_profile']);
+        Route::post('soft_delete_my_account', [ProfileController::class, 'soft_delete_my_account']);
+        Route::post('hard_delete_my_account', [ProfileController::class, 'hard_delete_my_account']);
+        Route::get('get_all_admins', [ProfileController::class, 'get_all_admins']);
+        Route::get('get_all_customers', [ProfileController::class, 'get_all_customers']);
+        Route::get('get_all_merchants', [ProfileController::class, 'get_all_merchants']);
+        Route::get('get_all_employees', [ProfileController::class, 'get_all_employees']);
+        Route::post('update_branch', [BranchController::class, 'update_branch']);
     });
 
 
-    Route::prefix('app_info')->group(function (){
-        Route::post('addOrUpdatePrivacyPolicy', [AppInformationController::class, 'AddORUpdatePrivacyPolicy']);
+    Route::prefix('app_info')->group(function () {
+        Route::middleware('Admin')->group(function () {
+            Route::post('addOrUpdatePrivacyPolicy', [AppInformationController::class, 'AddORUpdatePrivacyPolicy']);
+            Route::get('deletePrivacyPolicy', [AppInformationController::class, 'DeletePrivacyPolicy']);
+            Route::post('addOrUpdateTermsAndConditions', [AppInformationController::class, 'AddORUpdateTermsAndConditions']);
+            Route::get('deleteTermsAndConditions', [AppInformationController::class, 'DeleteTermsAndConditions']);
+            Route::post('addOrUpdateAboutApp', [AppInformationController::class, 'AddORUpdateAboutApp']);
+            Route::get('deleteAboutApp', [AppInformationController::class, 'DeleteAboutApp']);
+
+        });
         Route::get('showPrivacyPolicy', [AppInformationController::class, 'ShowPrivacyPolicy']);
-        Route::get('deletePrivacyPolicy', [AppInformationController::class, 'DeletePrivacyPolicy']);
-        Route::post('addOrUpdateTermsAndConditions', [AppInformationController::class, 'AddORUpdateTermsAndConditions']);
         Route::get('showTermsAndConditions', [AppInformationController::class, 'ShowTermsAndConditions']);
-        Route::get('deleteTermsAndConditions', [AppInformationController::class, 'DeleteTermsAndConditions']);
-        Route::post('addOrUpdateAboutApp', [AppInformationController::class, 'AddORUpdateAboutApp']);
         Route::get('showAboutApp', [AppInformationController::class, 'ShowAboutApp']);
-        Route::get('deleteAboutApp', [AppInformationController::class, 'DeleteAboutApp']);
 
     });
 
 
-    Route::prefix('category')->group(function (){
-        Route::post('addCategoryRequest', [CategoryRequestController::class, 'AddCategoryRequest']);
-        Route::post('updateCategoryRequest/{request_id}', [CategoryRequestController::class, 'UpdateCategoryRequest']);
-        Route::get('deleteCategoryRequest/{request_id}', [CategoryRequestController::class, 'DeleteCategoryRequest']);
-        Route::get('getCategoryRequest/{request_id}', [CategoryRequestController::class, 'GetCategoryRequest']);
-        Route::get('getAllForUser', [CategoryRequestController::class, 'GetAllForUser']);
-        Route::get('getAll', [CategoryRequestController::class, 'GetAll']);
+    Route::prefix('category')->group(function () {
+        Route::middleware('roles:Merchant,Employee')->group(function () {
+            Route::post('addCategoryRequest', [CategoryRequestController::class, 'AddCategoryRequest']);
+            Route::post('updateCategoryRequest/{request_id}', [CategoryRequestController::class, 'UpdateCategoryRequest']);
+            Route::get('deleteCategoryRequest/{request_id}', [CategoryRequestController::class, 'DeleteCategoryRequest']);
+            Route::get('getAllForUser', [CategoryRequestController::class, 'GetAllForUser']);
+
+        });
+        Route::middleware('Admin')->group(function () {
+            Route::post('acceptCategoryRequest/{request_id}', [CategoryRequestController::class, 'AcceptCategoryRequest']);
+            Route::get('rejectCategoryRequest/{request_id}', [CategoryRequestController::class, 'RejectCategoryRequest']);
+            Route::get('getAll', [CategoryRequestController::class, 'GetAll']);
+
+        });
+
+        Route::get('getCategoryRequest/{request_id}', [CategoryRequestController::class, 'GetCategoryRequest'])->middleware('roles:Merchant,Employee,Admin');
 
 
     });
 
 
-    Route::prefix('verification')->group(function (){
-        Route::post('addVerificationRequest', [VerificationController::class, 'AddVerificationRequest']);
-        Route::get('acceptVerificationRequest/{request_id}', [VerificationController::class, 'AcceptVerificationRequest']);
-        Route::get('rejectVerificationRequest/{request_id}', [VerificationController::class, 'RejectVerificationRequest']);
-        Route::get('getVerificationRequest/{request_id}', [VerificationController::class, 'GetVerificationRequest']);
-        Route::get('getAllForUser', [VerificationController::class, 'GetAllForUser']);
-        Route::get('getAll', [VerificationController::class, 'GetAll']);
+    Route::prefix('verification')->group(function () {
+        Route::middleware('Admin')->group(function () {
+            Route::get('acceptVerificationRequest/{request_id}', [VerificationController::class, 'AcceptVerificationRequest']);
+            Route::get('rejectVerificationRequest/{request_id}', [VerificationController::class, 'RejectVerificationRequest']);
+            Route::get('getAll', [VerificationController::class, 'GetAll']);
 
+        });
+        Route::middleware('Merchant')->group(function () {
+            Route::post('addVerificationRequest', [VerificationController::class, 'AddVerificationRequest']);
+            Route::get('getAllForUser', [VerificationController::class, 'GetAllForUser']);
+        });
+        Route::get('getVerificationRequest/{request_id}', [VerificationController::class, 'GetVerificationRequest'])->middleware('roles:Merchant,Admin');
 
     });
 
 });
 
-Route::middleware(['auth:sanctum','Customer','check.blocked'])->group(function () {
+    Route::middleware(['auth:sanctum','Customer','check.blocked'])->group(function () {
     Route::get('list_visible_stores',[StoreController::class ,'list_visible_stores']);
     Route::get('list_customer_branches',[BranchController::class ,'list_customer_branches']);
 });
