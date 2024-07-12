@@ -252,6 +252,19 @@ class ProfileController extends Controller
             'data' => ProfileResource::collection($merchants),
         ]);
     }
+
+    public function get_merchant_detail(Request $request)
+    {
+        $merchant = User::where('role','Merchant')->where('id',$request->id)->get();
+        return response()->json([
+            'status' => 200,
+            'message' => 'merchant detail',
+            'data' => ProfileResource::collection($merchant),
+        ]);
+    }
+
+
+
     public function get_all_employees()
     {
         $employees = User::where('role','Employee')->get();

@@ -53,6 +53,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('get_all_customers', [ProfileController::class, 'get_all_customers']);
         Route::get('get_all_merchants', [ProfileController::class, 'get_all_merchants']);
         Route::get('get_all_employees', [ProfileController::class, 'get_all_employees']);
+        Route::get('get_merchant_detail', [ProfileController::class, 'get_merchant_detail']);
         Route::post('update_branch', [BranchController::class, 'update_branch']);
     });
 
