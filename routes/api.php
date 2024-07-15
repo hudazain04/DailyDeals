@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AppInformationController;
 use App\Http\Controllers\CategoryRequestController;
+use App\Http\Controllers\OfferController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\EmployeeMiddleware;
@@ -37,7 +38,7 @@ Route::middleware(['check.blocked'])->group(function () {
         Route::get('get_faq',[FaqController::class ,'get_faq']);
         Route::post('store_byID',[StoreController::class ,'store_byID']);
         Route::post('Branch_byID',[BranchController::class ,'Branch_byID']);
-        
+
     });
 });
 
@@ -97,6 +98,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
     });
 
 
+
     Route::prefix('verification')->group(function () {
         Route::middleware('Admin')->group(function () {
             Route::get('acceptVerificationRequest/{request_id}', [VerificationController::class, 'AcceptVerificationRequest']);
@@ -111,6 +113,21 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('getVerificationRequest/{request_id}', [VerificationController::class, 'GetVerificationRequest'])->middleware('roles:Merchant,Admin');
 
     });
+
+
+    Route::prefix('offer')->group(function (){
+        Route::middleware('role:Merchant,Employee')->group(function (){
+            Route::post('addOfferTypeRequest',[OfferController::class,'AddOfferTypeRequest']);
+            Route::post('updateOfferTypeRequest/{request_id}',[OfferController::class,'UpdateOfferTypeRequest']);
+            Route::get('deleteOfferTypeRequest/{request_id}',[OfferController::class,'DeleteOfferTypeRequest']);
+            Route::get('getAllForUser',[OfferController::class,'GetAllForUser']);
+
+        });
+
+        Route::get('getAll',[OfferController::class,'GetAll'])->middleware('Admin');
+
+    });
+
 
 });
 
