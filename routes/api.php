@@ -15,6 +15,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FaqController;
 
 Route::get('/user', function (Request $request) {
@@ -143,7 +144,11 @@ Route::middleware(['auth:sanctum','Merchant','check.blocked'])->group(function (
     Route::post('create_branch',[BranchController::class ,'create_branch']);
     Route::post('delete_branch',[BranchController::class ,'delete_branch']);
     Route::get('list_merchant_branches',[BranchController::class ,'list_merchant_branches']);
-
+    Route::post('create_employee',[EmployeeController::class ,'create_employee']);
+    Route::post('update_employee',[EmployeeController::class ,'update_employee']);
+    Route::post('create_new_code',[EmployeeController::class ,'create_new_code']);
+    Route::post('delete_employee',[EmployeeController::class ,'delete_employee']);
+    Route::get('get_employees_by_store',[EmployeeController::class ,'get_employees_by_store']);
 });
 
 Route::middleware(['auth:sanctum','Employee','check.blocked'])->group(function () {
