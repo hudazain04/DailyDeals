@@ -128,6 +128,19 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
     });
 
 
+
+    Route::prefix('comment')->group(function (){
+        Route::middleware('Customer')->group(function (){
+            Route::post('addComment',[OfferController::class,'AddComment']);
+            Route::post('updateComment/{comment_id}',[OfferController::class,'UpdateComment']);
+            Route::get('deleteComment/{comment_id}',[OfferController::class,'DeleteComment']);
+
+        });
+
+        Route::get('getAllCommentsOnOffer/{offer_id}',[OfferController::class,'GetAllCommentsOnOffer']);
+
+    });
+
 });
 
     Route::middleware(['auth:sanctum','Customer','check.blocked'])->group(function () {
@@ -164,5 +177,9 @@ Route::middleware(['auth:sanctum','Admin','check.blocked'])->group(function ()
     Route::get('list_all_stores',[StoreController::class ,'list_all_stores']);
     Route::get('list_admin_branches',[BranchController::class ,'list_admin_branches']);
 });
+
+
+
+
 
 
