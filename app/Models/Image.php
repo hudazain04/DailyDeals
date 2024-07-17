@@ -22,4 +22,19 @@ class Image extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function setImageAttribute($image)
+    {
+        if ($image && $image->isValid()) {
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('ProductImage'),$filename);
+            $this->attributes['image'] = public_path('ProductImage').$filename;
+        }
+    }
+
+
+
+    public function getImageUrlAttribute()
+    {
+        return $this->attributes['image'];
+    }
 }

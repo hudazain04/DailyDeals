@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    
+
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
@@ -138,4 +138,35 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+    public function setImageAttribute($image)
+    {
+        if ($image && $image->isValid()) {
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            switch (request()->get('role'))
+            {
+                case "Merchant": $url='MerchantImage';
+                break;
+                case "Customer": $url='CustomerImage';
+                break;
+                case "Employee": $url='EmployeeImage';
+                break;
+                case "Admin": $url='AdminImage';
+                break;
+            }
+
+            $image->move(public_path($url),$filename);
+            $this->attributes['image'] = '/'.$url.'/'.$filename;
+        }
+    }
+
+
+
+    public function getImageUrlAttribute()
+    {
+        return $this->attributes['image'];
+    }
+
+
 }

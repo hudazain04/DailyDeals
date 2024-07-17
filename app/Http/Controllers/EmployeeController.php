@@ -16,11 +16,15 @@ class EmployeeController extends Controller
 {
     public function create_employee(EmployeeRequest $request)
     {
-        return auth()->user()->id;
+        $user= auth()->user();
+//        Todo : check statement for merchant type should be in middleware
         if ($user && $user->role == 'Merchant') {
 
+//            Todo : check if generated code found in database first
             $rand_code = rand(1111,9999);
 
+//            Todo : password != code
+//            Todo : only password should be hashed
             $employee = User::create([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
@@ -29,34 +33,38 @@ class EmployeeController extends Controller
                 'phone_number' => $request->phone_number,
                 'role' => 'Employee',
             ]);
-
+//            Todo : move logic of create file image to user model using setAttribute function
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
+//                Todo : rand(111111,999999) will be reapeted and the name will not be unique
                 $image_name = rand(111111,999999) . '.' . $image->getClientOriginalExtension();
+//                  Todo : name of folders should be meaningful like EmployeeImage , CustomerImage
                 $path = public_path('/Image');
                 $image->move($path,$image_name);
 
                 $employee->image = $image_name;
                 $employee->save();
             }
-            
+
                 Employee::create([
                     'user_id' => $employee->id,
                     'branch_id' => $request->branch_id,
                     'merchant_id' => $user->id,
                     'code' => Hash::make($rand_code),
                 ]);
-    
+
                 $emp = new EmployeeResource($employee);
                 $emp['code'] = $rand_code;
 
+//                Todo : use HttpResponse trait instead of this
             return response()->json([
                 'status' => 200,
                 'message' => 'employee added successfully',
-                'data' => $emp ,
+                'data' => $emp , // Todo : use UserResource::make() to return the data always
             ]);
 
-        } else {
+        }
+        else {
             return response()->json([
                 'status' => 404,
                 'message' => 'user not found',
@@ -64,7 +72,7 @@ class EmployeeController extends Controller
             ]);
         }
     }
-    
+
     public function update_employee(EmployeeUpdateRequest $request)
     {
         $user = auth()->user();
@@ -91,12 +99,12 @@ class EmployeeController extends Controller
                     $image_name = rand(111111,999999) . '.' . $image->getClientOriginalExtension();
                     $path = public_path('/Image');
                     $image->move($path,$image_name);
-    
+
                     $emp_user->image = $image_name;
                     $emp_user->save();
                 }
-                
-                
+
+
                 return response()->json([
                     'status' => 200,
                     'message' => 'Employee updated successfully',
@@ -208,7 +216,7 @@ class EmployeeController extends Controller
     {
         $user = auth()->user();
         $store = Store::find($request->store_id);
-    
+
         if (!$store) {
             return response()->json([
                 'status' => 404,
@@ -223,7 +231,7 @@ class EmployeeController extends Controller
             foreach ($branches as $branch) {
                 $employees = $employees->merge($branch->employees);
             }
-        
+
             return response()->json([
                 'status' => 200,
                 'message' => 'List Employees',

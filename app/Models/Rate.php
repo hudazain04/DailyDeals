@@ -5,9 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Branch;
-use App\Models\Customer;
-
 class Rate extends Model
 {
     use HasFactory;
@@ -23,4 +20,5 @@ class Rate extends Model
     {
         return $this->belongsTo(User::class,'customer_id');
     }
+
 }

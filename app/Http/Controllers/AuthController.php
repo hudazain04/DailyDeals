@@ -52,13 +52,18 @@ class AuthController extends Controller
             $request['password'] = Hash::make($request['password']);
 //            $data=$request->only(['first_name','last_name','email','password', 'phone_number','role', 'image'=> $this->UploadImage($request)
 //            ]);
-            $imageUrl = AuthController::UploadImage($request);
+
+//            $imageUrl = AuthController::UploadImage($request);
             $data = $request->only(['first_name', 'last_name', 'email', 'password', 'phone_number', 'role']);
-            $data['image'] = $imageUrl;
+//            $data['image'] = $imageUrl;
             $user = User::create($data);
+            if ($request->hasFile('image')) {
+                $user->image = $request->file('image');
+                $user->save();
+            }
             $code=$this->SendVerificationCode($user,VerificationCodeType::register_code);
             DB::commit();
-            return $this->success(['user' => UserResource::make($user),'verification code'=>$code],"registered successfully");
+            return $this->success(['user' => UserResource::make($user)],"registered successfully");
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -189,6 +194,7 @@ class AuthController extends Controller
                     "notification_token"=>$request->notification_token,
                 ]);
             }
+
             return $this->success(['user' => UserResource::make($user), "access_token" => $token] ,'user logged in successfully' );
         }
         catch (\Throwable $th){
@@ -199,6 +205,7 @@ class AuthController extends Controller
     public function LoginEmployee(LoginEmployeeRequest $request)
     {
         try{
+
         $employee=Employee::where('code',$request->code)->first();
         if (! $employee)
         {

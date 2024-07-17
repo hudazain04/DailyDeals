@@ -64,4 +64,25 @@ class Branch extends Model
     {
         return $this->belongsToMany(Offer::class, 'offer__branches');
     }
+
+
+
+    public function setImageAttribute($image)
+    {
+        if ($image && $image->isValid()) {
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('BranchImage'),$filename);
+            $this->attributes['image'] = public_path('BranchImage').$filename;
+        }
+    }
+
+
+
+    public function getImageUrlAttribute()
+    {
+        return $this->attributes['image'];
+    }
+
+
+
 }

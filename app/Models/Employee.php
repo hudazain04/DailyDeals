@@ -10,11 +10,11 @@ use App\Models\Merchant;
 use App\Models\Branch;
 
 class Employee extends Model
-{   
+{
     use HasFactory;
     protected $table ="employees";
     protected $primaryKey="id";
-    protected $fillable = ['code','branch_id','user_id'];
+    protected $fillable = ['code','branch_id','user_id','merchant_id'];
 
     public function user()
     {
@@ -31,5 +31,12 @@ class Employee extends Model
     public function conversations()
     {
         return $this->hasMany(Conversation::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'code' => 'hashed',
+        ];
     }
 }

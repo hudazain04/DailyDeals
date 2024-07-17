@@ -32,7 +32,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'image' => $this->faker->word() . '.jpg',
             'phone_number' => $this->faker->phoneNumber,
-            'role' => $this->faker->randomElement(['admin', 'customer', 'merchant', 'employee']),
+            'role' => $this->faker->randomElement(['Admin', 'Customer', 'Merchant', 'Employee']),
             'blocked' => 0,
         ];
     }

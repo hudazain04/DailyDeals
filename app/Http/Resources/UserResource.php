@@ -22,7 +22,7 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
-            'image' => $this->image,
+            'image' => $this->image ? asset($this->image) : null,
 
         ];
         if(Auth::user())
