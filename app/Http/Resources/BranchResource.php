@@ -22,8 +22,9 @@ class BranchResource extends JsonResource
             'visible' => $this->visible,
             'store' => $this->store ? $this->store->name : null,
             'category' => $this->category ? $this->category->category : null,
-            'image' => public_path('/').'Image/'. $this->image,
-            'numbers' => NumberResource::collection($this->numbers)
+            'image' => $this->image,
+            'numbers' => NumberResource::collection($this->numbers),
+            'qr' => QrResource::collection($this->qrs)
         ];
     }
 }

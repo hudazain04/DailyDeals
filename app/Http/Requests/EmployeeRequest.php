@@ -24,11 +24,10 @@ class EmployeeRequest extends FormRequest
         return [
             'first_name' => 'required',
             'last_name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'image' => 'file',
-            'password' => 'required',
             'phone_number' => 'required',
-            'branch_id' => 'required|numeric|exists:branches,id'        
+            'branch_id' => 'required|numeric|exists:branches,id',
         ];
     }
 }

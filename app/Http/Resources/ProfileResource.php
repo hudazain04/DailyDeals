@@ -19,14 +19,15 @@ class ProfileResource extends JsonResource
         } else {
             $branch = null;
         }
+   
         return [
-            "user_id"=> $this->id,
+            'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'role' => $this->role,
-            'image' => public_path('/').'Image/'. $this->image,
+            'image' =>$this->image,
             'branch' => $this->when($branch != null, $branch),
         ];
     }

@@ -4,21 +4,20 @@ namespace App\Http\Controllers;
 use App\Http\Requests\faqRequest;
 use App\Http\Resources\faqResource;
 use App\Http\Controllers\Controller;
+use App\HttpResponse\HttpResponse;
 use App\Models\FAQ;
 use Illuminate\Http\Request;
 
 
 class FaqController extends Controller
 {
+    use HttpResponse;
+    
     public function get_faq()
     {
         $faq = FAQ::get();
+        return $this->success(FaqResource::collection($faq) ,'all Faq');
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'all Faq',
-            'data' => FaqResource::collection($faq),
-        ]);
     }
     
     public function add_faq(FaqRequest $request)
@@ -28,11 +27,8 @@ class FaqController extends Controller
             'answer' => $request->answer,
         ]);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Faq addes successfully',
-            'data' => new FaqResource($faq),
-        ]);
+        return $this->success(new FaqResource($faq) ,'Faq addes successfully');
+
     }
 
     public function update_faq(FaqRequest $request)
@@ -44,23 +40,15 @@ class FaqController extends Controller
             'answer' => $request->answer,
         ]);
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Faq updated successfully',
-            'data' => new FaqResource($faq),
-        ]);
+        return $this->success(new FaqResource($faq) ,'Faq updated successfully');
+
     }
 
     public function delete_faq(Request $request)
     {
         $faq = FAQ::where('id', $request->faq_id)->first();
-
         $faq->delete();
+        return $this->success(null ,'Faq deleted successfully');
 
-        return response()->json([
-            'status' => 200,
-            'message' => 'Faq deleted successfully',
-            'data' => null,
-        ]);
     }
 }

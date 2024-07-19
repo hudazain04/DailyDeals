@@ -23,7 +23,6 @@ class ProfileRequest extends FormRequest
     {
         return [
             'image' => 'file',
-            'branch_id' => 'required|numeric|exists:branches,id',
             'email' => 'required|email',
             'phone_number' => 'required',
         ];
