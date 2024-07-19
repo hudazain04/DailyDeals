@@ -144,7 +144,7 @@ class User extends Authenticatable
     {
         if ($image && $image->isValid()) {
             $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-            switch (request()->get('role'))
+            switch (request()->get('role',$this->role))
             {
                 case "Merchant": $url='MerchantImage';
                 break;
@@ -160,8 +160,6 @@ class User extends Authenticatable
             $this->attributes['image'] = '/'.$url.'/'.$filename;
         }
     }
-
-
 
     public function getImageUrlAttribute()
     {

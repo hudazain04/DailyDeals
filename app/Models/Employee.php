@@ -33,10 +33,5 @@ class Employee extends Model
         return $this->hasMany(Conversation::class);
     }
 
-    protected function casts(): array
-    {
-        return [
-            'code' => 'hashed',
-        ];
-    }
+
 }
