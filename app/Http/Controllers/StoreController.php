@@ -5,15 +5,17 @@ use App\Http\Requests\StoreRequest;
 use App\Http\Resources\StoreResource;
 use App\Models\Store;
 use App\Http\Controllers\Controller;
+use App\HttpResponse\HttpResponse;
 use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
+    use HttpResponse;
+    
     public function add_store(StoreRequest $request)
     {
-        $user = auth()->user();
+            $user = auth()->user();
 
-        if ($user && $user->role == 'Merchant') {
             $store = Store::create([
                 'name' => $request->name,
                 'type' => $request->type,
@@ -22,29 +24,18 @@ class StoreController extends Controller
                 'merchant_id' => $user->id,
             ]);
             
-            return response()->json([
-                'status' => 200,
-                'message' => 'store added successfully',
-                'data' => new StoreResource($store),
-            ]);
-
-        } else {
-            return response()->json([
-                'status' => 404,
-                'message' => 'user not found',
-                'data' => null,
-            ]);
-        }
+            return $this->success(new StoreResource($store),'store added successfully');
+      
     }
 
     public function update_store(StoreRequest $request)
     {
-        $user = auth()->user();
-
-        if ($user && $user->role == 'Merchant') {
+            $user = auth()->user();
             $store = Store::where('id',$request->store_id)->first();
 
-            if ($store->merchant_id == $user->id) {
+            if ($store->merchant_id != $user->id) {
+                return $this->error('not Authurized',403);
+            } else {
                 $store->update([
                     'name' => $request->name,
                     'type' => $request->type,
@@ -53,113 +44,46 @@ class StoreController extends Controller
                     'merchant_id' => $user->id,
                 ]);
                 
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'store updated successfully',
-                    'data' => new StoreResource($store),
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 403,
-                    'message' => 'not Authurized',
-                    'data' => null,
-                ]);
+                return $this->success(new StoreResource($store),'store updated successfully');
             }
-
-
-        } else {
-            return response()->json([
-                'status' => 404,
-                'message' => 'user not found',
-                'data' => null,
-            ]);
-        }
     }
 
     public function delete_store(Request $request)
     {
-        $user = auth()->user();
-
-        if ($user && $user->role == 'Merchant') {
+            $user = auth()->user();
             $store = Store::where('id',$request->store_id)->first();
 
-            if ($store->merchant_id == $user->id) {
-                $store->delete();  
-                
-                return response()->json([
-                    'status' => 200,
-                    'message' => 'store deleted successfully',
-                    'data' => null,
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 403,
-                    'message' => 'not Authurized',
-                    'data' => null,
-                ]);
-            }  
+            if ($store->merchant_id != $user->id) {
+                return $this->error('not Authurized',403);
 
-        } else {
-            return response()->json([
-                'status' => 404,
-                'message' => 'user not found',
-                'data' => null,
-            ]);
-        }
+            } else {
+                $store->delete();  
+                return $this->success(null,'store deleted successfully');
+            }  
     }
 
     public function list_visible_stores()
     {
         $visible_stores = Store::orderBy('verified', 'desc')->where('visible', 1)->get();
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'visible stores',
-            'data' => StoreResource::collection($visible_stores),
-        ]);
+        return $this->success(StoreResource::collection($visible_stores),'visible stores');
     }
 
     public function list_merchant_stores()
     {
         $user = auth()->user();
-        if ($user && $user->role == 'Merchant') {
-            $merchant_stores = Store::where('merchant_id',$user->id)->get();
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'merchant stores',
-                'data' => StoreResource::collection($merchant_stores),
-            ]);
-
-        } else {
-            return response()->json([
-                'status' => 404,
-                'message' => 'user not found',
-                'data' => null,
-            ]);
-        }
-    
+        $merchant_stores = Store::where('merchant_id',$user->id)->get();
+        return $this->success(StoreResource::collection($merchant_stores),'merchant stores');
     }
 
     public function list_all_stores()
     {
         $all_stores = Store::orderBy('verified', 'desc')->get();
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'all stores',
-            'data' => StoreResource::collection($all_stores),
-        ]);
+        return $this->success(StoreResource::collection($all_stores),'all stores');
     }
 
     public function store_byID (Request $request)
     {
         $stores = Store::where('id',$request->id)->get();
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'stores',
-            'data' => StoreResource::collection($stores),
-        ]);
+        return $this->success(StoreResource::collection($stores),'list stores by id');
     }
 }

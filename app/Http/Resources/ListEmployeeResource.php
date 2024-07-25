@@ -21,7 +21,7 @@ class ListEmployeeResource extends JsonResource
             'email' => $this->user->email,
             'phone_number' => $this->user->phone_number,
             'role' => $this->user->role,
-            'image' => public_path('/').'Image/'. $this->user->image,
+            'image' =>$this->user->image,
         ];
     }
 }
