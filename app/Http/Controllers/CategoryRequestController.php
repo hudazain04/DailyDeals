@@ -26,7 +26,9 @@ class CategoryRequestController extends Controller
     {
         try
         {
-            $category=Category_Request::where('id',$request_id)->first();
+            $category=Category_Request::find($request_id);
+
+//            $category=Category_Request::where('id',$request_id)->first();
 
                 return $this->success(['category_request'=>CategoryRequestResource::make($category)],'success');
 
@@ -41,7 +43,7 @@ class CategoryRequestController extends Controller
     {
         try
         {
-            $user=Auth::user();
+            $user=$request->user();
             $category=Category_Request::create(['category'=>$request->category,'user_id'=>$user->id,'status'=>RequestType::Pending]);
             return $this->success(['category_request'=>CategoryRequestResource::make($category)],
                 'category request added successfully');
@@ -55,7 +57,8 @@ class CategoryRequestController extends Controller
     {
         try
         {
-            $category=Category_Request::where('id',$request_id)->first();
+            $category=Category_Request::find($request_id);
+//            $category=Category_Request::where('id',$request_id)->first();
             if ($category)
 
                 $category->update(['category'=>$request->category]);
@@ -74,7 +77,8 @@ class CategoryRequestController extends Controller
     {
         try
         {
-            $category=Category_Request::where('id',$request_id)->first();
+            $category=Category_Request::find($request_id);
+//            $category=Category_Request::where('id',$request_id)->first();
 
                 $category->delete();
                 return $this->success(null,'category request deleted successfully');
@@ -86,9 +90,9 @@ class CategoryRequestController extends Controller
             return $this->error($th->getMessage(),500);
         }
     }
-    public function GetAllForUser()
+    public function GetAllForUser(Request $request)
     {
-        $user=Auth::user();
+        $user=$request->user();
         try
         {
             $status=[RequestType::Pending,RequestType::Accepted,RequestType::Rejected];
@@ -126,7 +130,9 @@ class CategoryRequestController extends Controller
         try
         {
             DB::beginTransaction();
-            $category_request=Category_Request::where('id',$request_id)->first();
+            $category_request=Category_Request::find($request_id);
+
+//            $category_request=Category_Request::where('id',$request_id)->first();
             if ($request['admin_name'])
             {
                 $category_request->update(['admin_name'=>$request->admin_name,'status'=>RequestType::Accepted]);
@@ -178,7 +184,8 @@ class CategoryRequestController extends Controller
     public function RejectCategoryRequest($request_id)
     {
         try {
-            $category_request=Category_Request::where('id',$request_id)->first();
+            $category_request=Category_Request::find($request_id);
+//            $category_request=Category_Request::where('id',$request_id)->first();
             $category_request->update(['status'=>RequestType::Rejected]);
             return $this->success(null,'category request rejected');
         }

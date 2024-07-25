@@ -22,7 +22,7 @@ class LogoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'device_id' => "required"
+//            'device_id' => "required"
         ];
     }
 }
