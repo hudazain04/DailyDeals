@@ -23,6 +23,7 @@ class BranchResource extends JsonResource
             'store' => $this->store ? $this->store->name : null,
             'category' => $this->category ? $this->category->category : null,
             'image' => $this->image,
+            'rate'=> $this->rate,
             'numbers' => NumberResource::collection($this->numbers),
             'qr' => QrResource::collection($this->qrs)
         ];
