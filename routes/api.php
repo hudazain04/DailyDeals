@@ -16,7 +16,11 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\NotifiedController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -57,6 +61,8 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('get_all_employees', [ProfileController::class, 'get_all_employees']);
         Route::get('get_merchant_detail', [ProfileController::class, 'get_merchant_detail']);
         Route::post('update_branch', [BranchController::class, 'update_branch']);
+        Route::get('list_visible_categories',[CategoryController::class ,'list_visible_categories']);
+
     });
 
 
@@ -144,9 +150,16 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
 
 });
 
+
     Route::middleware(['auth:sanctum','Customer','check.blocked'])->group(function () {
     Route::get('list_visible_stores',[StoreController::class ,'list_visible_stores']);
     Route::get('list_customer_branches',[BranchController::class ,'list_customer_branches']);
+    Route::post('add_favorite',[FavoriteController::class ,'add_favorite']);
+    Route::get('list_favorite',[FavoriteController::class ,'list_favorite']);
+    Route::post('add_complaint',[ComplaintController::class ,'add_complaint']);
+    Route::post('add_notified',[NotifiedController::class ,'add_notified']);
+    Route::get('list_my_notified',[NotifiedController::class ,'list_my_notified']);
+    Route::post('delete_notified',[NotifiedController::class ,'delete_notified']);
 });
 
 Route::middleware(['auth:sanctum','Merchant','check.blocked'])->group(function () {
@@ -181,10 +194,16 @@ Route::middleware(['auth:sanctum','Admin','check.blocked'])->group(function ()
     Route::post('delete_faq',[FaqController::class ,'delete_faq']);
     Route::get('list_all_stores',[StoreController::class ,'list_all_stores']);
     Route::get('list_admin_branches',[BranchController::class ,'list_admin_branches']);
+    Route::get('list_all_categories',[CategoryController::class ,'list_all_categories']);
+    Route::post('add_category',[CategoryController::class ,'add_category']);
+    Route::post('update_category',[CategoryController::class ,'update_category']);
+    Route::post('delete_category',[CategoryController::class ,'delete_category']);
+    Route::get('list_all_complaints',[ComplaintController::class ,'list_all_complaints']);
+    Route::get('complaint_details',[ComplaintController::class ,'complaint_details']);
 });
 
+Route::middleware('roles:Merchant,Employee,Customer')->group(function () {
 
 
-
-
+});
 
