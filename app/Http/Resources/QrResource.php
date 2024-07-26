@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QrResource extends JsonResource
+class QRResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,11 +14,9 @@ class QrResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-   
         return [
-            'id' => $this->id,
-            'rate' => $this->rate,
-            'image' => $this->image,
+          'image'=>$this->image ? asset($this->image) : null,
+            'rate'=>$this->rate,
         ];
     }
 }
