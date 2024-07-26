@@ -2,10 +2,13 @@
 
 namespace App\Http\Resources;
 
+use App\Types\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
-class QRResource extends JsonResource
+
+class FavoriteResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,9 +17,9 @@ class QRResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-          'image'=>$this->image ? asset($this->image) : null,
-            'rate'=>$this->rate,
+    return [
+    'branch' => $this->branch ? $this->branch->name : null,
+    'customer' => $this->customer ? $this->customer->first_name . " " . $this->customer->last_name : null,
         ];
     }
 }
