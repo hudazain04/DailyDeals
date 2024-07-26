@@ -21,6 +21,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\NotifiedController;
+use App\Http\Controllers\RateController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -145,6 +146,13 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         });
 
         Route::get('getAllCommentsOnOffer/{offer_id}',[OfferController::class,'GetAllCommentsOnOffer']);
+
+    });
+    Route::prefix('rate')->group(function (){
+        Route::post('addRate',[RateController::class,'AddRate']);
+        Route::post('getBranchRates/{branch_id}',[RateController::class,'GetBranchRates']);
+        Route::post('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs']);
+
 
     });
 

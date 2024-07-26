@@ -179,20 +179,23 @@ class AuthController extends Controller
 
             $user = Auth::user();
             $token=$user->createToken('auth_token')->plainTextToken;
-            $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
-            if ($currentdevice){
-                $currentdevice->update([
-                    "token" => $token,
-                    "notification_token"=>$request->notification_token,
-                ]);
-            }else{
-                Device::create([
-                    'user_id' => $user->id,
-                    "device_name" => $request->device_name,
-                    "device_id" => $request->device_id,
-                    "token" =>  $token,
-                    "notification_token"=>$request->notification_token,
-                ]);
+            if($request->device_id)
+            {
+                $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
+                if ($currentdevice){
+                    $currentdevice->update([
+                        "token" => $token,
+                        "notification_token"=>$request->notification_token,
+                    ]);
+                }else{
+                    Device::create([
+                        'user_id' => $user->id,
+                        "device_name" => $request->device_name,
+                        "device_id" => $request->device_id,
+                        "token" =>  $token,
+                        "notification_token"=>$request->notification_token,
+                    ]);
+                }
             }
 
             return $this->success(['user' => UserResource::make($user), "access_token" => $token] ,'user logged in successfully' );
@@ -211,24 +214,25 @@ class AuthController extends Controller
         {
             return $this->error('employee not found', 404);
         }
-        $user=User::where('id',$employee->user_id)->first();
+            $user=User::find($employee->user_id);
+//        $user=User::where('id',$employee->user_id)->first();
         $token=$user->createToken('auth_token')->plainTextToken;
-        $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
-        if ($currentdevice){
-            $currentdevice->update([
-                "token" => $token,
-                "notification_token"=>$request->notification_token,
-
-            ]);
-        }else{
-            Device::create([
-                'user_id' => $user->id,
-                "device_name" => $request->device_name,
-                "device_id" => $request->device_id,
-                "token" =>  $token,
-                "notification_token"=>$request->notification_token,
-            ]);
-        }
+//        $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
+//        if ($currentdevice){
+//            $currentdevice->update([
+//                "token" => $token,
+//                "notification_token"=>$request->notification_token,
+//
+//            ]);
+//        }else{
+//            Device::create([
+//                'user_id' => $user->id,
+//                "device_name" => $request->device_name,
+//                "device_id" => $request->device_id,
+//                "token" =>  $token,
+//                "notification_token"=>$request->notification_token,
+//            ]);
+//        }
         return $this->success(['user' => UserResource::make($user), "access_token" => $token] ,'employee logged in successfully' );
     }
         catch (\Throwable $th){
@@ -257,27 +261,35 @@ class AuthController extends Controller
     public function Logout(LogoutRequest $request)
     {
         try {
-            $user = Auth::user();
+            $user =$request->user();
+            if ($request->device_id)
+            {
+                $device = Device::where('user_id', $user->id)
+                    ->where('device_id', $request->device_id)
+                    ->first();
 
-            $device = Device::where('user_id', $user->id)
-                ->where('device_id', $request->device_id)
-                ->first();
+                if ($device) {
 
-            if ($device) {
+                    $tokenParts = explode('|', $device->token);
+                    if (count($tokenParts) === 2) {
+                        $tokenId = $tokenParts[0];
+                        PersonalAccessToken::where('id', $tokenId)->delete();
+                    }
 
-                $tokenParts = explode('|', $device->token);
-                if (count($tokenParts) === 2) {
-                    $tokenId = $tokenParts[0];
-                    PersonalAccessToken::where('id', $tokenId)->delete();
+                    return $this->success(null, 'user logged out successfully');
+
+
                 }
-
-                return $this->success(null, 'user logged out successfully');
-
-
+                else {
+                    return $this->error('Device not found', 404);
+                }
             }
-            else {
-                return $this->error('Device not found', 404);
-            }
+            $request->user()->token()->revoke();
+            return $this->success(null, 'user logged out successfully');
+
+
+
+
         } catch (\Throwable $th) {
             return $this->error($th->getMessage(), 500);
         }

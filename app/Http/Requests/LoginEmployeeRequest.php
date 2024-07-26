@@ -22,9 +22,9 @@ class LoginEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code'=>'required|min:4',
-            'device_name'        => 'required',
-            'device_id'        => 'required',
+            'code'=>'required|min:6',
+//            'device_name'        => 'required',
+//            'device_id'        => 'required',
             'notification_token'=>'required',
         ];
     }

@@ -20,7 +20,7 @@ class VerificationController extends Controller
     public function AddVerificationRequest(AddVerificationRequestRequest $request)
     {
         try {
-            $user=Auth::user();
+            $user=$request->user();
             $verification_request=Verification::create(['commercial_record'=>AuthController::UploadImage($request),
                 'merchant_id'=>$user->id,'store_id'=>$request->store_id,'status'=>RequestType::Pending]);
             return $this->success(['verification_request'=>VerificationResource::make($verification_request)],'verification requested successfully');
@@ -36,9 +36,11 @@ class VerificationController extends Controller
     {
         try {
             DB::beginTransaction();
-            $verification_request=Verification::where('id',$request_id)->first();
+
+            $verification_request=Verification::find($request_id);
+//            $verification_request=Verification::where('id',$request_id)->first();
             $verification_request->update(['status'=>RequestType::Accepted]);
-            $store=Store::where('id',$verification_request->store_id)->first();
+            $store=Store::find($verification_request->store_id);
             $store->update(['verified'=>true]);
             DB::commit();
             return $this->success(['verification_request'=>VerificationResource::make($verification_request)],
@@ -55,9 +57,11 @@ class VerificationController extends Controller
     {
         try {
             DB::beginTransaction();
-            $verification_request=Verification::where('id',$request_id)->first();
+            $verification_request=Verification::find($request_id);
+//            $verification_request=Verification::where('id',$request_id)->first();
             $verification_request->update(['status'=>RequestType::Rejected]);
-            $store=Store::where('id',$verification_request->store_id)->first();
+            $store=Store::find($verification_request->store_id);
+//            $store=Store::where('id',$verification_request->store_id)->first();
             $store->update(['verified'=>false]);
             DB::commit();
             return $this->success(['verification_request'=>VerificationResource::make($verification_request)],
@@ -74,7 +78,8 @@ class VerificationController extends Controller
     {
         try
         {
-            $verification_request=Verification::where('id',$request_id)->first();
+            $verification_request=Verification::find($request_id);
+//            $verification_request=Verification::where('id',$request_id)->first();
 
             return $this->success(['verification_request'=>VerificationResource::make($verification_request)],'success');
 
@@ -85,9 +90,9 @@ class VerificationController extends Controller
         }
 
     }
-    public function GetAllForUser()
+    public function GetAllForUser(Request $request)
     {
-        $user=Auth::user();
+        $user=$request->user();
         try
         {
             $status=[RequestType::Pending,RequestType::Accepted,RequestType::Rejected];
