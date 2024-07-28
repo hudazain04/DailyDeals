@@ -18,7 +18,16 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.HOSTING_SERVER_SSH_KEY }}
 
+    - name: Debug SSH Connection
+      env:
+        HOSTING_SERVER_IP: ${{ secrets.HOSTING_SERVER_IP }}
+        HOSTING_SERVER_USER: ${{ secrets.HOSTING_SERVER_USER }}
+      run: |
+        echo "$HOSTING_SERVER_USER@$HOSTING_SERVER_IP"
+        ssh -v -o StrictHostKeyChecking=no $HOSTING_SERVER_USER@$HOSTING_SERVER_IP "echo Connection successful"
+
     - name: Deploy to VPS
+      if: success()  # Proceed only if the SSH connection debug step is successful
       env:
         HOSTING_SERVER_IP: ${{ secrets.HOSTING_SERVER_IP }}
         HOSTING_SERVER_USER: ${{ secrets.HOSTING_SERVER_USER }}
