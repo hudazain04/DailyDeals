@@ -13,26 +13,26 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up SSH
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.HOSTING_SERVER_SSH_KEY }}
+    - name: Install sshpass
+      run: sudo apt-get install sshpass
 
     - name: Debug SSH Connection
       env:
         HOSTING_SERVER_IP: ${{ secrets.HOSTING_SERVER_IP }}
         HOSTING_SERVER_USER: ${{ secrets.HOSTING_SERVER_USER }}
+        HOSTING_SERVER_PASSWORD: ${{ secrets.HOSTING_SERVER_PASSWORD }}
       run: |
         echo "$HOSTING_SERVER_USER@$HOSTING_SERVER_IP"
-        ssh -v -o StrictHostKeyChecking=no $HOSTING_SERVER_USER@$HOSTING_SERVER_IP "echo Connection successful"
+        sshpass -p "$HOSTING_SERVER_PASSWORD" ssh -v -o StrictHostKeyChecking=no $HOSTING_SERVER_USER@$HOSTING_SERVER_IP "echo Connection successful"
 
     - name: Deploy to VPS
       if: success()  # Proceed only if the SSH connection debug step is successful
       env:
         HOSTING_SERVER_IP: ${{ secrets.HOSTING_SERVER_IP }}
         HOSTING_SERVER_USER: ${{ secrets.HOSTING_SERVER_USER }}
+        HOSTING_SERVER_PASSWORD: ${{ secrets.HOSTING_SERVER_PASSWORD }}
       run: |
-        ssh -o StrictHostKeyChecking=no ${{ secrets.HOSTING_SERVER_USER }}@${{ secrets.HOSTING_SERVER_IP }} << 'EOF'
+        sshpass -p "$HOSTING_SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no ${{ secrets.HOSTING_SERVER_USER }}@${{ secrets.HOSTING_SERVER_IP }} << 'EOF'
           cd /var/www/html/DailyDeals/
           sudo git pull origin main
           sudo composer install --optimize-autoloader --no-dev
