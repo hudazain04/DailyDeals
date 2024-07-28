@@ -1,0 +1,35 @@
+name: Laravel
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.5.3
+      with:
+        ssh-private-key: ${{ secrets.HOSTING_SERVER_SSH_KEY }}
+
+    - name: Deploy to VPS
+      env:
+        HOSTING_SERVER_IP: ${{ secrets.HOSTING_SERVER_IP }}
+        HOSTING_SERVER_USER: ${{ secrets.HOSTING_SERVER_USER }}
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.HOSTING_SERVER_USER }}@${{ secrets.HOSTING_SERVER_IP }} << 'EOF'
+          cd /var/www/html/DailyDeals/
+          git pull origin main
+          composer install --optimize-autoloader --no-dev
+          php artisan migrate --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+          sudo systemctl reload apache2
+        EOF
