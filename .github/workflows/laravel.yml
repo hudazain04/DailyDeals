@@ -34,11 +34,11 @@ jobs:
       run: |
         sshpass -p "$HOSTING_SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no ${{ secrets.HOSTING_SERVER_USER }}@${{ secrets.HOSTING_SERVER_IP }} << 'EOF'
           cd /var/www/html/DailyDeals/
-          sudo git pull origin main
-          sudo composer install --optimize-autoloader --no-dev
-          sudo php artisan migrate --force
-          sudo php artisan config:cache
-          sudo php artisan route:cache
-          sudo php artisan view:cache
+          git pull origin main
+          composer install --optimize-autoloader --no-dev
+          php artisan migrate --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
           sudo systemctl reload apache2
         EOF
