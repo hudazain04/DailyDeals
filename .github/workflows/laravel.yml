@@ -36,5 +36,8 @@ jobs:
           cd /var/www/html/DailyDeals/
           git pull origin main
           composer install --optimize-autoloader --no-dev
-          php artisan migrate --force
+          php artisan migrate:fresh --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
         EOF
