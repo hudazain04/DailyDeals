@@ -36,8 +36,8 @@ jobs:
           cd /var/www/html/DailyDeals/
           git pull origin main
           composer install
-          php artisan migrate:fresh --force
           php artisan telescope:install
+          php artisan migrate:fresh --force
           php artisan config:cache
           php artisan route:cache
           php artisan view:cache
