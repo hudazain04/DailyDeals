@@ -12,6 +12,8 @@ use App\Http\Middleware\MerchantMiddleware;
 
 
 Route::get('/', function () {
-    return view('welcome');
+//    return view('welcome');
+    return "CI / CD by | ****** JAWAD TAKI ALDEEN test test *******";
 });
+
 

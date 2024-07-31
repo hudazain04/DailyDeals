@@ -1,0 +1,45 @@
+name: Deploy Laravel Application
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install sshpass
+      run: sudo apt-get install sshpass
+
+    - name: Debug SSH Connection
+      env:
+        HOSTING_SERVER_IP: ${{ secrets.HOSTING_SERVER_IP }}
+        HOSTING_SERVER_USER: ${{ secrets.HOSTING_SERVER_USER }}
+        HOSTING_SERVER_PASSWORD: ${{ secrets.HOSTING_SERVER_PASSWORD }}
+      run: |
+        echo "$HOSTING_SERVER_USER@$HOSTING_SERVER_IP"
+        sshpass -p "$HOSTING_SERVER_PASSWORD" ssh -v -o StrictHostKeyChecking=no $HOSTING_SERVER_USER@$HOSTING_SERVER_IP "echo Connection successful"
+
+    - name: Deploy to VPS
+      if: success()  # Proceed only if the SSH connection debug step is successful
+      env:
+        HOSTING_SERVER_IP: ${{ secrets.HOSTING_SERVER_IP }}
+        HOSTING_SERVER_USER: ${{ secrets.HOSTING_SERVER_USER }}
+        HOSTING_SERVER_PASSWORD: ${{ secrets.HOSTING_SERVER_PASSWORD }}
+      run: |
+        sshpass -p "$HOSTING_SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no ${{ secrets.HOSTING_SERVER_USER }}@${{ secrets.HOSTING_SERVER_IP }} << 'EOF'
+          cd /var/www/html/DailyDeals/
+          git pull origin main
+          composer install --optimize-autoloader --no-dev
+          composer require laravel/telescope
+          php artisan telescope:install
+          php artisan migrate:fresh --force
+          php artisan config:cache
+          php artisan route:cache
+          php artisan view:cache
+        EOF
