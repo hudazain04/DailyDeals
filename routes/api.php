@@ -21,6 +21,7 @@ use App\Http\Controllers\FaqController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\NotifiedController;
+use App\Http\Controllers\AdvertisementController;
 use App\Http\Controllers\RateController;
 
 Route::get('/user', function (Request $request) {
@@ -61,9 +62,10 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('get_all_merchants', [ProfileController::class, 'get_all_merchants']);
         Route::get('get_all_employees', [ProfileController::class, 'get_all_employees']);
         Route::get('get_merchant_detail', [ProfileController::class, 'get_merchant_detail']);
-        Route::post('update_branch', [BranchController::class, 'update_branch']);
         Route::get('list_visible_categories',[CategoryController::class ,'list_visible_categories']);
-
+        Route::get('list_advertisement', [AdvertisementController::class, 'list_advertisement']);
+        Route::get('advertisement_accepted_details', [AdvertisementController::class, 'advertisement_accepted_details']);
+    
     });
 
 
@@ -208,10 +210,19 @@ Route::middleware(['auth:sanctum','Admin','check.blocked'])->group(function ()
     Route::post('delete_category',[CategoryController::class ,'delete_category']);
     Route::get('list_all_complaints',[ComplaintController::class ,'list_all_complaints']);
     Route::get('complaint_details',[ComplaintController::class ,'complaint_details']);
+    Route::get('all_advertisement_requests', [AdvertisementController::class, 'all_advertisement_requests']);
+    Route::get('advertisement_details', [AdvertisementController::class, 'advertisement_details']);
+    Route::post('accept_advertisement', [AdvertisementController::class, 'accept_advertisement']);
+    Route::post('reject_advertisement', [AdvertisementController::class, 'reject_advertisement']);
+
+    
 });
 
-Route::middleware('roles:Merchant,Employee,Customer')->group(function () {
-
-
+Route::middleware('auth:sanctum','Role:Merchant-Employee','check.blocked')->group(function () {
+    Route::post('update_branch', [BranchController::class, 'update_branch']);
 });
 
+Route::middleware('auth:sanctum','Role:Merchant-Customer','check.blocked')->group(function () {   
+    Route::post('add_advertisement', [AdvertisementController::class, 'add_advertisement']);
+
+});

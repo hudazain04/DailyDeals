@@ -16,14 +16,13 @@ return new class extends Migration
             $table->id();
             $table->string('description');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->enum('status',[RequestType::Pending,RequestType::Accepted,RequestType::Rejected,RequestType::Shown]);
-//            $table->boolean('approved')->default(false);
+            $table->enum('status',[RequestType::Pending,RequestType::Accepted,RequestType::Rejected,RequestType::Reactivate]);
             $table->integer('period');
-            $table->integer('price');
-//            $table->boolean('shown')->default(false);
-            $table->string('invoice');
+            $table->integer('price')->nullable();
+            $table->boolean('shown')->default(false);
             $table->string('phone_number');
             $table->string('image');
+            $table->datetime('accepted_at')->nullable();
             $table->timestamps();
         });
 

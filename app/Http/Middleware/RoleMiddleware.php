@@ -19,7 +19,7 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $roles): Response
     {
-        $rolesArray = explode(',', $roles);
+        $rolesArray = explode('-', $roles);
 
         if (Auth::check() && in_array(Auth::user()->role, $rolesArray))
         {
