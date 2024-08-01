@@ -35,6 +35,6 @@ jobs:
         sshpass -p "$HOSTING_SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no ${{ secrets.HOSTING_SERVER_USER }}@${{ secrets.HOSTING_SERVER_IP }} << 'EOF'
           cd /var/www/html/DailyDeals/
           git pull origin main
-          composer install --optimize-autoloader --no-dev
+          composer install
           php artisan migrate:fresh --seed --force
         EOF
