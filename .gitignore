@@ -20,7 +20,7 @@ yarn-error.log
 /.vscode
 database/factories/CustomerFactory.php
 database/migrations/2024_07_03_120413_create_logs_table.php
-/public/customerImage
+/public/CustomerImage
 /public/AdminImage
 /public/MerchantImage
 /public/EmployeeImage

@@ -29,13 +29,13 @@ class UserFactory extends Factory
 
 
         // Create a new UploadedFile instance from the existing file
-        $uploadedFile = new UploadedFile(
-            $pathToImage,
-            'default-avatar.jpg', // Original filename
-            'image/jpeg', // MIME type
-            null, // Test (optional, to bypass file size checks)
-            true // Ensure that the file is marked as "uploaded"
-        );
+//        $uploadedFile = new UploadedFile(
+//            $pathToImage,
+//            'default-avatar.jpg', // Original filename
+//            'image/jpeg', // MIME type
+//            null, // Test (optional, to bypass file size checks)
+//            true // Ensure that the file is marked as "uploaded"
+//        );
         return [
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
@@ -50,7 +50,7 @@ class UserFactory extends Factory
             'role'=>UserType::Admin,
             'email'=>'admin@gamil.com',
             'password'=>'123456789',
-            'image'=>$uploadedFile,
+//            'image'=>$uploadedFile,
         ];
     }
 
