@@ -12,7 +12,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResendVerificationCodeRequest;
 use App\Http\Requests\VerifyRequest;
 use App\Http\Resources\UserResource;
-use App\HttpResponse\HTTPResponse;
+use App\HttpResponse\HttpResponse;
 use App\Mail\VerificationMail;
 use App\Models\Customer;
 use App\Models\Device;
