@@ -144,6 +144,7 @@ class User extends Authenticatable
     {
         if ($image && $image->isValid()) {
             $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $url='';
             switch (request()->get('role',$this->role))
             {
                 case "Merchant": $url='MerchantImage';

@@ -14,5 +14,5 @@ class RequestType
     public const Pending='Pending';
     public const Accepted='Accepted';
     public const Rejected='Rejected';
-    public const Shown='Shown';
+    public const Reactivate='Reactivate';
 }

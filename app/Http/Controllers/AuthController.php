@@ -36,7 +36,7 @@ use function Psy\debug;
 class AuthController extends Controller
 {
 
-    use HTTPResponse;
+    use HttpResponse;
 
     public function __construct()
     {
