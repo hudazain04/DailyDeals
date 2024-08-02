@@ -65,7 +65,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('list_visible_categories',[CategoryController::class ,'list_visible_categories']);
         Route::get('list_advertisement', [AdvertisementController::class, 'list_advertisement']);
         Route::get('advertisement_accepted_details', [AdvertisementController::class, 'advertisement_accepted_details']);
-    
+
     });
 
 
@@ -152,8 +152,8 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
     });
     Route::prefix('rate')->group(function (){
         Route::post('addRate',[RateController::class,'AddRate']);
-        Route::post('getBranchRates/{branch_id}',[RateController::class,'GetBranchRates']);
-        Route::post('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs']);
+        Route::get('getBranchRates/{branch_id}',[RateController::class,'GetBranchRates']);
+        Route::get('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs']);
 
 
     });
@@ -215,14 +215,14 @@ Route::middleware(['auth:sanctum','Admin','check.blocked'])->group(function ()
     Route::post('accept_advertisement', [AdvertisementController::class, 'accept_advertisement']);
     Route::post('reject_advertisement', [AdvertisementController::class, 'reject_advertisement']);
 
-    
+
 });
 
 Route::middleware('auth:sanctum','Role:Merchant-Employee','check.blocked')->group(function () {
     Route::post('update_branch', [BranchController::class, 'update_branch']);
 });
 
-Route::middleware('auth:sanctum','Role:Merchant-Customer','check.blocked')->group(function () {   
+Route::middleware('auth:sanctum','Role:Merchant-Customer','check.blocked')->group(function () {
     Route::post('add_advertisement', [AdvertisementController::class, 'add_advertisement']);
 
 });

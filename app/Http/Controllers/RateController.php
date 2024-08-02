@@ -24,7 +24,8 @@ class RateController extends Controller
                 'customer_id'=>$request->user()->id,
                 'branch_id'=>$request->branch_id,
             ]);
-            CalculateBranchRate::dispatch($request->branch_id);
+//            dd($rate);
+            CalculateBranchRate::dispatchAfterResponse($request->branch_id);
 
             return $this->success(RateResource::make($rate),'rate added successfully');
 

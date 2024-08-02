@@ -17,12 +17,13 @@ class RateResource extends JsonResource
     {
         $baseData=[
             'rate'=>$this->rate,
-            'branch_id'=>$this->branch_id,
+//            'branch_id'=>$this->branch_id,
 
         ];
         if ($request->user()->role != UserType::Customer)
         {
             $baseData=array_merge($baseData,['customer_id'=>$this->customer_id]);
+
         }
         return $baseData;
     }
