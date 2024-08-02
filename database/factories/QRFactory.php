@@ -17,8 +17,9 @@ class QRFactory extends Factory
      */
     public function definition(): array
     {
-        $pathToImage = 'D:\DailyDeals\public\SeederImage\6696770023c44.jpg';
-        $tempImagePath = 'D:\DailyDeals\public\TempImage\669670e71bb83.jpg';
+        $pathToImage =public_path('SeederImage\6696770023c44.jpg');//'D:\DailyDeals\public\SeederImage\6696770023c44.jpg';
+        $tempImagePath = public_path('TempImage\669670e71bb83.jpg');//'D:\DailyDeals\public\TempImage\669670e71bb83.jpg';
+
 
         copy($pathToImage, $tempImagePath);
 
