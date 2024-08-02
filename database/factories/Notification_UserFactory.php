@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Notification_user>
  */
-class Notification_userFactory extends Factory
+class Notification_UserFactory extends Factory
 {
     /**
      * Define the model's default state.
