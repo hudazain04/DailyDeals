@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Offer_product>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Percentage_offer>
  */
-class Offer_productFactory extends Factory
+class Percentage_OfferFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,7 @@ class Offer_productFactory extends Factory
     public function definition(): array
     {
         return [
-            'price_after' => $this->faker->numberBetween(10, 100),
-            'product_id' => $this->faker->numberBetween(1, 10),
+            'percentage' => $this->faker->numberBetween(1, 100),
             'offer_id' => $this->faker->numberBetween(1, 10),
 
         ];

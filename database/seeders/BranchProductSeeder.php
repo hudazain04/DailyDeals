@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Branch_product;
+use App\Models\Branch_Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +13,7 @@ class BranchProductSeeder extends Seeder
      */
     public function run(): void
     {
-        Branch_product::factory()->count(10)->create();
+        Branch_Product::factory()->count(10)->create();
 
     }
 }

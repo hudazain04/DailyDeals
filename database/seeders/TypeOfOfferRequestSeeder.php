@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Type_of_offer_request;
+use App\Models\Type_Of_Offer_Request;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +13,7 @@ class TypeOfOfferRequestSeeder extends Seeder
      */
     public function run(): void
     {
-        Type_of_offer_request::factory()->count(10)->create();
+        Type_Of_Offer_Request::factory()->count(10)->create();
 
     }
 }

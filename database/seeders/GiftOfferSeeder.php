@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Gift_offer;
+use App\Models\Gift_Offer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +13,7 @@ class GiftOfferSeeder extends Seeder
      */
     public function run(): void
     {
-        Gift_offer::factory()->count(10)->create();
+        Gift_Offer::factory()->count(10)->create();
 
     }
 }

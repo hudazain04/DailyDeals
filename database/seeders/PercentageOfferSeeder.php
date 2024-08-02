@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Percentage_offer;
+use App\Models\Percentage_Offer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +13,7 @@ class PercentageOfferSeeder extends Seeder
      */
     public function run(): void
     {
-        Percentage_offer::factory()->count(10)->create();
+        Percentage_Offer::factory()->count(10)->create();
 
     }
 }

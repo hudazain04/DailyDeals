@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Extra_offer;
+use App\Models\Extra_Offer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,7 +13,7 @@ class ExtraOfferSeeder extends Seeder
      */
     public function run(): void
     {
-        Extra_offer::factory()->count(10)->create();
+        Extra_Offer::factory()->count(10)->create();
 
     }
 }

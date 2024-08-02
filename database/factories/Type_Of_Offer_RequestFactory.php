@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Type_of_offer_request>
  */
-class Type_of_offer_requestFactory extends Factory
+class Type_Of_Offer_RequestFactory extends Factory
 {
     /**
      * Define the model's default state.
