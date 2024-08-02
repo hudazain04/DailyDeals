@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category_request>
  */
-class Category_requestFactory extends Factory
+class Category_RequestFactory extends Factory
 {
     /**
      * Define the model's default state.
