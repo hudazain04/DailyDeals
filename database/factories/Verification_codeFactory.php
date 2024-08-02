@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Verification_code>
  */
-class Verification_codeFactory extends Factory
+class Verification_CodeFactory extends Factory
 {
     protected $model = Verification_Code::class;
 
