@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Verification_code;
+use App\Models\Verification_Code;
 use Illuminate\Database\Seeder;
 
 class VerificationCodeSeeder extends Seeder
