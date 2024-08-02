@@ -87,7 +87,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
 
 
     Route::prefix('category')->group(function () {
-        Route::middleware('roles:Merchant,Employee')->group(function () {
+        Route::middleware('Role:Merchant-Employee')->group(function () {
             Route::post('addCategoryRequest', [CategoryRequestController::class, 'AddCategoryRequest']);
             Route::post('updateCategoryRequest/{request_id}', [CategoryRequestController::class, 'UpdateCategoryRequest']);
             Route::get('deleteCategoryRequest/{request_id}', [CategoryRequestController::class, 'DeleteCategoryRequest']);
@@ -101,7 +101,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
 
         });
 
-        Route::get('getCategoryRequest/{request_id}', [CategoryRequestController::class, 'GetCategoryRequest'])->middleware('roles:Merchant,Employee,Admin');
+        Route::get('getCategoryRequest/{request_id}', [CategoryRequestController::class, 'GetCategoryRequest'])->middleware('Role:Merchant-Employee-Admin');
 
 
     });
@@ -119,13 +119,13 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
             Route::post('addVerificationRequest', [VerificationController::class, 'AddVerificationRequest']);
             Route::get('getAllForUser', [VerificationController::class, 'GetAllForUser']);
         });
-        Route::get('getVerificationRequest/{request_id}', [VerificationController::class, 'GetVerificationRequest'])->middleware('roles:Merchant,Admin');
+        Route::get('getVerificationRequest/{request_id}', [VerificationController::class, 'GetVerificationRequest'])->middleware('Role:Merchant-Admin');
 
     });
 
 
     Route::prefix('offer')->group(function (){
-        Route::middleware('role:Merchant,Employee')->group(function (){
+        Route::middleware('Role:Merchant-Employee')->group(function (){
             Route::post('addOfferTypeRequest',[OfferController::class,'AddOfferTypeRequest']);
             Route::post('updateOfferTypeRequest/{request_id}',[OfferController::class,'UpdateOfferTypeRequest']);
             Route::get('deleteOfferTypeRequest/{request_id}',[OfferController::class,'DeleteOfferTypeRequest']);
@@ -151,9 +151,9 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
 
     });
     Route::prefix('rate')->group(function (){
-        Route::post('addRate',[RateController::class,'AddRate']);
-        Route::get('getBranchRates/{branch_id}',[RateController::class,'GetBranchRates']);
-        Route::get('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs']);
+        Route::post('addRate',[RateController::class,'AddRate'])->middleware('Customer');
+        Route::get('getBranchRates/{branch_id}',[RateController::class,'GetBranchRates'])->middleware('Role:Merchant-Employee');
+        Route::get('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs'])->middleware('Role:Merchant-Admin-Employee');
 
 
     });
