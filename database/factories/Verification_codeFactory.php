@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class Verification_codeFactory extends Factory
 {
-    protected $model = Verification_code::class;
+    protected $model = Verification_Code::class;
 
     public function definition(): array
     {

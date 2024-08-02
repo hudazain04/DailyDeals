@@ -9,6 +9,6 @@ class VerificationCodeSeeder extends Seeder
 {
     public function run(): void
     {
-        Verification_code::factory()->count(10)->create();
+        Verification_Code::factory()->count(10)->create();
     }
 }
