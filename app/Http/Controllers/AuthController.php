@@ -84,27 +84,6 @@ class AuthController extends Controller
         $code=Verification_Code::create(['code'=>$verificationCode,'type'=>$codeType,'user_id'=>$user->id]);
         return $code;
     }
-    public  static function UploadImage(Request $request){
-    if($request['image']){
-
-            $image=$request->file('image');
-
-
-        if ($image->isValid()) {
-            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move('public/Image/',$filename);
-            $url=url('public/Image/',$filename);
-        }
-
-
-
-
-            return $url;
-        }
-
-        else return null;
-    }
-
 
 
     public function VerifyEmail(VerifyRequest $request){
@@ -122,21 +101,25 @@ class AuthController extends Controller
             $user->update(['verified'=>true]);
             $code->update(['used'=>true]);
             $token=$user->createToken('auth_token')->plainTextToken;
-            $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
-            if ($currentdevice){
-                $currentdevice->update([
-                    "token" => $token,
-                    "notification_token"=>$request->notification_token,
-                ]);
-            }else{
-                $de=Device::create([
-                    'user_id' => $user->id,
-                    'device_id' => $request->device_id,
-                    "device_name" => $request->device_name,
-                    "token" =>  $token,
-                    "notification_token"=>$request->notification_token,
-                ]);
+            if($request->device_id)
+            {
+                $currentdevice=$user->devices()->where('user_id', $user->id)->where('device_id', $request->device_id)->first();
+                if ($currentdevice){
+                    $currentdevice->update([
+                        "token" => $token,
+                        "notification_token"=>$request->notification_token,
+                    ]);
+                }else{
+                    $de=Device::create([
+                        'user_id' => $user->id,
+                        'device_id' => $request->device_id,
+                        "device_name" => $request->device_name,
+                        "token" =>  $token,
+                        "notification_token"=>$request->notification_token,
+                    ]);
+                }
             }
+
             DB::commit();
             return $this->success(['user'=> UserResource::make($user),'access_token' =>$token] ,'user verified successfully');
         }catch (\Throwable $th){
@@ -241,22 +224,7 @@ class AuthController extends Controller
 
 
 }
-//
-//    public function Logout(LogoutRequest $request)
-//    {
-//
-//        try {
-//            $device = Device::where('device_id', $request->deivce_id)->first();
-//            if ($device) {
-//
-//                $token = $device->token;
-//                PersonalAccessToken::findToken($token)->delete();
-//            }
-//            return $this->success(null, 'user logged out successfully');
-//        } catch (\Throwable $th) {
-//            return $this->error($th->getMessage(), 500);
-//        }
-//    }
+
     public function Logout(LogoutRequest $request)
     {
         try {
@@ -305,8 +273,10 @@ class AuthController extends Controller
                         'password' => Hash::make($request->new_password)
                     ]
                 );
-                $devices = $user->devices->where('device_id' , "!=" , $request->device_id);
-                foreach ($devices as $device) {
+                if ($request->device_id)
+                {
+                    $devices = $user->devices->where('device_id' , "!=" , $request->device_id);
+                    foreach ($devices as $device) {
 
                         $tokenParts = explode('|', $device->token);
                         if (count($tokenParts) === 2) {
@@ -317,7 +287,9 @@ class AuthController extends Controller
 
 //                    $token=$device->token;
 //                    PersonalAccessToken::findToken($token)->delete();
+                    }
                 }
+
                 return $this->success(['user'=>UserResource::make($user)], 'password changed successfully');
 
             }

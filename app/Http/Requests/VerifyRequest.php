@@ -24,8 +24,8 @@ class VerifyRequest extends FormRequest
         return [
             'email' => 'required|email|exists:users',
             'code'  => 'required', 'string', 'size:4',
-            'device_name'        => 'required',
-            'device_id'        => 'required',
+//            'device_name'        => 'required',
+//            'device_id'        => 'required',
             'notification_token'=>'required',
         ];
     }

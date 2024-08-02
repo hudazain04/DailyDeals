@@ -24,7 +24,7 @@ class ChangePasswordRequest extends FormRequest
         return [
             'new_password'=>'required|string|min:8',
             'current_password'=>'required',
-            'device_id'=>'required'
+//            'device_id'=>'required'
 
         ];
     }
