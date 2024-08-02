@@ -25,9 +25,11 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $pathToImage = public_path('SeederImage\6696770023c44.jpg');
-        $tempImagePath = public_path('TempImage\669670e71bb83.jpg');
-        copy($tempImagePath,$pathToImage);
+        $pathToImage = 'D:\DailyDeals\public\SeederImage\6696770023c44.jpg';
+        $tempImagePath = 'D:\DailyDeals\public\TempImage\669670e71bb83.jpg';
+
+        copy($pathToImage, $tempImagePath);
+
         $uploadedFile = new UploadedFile(
             $tempImagePath,
             'default-avatar.jpg', // Original filename
@@ -35,7 +37,6 @@ class UserFactory extends Factory
             null, // Test (optional, to bypass file size checks)
             true // Ensure that the file is marked as "uploaded"
         );
-
         return [
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),

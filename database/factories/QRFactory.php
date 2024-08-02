@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\QR>
@@ -16,11 +17,23 @@ class QRFactory extends Factory
      */
     public function definition(): array
     {
+        $pathToImage = 'D:\DailyDeals\public\SeederImage\6696770023c44.jpg';
+        $tempImagePath = 'D:\DailyDeals\public\TempImage\669670e71bb83.jpg';
+
+        copy($pathToImage, $tempImagePath);
+
+        $uploadedFile = new UploadedFile(
+            $tempImagePath,
+            'default-avatar.jpg', // Original filename
+            'image/jpeg', // MIME type
+            null, // Test (optional, to bypass file size checks)
+            true // Ensure that the file is marked as "uploaded"
+        );
         return [
-            'image' => $this->faker->word() . '.jpg',
+//            'image' => $this->faker->word() . '.jpg',
             'rate' => $this->faker->numberBetween(1, 5),
             'branch_id' => $this->faker->numberBetween(1, 10),
-
+            'image'=>$uploadedFile,
         ];
     }
 }

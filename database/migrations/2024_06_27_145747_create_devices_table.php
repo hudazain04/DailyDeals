@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
-            $table->integer('device_id')->default(null);
+            $table->string('device_id')->default(null);
             $table->string('device_name');
             $table->string('token');
             $table->string('notification_token');
