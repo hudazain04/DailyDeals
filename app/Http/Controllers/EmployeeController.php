@@ -69,14 +69,18 @@ class EmployeeController extends Controller
                 return $this->error('not authorized',403);
             } else {
 
-                $user->update([
-                    'email' => $request->email,
-                    'phone_number' => $request->phone_number,
-                ]);
+                $user->fill($request->only([
+                    'email', 
+                    'phone_number', 
+                ]));
+        
+                $user->save();
 
-                $employee->update([
-                    'branch_id' => $request->branch_id,
-                ]);
+                $employee->fill($request->only([
+                    'branch_id', 
+                ]));
+        
+                $employee->save();
 
                 if ($request->hasFile('image')) {
                     $user->image = $request->file('image');
@@ -86,7 +90,6 @@ class EmployeeController extends Controller
                 return $this->success(new EmployeeResource($user) ,'Employee updated successfully');
             }
     }
-
     public function create_new_code(Request $request)
     {
 

@@ -36,13 +36,16 @@ class StoreController extends Controller
             if ($store->merchant_id != $user->id) {
                 return $this->error('not Authurized',403);
             } else {
-                $store->update([
-                    'name' => $request->name,
-                    'type' => $request->type,
-                    'description' => $request->description,
-                    'visible' => $request->visible,
-                    'merchant_id' => $user->id,
-                ]);
+                $store->fill($request->only([
+                    'name', 
+                    'type', 
+                    'description', 
+                    'visible', 
+                    'merchant_id', 
+                ]));
+        
+                $store->save();
+    
                 
                 return $this->success(new StoreResource($store),'store updated successfully');
             }
