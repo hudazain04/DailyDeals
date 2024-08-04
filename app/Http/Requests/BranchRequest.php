@@ -22,13 +22,13 @@ class BranchRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'location' => 'required',
-            'google_maps' => 'required',
+            'name' => 'sometimes',
+            'location' => 'sometimes',
+            'google_maps' => 'sometimes',
             'image' => 'file',
             'visible' => 'boolean',
-            'store_id' => 'required|numeric|exists:stores,id',
-            'category_id' => 'required|numeric|exists:categories,id',         
+            'store_id' => 'sometimes|numeric|exists:stores,id',
+            'category_id' => 'sometimes|numeric|exists:categories,id',         
         ];
     }
 }

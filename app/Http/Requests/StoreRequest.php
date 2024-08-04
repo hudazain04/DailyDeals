@@ -22,11 +22,11 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'description' => 'required',
-            'visible' => 'required|boolean',
+            'name' => 'sometimes',
+            'description' => 'sometimes',
+            'visible' => 'sometimes|boolean',
             'merchant_id' => 'numeric|exists:merchants,id',
-            'type' => 'required|in:"free vendor","verified vendor"',
+            'type' => 'sometimes|in:"free vendor","verified vendor"',
         ];
     }
 }

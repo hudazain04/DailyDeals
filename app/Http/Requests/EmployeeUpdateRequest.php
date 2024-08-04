@@ -22,10 +22,10 @@ class EmployeeUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required|email',
+            'email' => 'sometimes|email',
             'image' => 'file',
-            'phone_number' => 'required',
-            'branch_id' => 'required|numeric|exists:branches,id',
+            'phone_number' => 'sometimes',
+            'branch_id' => 'sometimes|numeric|exists:branches,id',
         ];
     }
 }
