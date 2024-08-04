@@ -23,8 +23,9 @@ class ProfileRequest extends FormRequest
     {
         return [
             'image' => 'file',
-            'email' => 'required|email',
-            'phone_number' => 'required',
+            'first_name' => 'sometimes',
+            'last_name' => 'sometimes',
+            'phone_number' => 'sometimes',
         ];
     }
 }

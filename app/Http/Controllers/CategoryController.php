@@ -38,12 +38,15 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($request->category_id);
         
-        $category->update([
-            'category' => $request->category,
-            'parent_category' => $request->parent_category,
-            'visible' => $request->visible,
-            'priority' => $request->priority,
-        ]);
+        $category->fill($request->only([
+            'category', 
+            'parent_category', 
+            'visible', 
+            'priority'
+        ]));
+
+        $category->save();
+
         return $this->success(new ListCategoryResource($category),'category updated successfully');
     }
 
@@ -61,5 +64,9 @@ class CategoryController extends Controller
         return $this->success(null,'category deleted successfully');
     }
 
-
+    public function show_category(Request $request)
+    {
+        $category = Category::findOrFail($request->category_id);
+        return $this->success(new ListCategoryResource($category),'show category');
+    }
 }
