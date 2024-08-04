@@ -22,10 +22,10 @@ class CategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category' => 'required',
+            'category' => 'sometimes',
             'parent_category ' => 'exists:categories,id',
             'visible' => 'boolean',
-            'priority' => 'required|numeric',
+            'priority' => 'sometimes|numeric',
         ];
     }
 }

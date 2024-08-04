@@ -24,14 +24,22 @@ class ProfileController extends Controller
     public function update_my_profile(profileRequest $request)
     {
             $user = User::where('id',auth()->user()->id)->first();
-            $user->email = $request->email;
-            $user->phone_number = $request->phone_number;
-            $user->image = $request->file('image');
+
+            $user->fill($request->only([
+                'first_name', 
+                'last_name', 
+                'phone_number', 
+            ]));
+    
             $user->save();
+
+            if ($request->hasFile('image')) {
+                $user->image = $request->file('image');
+                $user->save();
+            }
         
             return $this->success(new ProfileResource($user) ,'profile updated successfully');
     }
-
 
     public function soft_delete_users_accounts(Request $request)
     {

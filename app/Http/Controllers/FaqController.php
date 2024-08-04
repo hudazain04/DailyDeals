@@ -35,10 +35,11 @@ class FaqController extends Controller
     {
         $faq = FAQ::where('id', $request->faq_id)->first();
 
-        $faq->update([
-            'question' => $request->question,
-            'answer' => $request->answer,
-        ]);
+        $faq->fill($request->only([
+            'question', 
+            'answer', 
+        ]));
+        $faq->save();
 
         return $this->success(new FaqResource($faq) ,'Faq updated successfully');
 
@@ -50,5 +51,11 @@ class FaqController extends Controller
         $faq->delete();
         return $this->success(null ,'Faq deleted successfully');
 
+    }
+
+    public function show_faq(Request $request)
+    {
+        $faq = FAQ::where('id', $request->faq_id)->first();
+        return $this->success(new FaqResource($faq) ,'show Faq');
     }
 }
