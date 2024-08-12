@@ -27,7 +27,7 @@ class UserResource extends JsonResource
         ];
         if(Auth::user())
         {
-            if (Auth::user()->role == UserType::Admin ){
+            if (Auth::user()->role == UserType::Admin || Auth::user()->role == UserType::Merchant ){
                 $baseData = array_merge($baseData , ['role' => $this->role]);
             }
         }
