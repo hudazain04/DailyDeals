@@ -13,7 +13,7 @@ class Message extends Model
     use HasFactory;
     protected $table ="messages";
     protected $primaryKey="id";
-    protected $fillable = ['message', 'sender_id', 'receiver_id', 'conversation_id'];
+    protected $fillable = ['message', 'sender_id', 'receiver_id', 'conversation_id','time'];
 
     public function sender()
     {
