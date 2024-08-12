@@ -67,15 +67,23 @@ class BranchController extends Controller
 
                 if ($store->merchant_id == auth()->user()->id || $emp_branch != null) {
     
-                    $branch->update([
-                        'name' => $request->name,
-                        'location' => $request->location,
-                        'google_maps' => $request->google_maps,
-                        'store_id' => $request->store_id,
-                        'category_id' => $request->category_id,
-                        'visible' => $request->visible,
-                        'image' => $request->file('image'),
+
+                    $data = $request->only([
+                        'name', 
+                        'location', 
+                        'google_maps', 
+                        'store_id', 
+                        'category_id', 
+                        'visible', 
                     ]);
+
+                    if ($request->hasFile('image')) {
+                        $data['image'] = $request->file('image');
+                    }
+
+                    $branch->fill($data);
+                    $branch->save();
+
     
                     $existingNumbers = $branch->numbers;
                     $newPhoneNumbers = $request->phone_numbers;
