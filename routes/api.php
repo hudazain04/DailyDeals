@@ -40,6 +40,7 @@ Route::middleware(['check.blocked'])->group(function () {
         Route::post('forgetPasswordVerify', [AuthController::class, 'ForgetPasswordVerify']);
         Route::post('forgetPasswordChange',[AuthController::class, 'ForgetPasswordChange']);
         Route::post('loginEmployee',[AuthController::class,'LoginEmployee']);
+        Route::post('restore_my_account',[ProfileController::class,'restore_my_account']);
 
     });
 });
@@ -62,7 +63,6 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('list_advertisement', [AdvertisementController::class, 'list_advertisement']);
         Route::get('advertisement_accepted_details', [AdvertisementController::class, 'advertisement_accepted_details']);
         Route::get('show_category',[CategoryController::class ,'show_category']);
-        Route::post('restore_my_account',[ProfileController::class,'restore_my_account']);
         Route::get('get_faq',[FaqController::class ,'get_faq']);
         Route::get('show_faq',[FaqController::class ,'show_faq']);
         Route::post('store_byID',[StoreController::class ,'store_byID']);
