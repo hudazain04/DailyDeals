@@ -19,11 +19,9 @@ class StoreFactory extends Factory
         return [
             'name' => fake()->company(),
             'description' => $this->faker->text(50),
-            'type' => $this->faker->randomElement(['free vendor', 'verified vendor']),
             'visible' => 1,
             'merchant_id' => $this->faker->numberBetween(1, 10),
-
-
+            'verified' => $this->faker->boolean()
         ];
     }
 }
