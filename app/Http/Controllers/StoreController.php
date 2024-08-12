@@ -18,7 +18,6 @@ class StoreController extends Controller
 
             $store = Store::create([
                 'name' => $request->name,
-                'type' => $request->type,
                 'description' => $request->description,
                 'visible' => $request->visible,
                 'merchant_id' => $user->id,
@@ -38,7 +37,6 @@ class StoreController extends Controller
             } else {
                 $store->fill($request->only([
                     'name', 
-                    'type', 
                     'description', 
                     'visible', 
                     'merchant_id', 
