@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\faqRequest;
-use App\Http\Resources\faqResource;
+use App\Http\Resources\FaqResource;
 use App\Http\Controllers\Controller;
 use App\HttpResponse\HttpResponse;
 use App\Models\FAQ;
@@ -12,14 +12,14 @@ use Illuminate\Http\Request;
 class FaqController extends Controller
 {
     use HttpResponse;
-    
+
     public function get_faq()
     {
         $faq = FAQ::get();
         return $this->success(FaqResource::collection($faq) ,'all Faq');
 
     }
-    
+
     public function add_faq(FaqRequest $request)
     {
         $faq = FAQ::create([
@@ -36,8 +36,8 @@ class FaqController extends Controller
         $faq = FAQ::where('id', $request->faq_id)->first();
 
         $faq->fill($request->only([
-            'question', 
-            'answer', 
+            'question',
+            'answer',
         ]));
         $faq->save();
 
