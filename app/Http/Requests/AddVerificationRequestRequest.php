@@ -22,7 +22,7 @@ class AddVerificationRequestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'store_id'=>'required|int',
+            'store_id'=>'required|exists:stores,id',
             'image'=>'required|image',
         ];
     }

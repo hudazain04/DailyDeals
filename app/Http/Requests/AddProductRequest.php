@@ -23,17 +23,15 @@ class AddProductRequest extends FormRequest
     {
         return [
             'name'=>'required|string',
-            'category_id' => 'required|integer',
-            'store_id' => 'required|integer',
-            'price' => 'required|integer',
-            'colors' => 'required|array',
-            'colors.*.color' => 'required|int',
-            'colors.*.image' => 'required|image',
-            'sizes' => 'required|array',
-            'sizes.*.size' => 'required|integer',
-            'sizes.*.unit' => 'required|string',
-
-
+            'category_id' => 'required|exists:categories,id',
+            'store_id' => 'required|exists:stores,id',
+//            'price' => 'required|numeric',
+//            'colors' => 'required|array',
+//            'colors.*.color' => 'required|exists:colors,id',
+//            'colors.*.image' => 'required|image',
+//            'sizes' => 'required|array',
+//            'sizes.*.size' => 'required|numeric',
+//            'sizes.*.unit' => 'required|string',
         ];
 
 

@@ -22,7 +22,7 @@ class AcceptCategoryRequestRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'priority'=>'required|int',
+            'priority'=>'required|numeric',
 
         ];
     }

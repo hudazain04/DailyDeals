@@ -133,6 +133,22 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
             Route::post('updateOfferTypeRequest/{request_id}',[OfferController::class,'UpdateOfferTypeRequest']);
             Route::get('deleteOfferTypeRequest/{request_id}',[OfferController::class,'DeleteOfferTypeRequest']);
             Route::get('getAllForUser',[OfferController::class,'GetAllForUser']);
+            Route::post('addPercentageOffer',[OfferController::class,'AddPercentageOffer']);
+            Route::post('addDiscountOffer',[OfferController::class,'AddDiscountOffer']);
+            Route::post('addGiftOffer',[OfferController::class,'AddGiftOffer']);
+            Route::post('addExtraOffer',[OfferController::class,'AddExtraOffer']);
+            Route::patch('updatePercentageOffer/{offer_id}',[OfferController::class,'UpdatePercentageOffer']);
+            Route::patch('updateDiscountOffer/{offer_id}',[OfferController::class,'UpdateDiscountOffer']);
+            Route::patch('updateGiftOffer/{offer_id}',[OfferController::class,'UpdateGiftOffer']);
+            Route::patch('updateExtraOffer/{offer_id}',[OfferController::class,'UpdateExtraOffer']);
+            Route::get('deleteOffer/{offer_id}',[OfferController::class,'DeleteOffer']);
+            Route::get('activateOffer/{offer_id}',[OfferController::class,'ActivateOffer']);
+            Route::get('unactivateOffer/{offer_id}',[OfferController::class,'UnactivateOffer']);
+            Route::get('getOffersOfBranch/{branch_id}',[OfferController::class,'GetOffersOfBranch']);
+            Route::get('getBranchArchive/{branch_id}',[OfferController::class,'GetBranchArchive']);
+            Route::get('getOffers',[OfferController::class,'GetOffers']);
+
+
 
         });
 

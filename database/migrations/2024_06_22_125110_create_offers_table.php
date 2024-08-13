@@ -15,8 +15,6 @@ return new class extends Migration
         Schema::create('offers', function (Blueprint $table) {
             $table->id();
             $table->enum('type',[OfferType::Percentage,OfferType::Discount,OfferType::Gift,OfferType::Extra]);
-            $table->integer('price_before');
-            $table->integer('price_after')->nullable();
             $table->string('image');
             $table->boolean('active')->default(true);
             $table->integer('period')->nullable();

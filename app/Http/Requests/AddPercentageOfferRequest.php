@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AddCommentRequest extends FormRequest
+class AddPercentageOfferRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,13 @@ class AddCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'comment'=>'required|string',
-            'offer_id'=>'required|exists:branches,id',
+            'image'=>'required|image',
+            'branch_id'=>'required|exists:branches,id',
+            'percentage'=>'required|numeric',
+            'products'=>'required|array',
+            'products.*.product'=>'exists:products,id',
+
+
         ];
     }
 }
