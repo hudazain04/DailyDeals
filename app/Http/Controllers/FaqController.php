@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Requests\faqRequest;
+use App\Http\Requests\FaqRequest;
 use App\Http\Resources\FaqResource;
 use App\Http\Controllers\Controller;
 use App\HttpResponse\HttpResponse;
