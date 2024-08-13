@@ -16,9 +16,9 @@ use Illuminate\Http\Request;
 class BranchController extends Controller
 {
     use HttpResponse;
-    
+
     public function create_branch(BranchRequest $request)
-    {        
+    {
             $branch = Branch::create([
                 'name' => $request->name,
                 'location' => $request->location,
@@ -36,7 +36,7 @@ class BranchController extends Controller
                 ]);
             }
 
-            for ($i=1; $i <= 5; $i++) { 
+            for ($i=1; $i <= 5; $i++) {
                 QR::create([
                     'rate' => $i,
                     'branch_id' => $branch->id,
@@ -53,28 +53,28 @@ class BranchController extends Controller
     {
         if (auth()->user()->role != 'Merchant' && auth()->user()->role != 'Employee') {
             return $this->error('not authorized',403);
-           
+
             } else {
                 $branch = Branch::where('id',$request->branch_id)->first();
                 $store = Store::where('id',$branch->store_id)->first();
                 $employee = Employee::where('user_id',auth()->user()->id)->first();
                 $emp_branch = null;
-    
+
                 if ($employee) {
                     $emp_branch = Branch::where('id',$employee->branch_id)
                     ->where('id',$request->branch_id)->first();
                 }
 
                 if ($store->merchant_id == auth()->user()->id || $emp_branch != null) {
-    
+
 
                     $data = $request->only([
-                        'name', 
-                        'location', 
-                        'google_maps', 
-                        'store_id', 
-                        'category_id', 
-                        'visible', 
+                        'name',
+                        'location',
+                        'google_maps',
+                        'store_id',
+                        'category_id',
+                        'visible',
                     ]);
 
                     if ($request->hasFile('image')) {
@@ -84,10 +84,10 @@ class BranchController extends Controller
                     $branch->fill($data);
                     $branch->save();
 
-    
+
                     $existingNumbers = $branch->numbers;
                     $newPhoneNumbers = $request->phone_numbers;
-    
+
                     foreach ($existingNumbers as $key => $number) {
                         if (isset($newPhoneNumbers[$key])) {
                             $number->update([
@@ -95,8 +95,8 @@ class BranchController extends Controller
                             ]);
                         }
                     }
-        
-                    
+
+
                     return $this->success(new BranchResource($branch) ,'branch updated successfully');
             }
         }
@@ -111,7 +111,7 @@ class BranchController extends Controller
             if ($store->merchant_id != auth()->user()->id) {
                 return $this->error('not authorized',403);
             } else {
-                $branch->delete(); 
+                $branch->delete();
                 return $this->success(null ,'branch deleted successfully');
             }
     }
@@ -120,7 +120,6 @@ class BranchController extends Controller
     public function list_merchant_branches(Request $request)
     {
             $store = Store::where('id',$request->store_id)->first();
-
             if ($store->merchant_id != auth()->user()->id) {
                 return $this->error('not authorized',403);
             } else {

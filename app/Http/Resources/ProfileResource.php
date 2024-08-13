@@ -19,7 +19,7 @@ class ProfileResource extends JsonResource
         } else {
             $branch = null;
         }
-   
+
         return [
             'id' => $this->id,
             'first_name' => $this->first_name,
@@ -27,7 +27,7 @@ class ProfileResource extends JsonResource
             'email' => $this->email,
             'phone_number' => $this->phone_number,
             'role' => $this->role,
-            'image' =>$this->image,
+            'image' =>$this->image ? asset($this->image) : null,
             'branch' => $this->when($branch != null, $branch),
         ];
     }
