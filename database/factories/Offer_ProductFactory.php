@@ -17,7 +17,7 @@ class Offer_ProductFactory extends Factory
     public function definition(): array
     {
         return [
-            'price_after' => $this->faker->numberBetween(10, 100),
+//            'price_after' => $this->faker->numberBetween(10, 100),
             'product_id' => $this->faker->numberBetween(1, 10),
             'offer_id' => $this->faker->numberBetween(1, 10),
 

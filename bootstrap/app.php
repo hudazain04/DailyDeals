@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Foundation\Application;
@@ -20,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'Customer'=>\App\Http\Middleware\CustomerMiddleware::class,
             'Role'=>\App\Http\Middleware\RoleMiddleware::class,
             'check.blocked' => \App\Http\Middleware\CheckBlocked::class,
+            'language'=>\App\Http\Middleware\LanguageMiddleware::class,
         ]);
 
     })
