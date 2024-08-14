@@ -27,14 +27,14 @@ class AppInformationController extends Controller
 
         try{
             if (!File::exists($this->privacy)) {
-                return $this->error(['Privacy policy not found'], 404);
+                return $this->error([__('messages.app_info_controller.privacy_policy_not_found')], 404);
             }
             $privacyPolicy = [
                 'privacy policy' => $request['content'],
             ];
 
             File::put($this->privacy, json_encode($privacyPolicy));
-            return $this->success(['privacy_policy'=>$privacyPolicy],'privacy policy added successfully');
+            return $this->success(['privacy_policy'=>$privacyPolicy],__('messages.app_info_controller.create_privacy_policy'));
         }
         catch (\Throwable $th)
         {
@@ -49,13 +49,13 @@ class AppInformationController extends Controller
         try{
 
             if (!File::exists($this->privacy)) {
-                return $this->error( 'Privacy policy not found',404);
+                return $this->error( __('messages.app_info_controller.privacy_policy_not_found'),404);
             }
 
             $json = File::get($this->privacy);
             $privacyPolicy = json_decode($json, true);
 
-            return $this->success(['privacy_policy'=>$privacyPolicy],'success');
+            return $this->success(['privacy_policy'=>$privacyPolicy],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -70,10 +70,10 @@ class AppInformationController extends Controller
         try{
             if (File::exists($this->privacy)) {
                 File::put($this->privacy, json_encode([]));
-                return $this->success(null,'privacy policy deleted successfully');
+                return $this->success(null,__('messages.app_info_controller.delete_privacy_policy'));
             }
 
-            return $this->error( 'Privacy policy not found',404);
+            return $this->error( __('messages.app_info_controller.privacy_policy_not_found'),404);
         }
         catch (\Throwable $th)
         {
@@ -86,14 +86,14 @@ class AppInformationController extends Controller
 
         try{
             if (!File::exists($this->terms)) {
-                return $this->error(['terms and conditions not found'], 404);
+                return $this->error([__('messages.app_info_controller.terms_and_conditions_not_found')], 404);
             }
             $termsAndConditions = [
                 'terms and conditions' => $request['content'],
             ];
 
             File::put($this->terms, json_encode($termsAndConditions));
-            return $this->success(['terms_and_conditions'=>$termsAndConditions],'terms and conditions added successfully');
+            return $this->success(['terms_and_conditions'=>$termsAndConditions],__('messages.app_info_controller.create_terms_and_conditions'));
         }
         catch (\Throwable $th)
         {
@@ -108,13 +108,15 @@ class AppInformationController extends Controller
         try{
 
             if (!File::exists($this->terms)) {
-                return response()->json(['message' => 'v not found.'], 404);
+
+                return $this->error(__('messages.app_info_controller.terms_and_conditions_not_found'),404);
+
             }
 
             $json = File::get($this->terms);
             $termsAndConditions = json_decode($json, true);
 
-            return $this->success(['terms_and_conditions'=>$termsAndConditions],'success');
+            return $this->success(['terms_and_conditions'=>$termsAndConditions],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -129,10 +131,10 @@ class AppInformationController extends Controller
         try{
             if (File::exists($this->terms)) {
                 File::put($this->terms, json_encode([]));
-                return $this->success(null,'terms and conditions deleted successfully');
+                return $this->success(null,__('messages.app_info_controller.delete_terms_and_conditions'));
             }
 
-            return $this->error('terms and conditions not found',404);
+            return $this->error(__('messages.app_info_controller.terms_and_conditions_not_found'),404);
         }
         catch (\Throwable $th)
         {
@@ -145,14 +147,14 @@ class AppInformationController extends Controller
 
         try{
             if (!File::exists($this->about)) {
-                return $this->error(['About App not found'], 404);
+                return $this->error([__('messages.app_info_controller.about_app_not_found')], 404);
             }
             $aboutApp = [
                 'About App' => $request['content'],
             ];
 
             File::put($this->about, json_encode($aboutApp));
-            return $this->success(['about_app'=>$aboutApp],'About App added successfully');
+            return $this->success(['about_app'=>$aboutApp],__('messages.app_info_controller.create_about_app'));
         }
         catch (\Throwable $th)
         {
@@ -167,13 +169,13 @@ class AppInformationController extends Controller
         try{
 
             if (!File::exists($this->about)) {
-                return $this->error( 'About App not found',404);
+                return $this->error( __('messages.app_info_controller.about_app_not_found'),404);
             }
 
             $json = File::get($this->about);
             $aboutApp = json_decode($json, true);
 
-            return $this->success(['about_app'=>$aboutApp],'success');
+            return $this->success(['about_app'=>$aboutApp],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -188,10 +190,10 @@ class AppInformationController extends Controller
         try{
             if (File::exists($this->about)) {
                 File::put($this->about, json_encode([]));
-                return $this->success(null,'About App deleted successfully');
+                return $this->success(null,__('messages.app_info_controller.delete_about_app'));
             }
 
-            return $this->error( 'About App not found',404);
+            return $this->error( __('messages.app_info_controller.about_app_not_found'),404);
         }
         catch (\Throwable $th)
         {

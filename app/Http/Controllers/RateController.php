@@ -27,7 +27,7 @@ class RateController extends Controller
 //            dd($rate);
             CalculateBranchRate::dispatchAfterResponse($request->branch_id);
 
-            return $this->success(RateResource::make($rate),'rate added successfully');
+            return $this->success(RateResource::make($rate),__('messages.rate_controller.create_rate'));
 
         }
         catch (\Throwable $th)
@@ -39,7 +39,7 @@ class RateController extends Controller
     {
         try {
             $rates=Rate::where('branch_id',$branch_id)->get();
-            return $this->success(RateResource::collection($rates),'branch rates');
+            return $this->success(RateResource::collection($rates),__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -50,7 +50,7 @@ class RateController extends Controller
     {
         try {
             $qrs=QR::where('branch_id',$branch_id)->get();
-            return $this->success(QRResource::collection($qrs),'branch qrs');
+            return $this->success(QRResource::collection($qrs),__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {

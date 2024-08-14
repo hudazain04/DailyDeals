@@ -48,7 +48,7 @@ class ChatController extends Controller
 
             ]);
             event(new MessageEvent($request->receiver_id,$message));
-            return $this->success(MessageResource::make($message),'message send successfully');
+            return $this->success(MessageResource::make($message),__('messages.successful_request'));
         }
        catch (\Throwable $th)
        {
@@ -65,7 +65,7 @@ class ChatController extends Controller
 //            Message::where('conversation_id', $conversation_id)->update(['read' => true]);
             $conversation->messages()->latest()->update(['read' => true]);
             DB::commit();
-            return $this->success(MessageResource::collection($messages),'messages');
+            return $this->success(MessageResource::collection($messages),__('messages.successful_request'));
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage() , 500);
@@ -80,7 +80,7 @@ class ChatController extends Controller
             })->orWhere(function ($query) use ($user) {
                 $query->where('user2_id', $user);
             })->get();
-            return $this->success(ConversationResource::collection($conversations),'your conversations');
+            return $this->success(ConversationResource::collection($conversations),__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {

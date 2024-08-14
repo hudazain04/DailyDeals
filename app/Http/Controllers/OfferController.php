@@ -42,7 +42,7 @@ class OfferController extends Controller
                     'user_id'=>$user->id,
                 ]
             );
-            return $this->success(OfferTypeResource::make($offer_type),'offer type requested successfully');
+            return $this->success(OfferTypeResource::make($offer_type),__('messages.offer_controller.create_offer_request'));
         }
         catch (\Throwable $th)
         {
@@ -61,7 +61,7 @@ class OfferController extends Controller
                     'description'=>$request->description,
                 ]
             );
-            return $this->success(OfferTypeResource::make($offer_type),'offer type request updated successfully');
+            return $this->success(OfferTypeResource::make($offer_type),__('messages.offer_controller.update_offer_request'));
         }
         catch (\Throwable $th)
         {
@@ -74,7 +74,7 @@ class OfferController extends Controller
             $offer_type=Type_Of_Offer_Request::find($request_id);
 //            $offer_type=Type_Of_Offer_Request::where('id',$request_id)->first();
             $offer_type->delete();
-            return $this->success(null,'offer type request deleted successfully');
+            return $this->success(null,__('messages.offer_controller.delete_offer_request'));
 
         }
         catch (\Throwable $th)
@@ -87,7 +87,7 @@ class OfferController extends Controller
     {
         try {
             $offer_types=Type_Of_Offer_Request::all();
-            return $this->success(OfferTypeResource::collection($offer_types),'offer type requests');
+            return $this->success(OfferTypeResource::collection($offer_types),__('messages.successful_request'));
 
         }
         catch (\Throwable $th)
@@ -100,7 +100,7 @@ class OfferController extends Controller
         try {
             $user=$request->user();
             $offer_types=Type_Of_Offer_Request::where('user_id',$user->id)->get();
-            return $this->success(OfferTypeResource::collection($offer_types),'offer type requests');
+            return $this->success(OfferTypeResource::collection($offer_types),__('messages.successful_request'));
 
         }
         catch (\Throwable $th)
@@ -117,7 +117,7 @@ class OfferController extends Controller
                 'offer_id'=>$request->offer_id,
                 'customer_id'=>Auth::user()->id,
             ]);
-            return $this->success(CommentResource::make($comment),'comment added successfully');
+            return $this->success(CommentResource::make($comment),__('messages.offer_controller.create_comment'));
         }
         catch (\Throwable $th)
         {
@@ -132,14 +132,14 @@ class OfferController extends Controller
 //            $comment=Comment::where('id',$comment_id)->first();
             if ($comment->customer_id != $request->user()->id)
             {
-                return $this->error('this is not your comment',400);
+                return $this->error(__('messages.offer_controller.not_your_comment'),400);
             }
             else
             {
                 $comment->update([
                     'comment'=>$request->comment,
                 ]);
-                return $this->success(CommentResource::make($comment),'comment updated successfully');
+                return $this->success(CommentResource::make($comment),__('messages.offer_controller.update_comment'));
             }
 
         }
@@ -156,12 +156,12 @@ class OfferController extends Controller
 //            $comment=Comment::where('id',$comment_id)->first();
             if ($comment->customer_id != $request->user()->id)
             {
-                return $this->error('this is not your comment',400);
+                return $this->error(__('messages.offer_controller.not_your_comment'),400);
             }
             else
             {
                 $comment->delete();
-                return $this->success(null,'comment deleted successfully');
+                return $this->success(null,__('messages.offer_controller.delete_comment'));
             }
 
         }
@@ -174,7 +174,7 @@ class OfferController extends Controller
     {
         try {
             $comments=Comment::where('offer_id',$offer_id)->get();
-            return $this->success(CommentResource::collection($comments),'all comments');
+            return $this->success(CommentResource::collection($comments),__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -198,7 +198,7 @@ class OfferController extends Controller
                 $offer->products()->attach($product_id);
             }
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
         catch (\Throwable $th)
         {
@@ -222,7 +222,7 @@ class OfferController extends Controller
                 $offer->products()->attach($product_id);
             }
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'updateed successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.update_offer'));
         }
         catch (\Throwable $th)
         {
@@ -248,7 +248,7 @@ class OfferController extends Controller
                 $offer->products()->attach($product_id);
             }
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
         catch (\Throwable $th)
         {
@@ -272,7 +272,7 @@ class OfferController extends Controller
                 $offer->products()->attach($product_id);
             }
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'updated successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.update_offer'));
         }
         catch (\Throwable $th)
         {
@@ -298,7 +298,7 @@ class OfferController extends Controller
             }
 
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
         catch (\Throwable $th)
         {
@@ -326,7 +326,7 @@ class OfferController extends Controller
             }
 
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'updated successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.update_offer'));
         }
         catch (\Throwable $th)
         {
@@ -350,7 +350,7 @@ class OfferController extends Controller
                 'extra_count'=>$request->extra_count,
             ]);
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
         catch (\Throwable $th)
         {
@@ -368,7 +368,7 @@ class OfferController extends Controller
             $extraData= $request->only(['product_id','product_count','extra_count']);
             $offer->extra_offer()->update($extraData);
             DB::commit();
-            return $this->success(['offer'=>OfferResource::make($offer)],'updated successfully');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.update_offer'));
         }
         catch (\Throwable $th)
         {
@@ -381,7 +381,7 @@ class OfferController extends Controller
         try
         {
             $offer=Offer::find($offer_id)->delete();
-            return $this->success(null,'deleted successfully');
+            return $this->success(null,__('messages.offer_controller.delete_offer'));
         }
         catch (\Throwable $th)
         {
@@ -395,7 +395,7 @@ class OfferController extends Controller
         {
             $offer=Offer::find($offer_id);
             $offer->update(['active'=>false]);
-            return $this->success(['offer'=>OfferResource::make($offer)],'archived');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.archive_offer'));
 
         }
         catch (\Throwable $th)
@@ -409,7 +409,7 @@ class OfferController extends Controller
         {
             $offer=Offer::find($offer_id);
             $offer->update(['active'=>true]);
-            return $this->success(['offer'=>OfferResource::make($offer)],'activated');
+            return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.activate_offer'));
 
         }
         catch (\Throwable $th)
@@ -425,7 +425,7 @@ class OfferController extends Controller
             $offers=Offer::where('active',true)
                 ->orderBy('verified')
                 ->get();
-            return $this->success(['offes'=>OfferResource::collection($offers)],'offers');
+            return $this->success(['offes'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -437,7 +437,7 @@ class OfferController extends Controller
         try
         {
             $offers=Offer::where(['branch_id'=>$branch_id,'active'=>true])->get();
-            return $this->success(['offers'=>OfferResource::collection($offers)],'offers');
+            return $this->success(['offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -449,7 +449,7 @@ class OfferController extends Controller
         try
         {
             $offers=Offer::where(['active'=>false])->get();
-            return $this->success(['archived_offers'=>OfferResource::collection($offers)],'archived offers');
+            return $this->success(['archived_offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -469,7 +469,7 @@ class OfferController extends Controller
                $product=Product::find($offer_product);
                array_push($products,$product);
            }
-           return $this->success(['products'=>ProductResource::collection($products)],'products');
+           return $this->success(['products'=>ProductResource::collection($products)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {

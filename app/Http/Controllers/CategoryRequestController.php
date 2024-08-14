@@ -30,7 +30,7 @@ class CategoryRequestController extends Controller
 
 //            $category=Category_Request::where('id',$request_id)->first();
 
-                return $this->success(['category_request'=>CategoryRequestResource::make($category)],'success');
+                return $this->success(['category_request'=>CategoryRequestResource::make($category)],__('messages.successful_request'));
 
         }
         catch (\Throwable $th)
@@ -46,7 +46,7 @@ class CategoryRequestController extends Controller
             $user=$request->user();
             $category=Category_Request::create(['category'=>$request->category,'user_id'=>$user->id,'status'=>RequestType::Pending]);
             return $this->success(['category_request'=>CategoryRequestResource::make($category)],
-                'category request added successfully');
+                __('messages.category_request_controller.create_category'));
         }
         catch (\Throwable $th)
         {
@@ -63,7 +63,7 @@ class CategoryRequestController extends Controller
 
                 $category->update(['category'=>$request->category]);
                 return $this->success(['category_request'=>CategoryRequestResource::make($category)],
-                    'category request updated successfully');
+                    __('messages.category_request_controller.update_category'));
 
 
         }
@@ -81,7 +81,7 @@ class CategoryRequestController extends Controller
 //            $category=Category_Request::where('id',$request_id)->first();
 
                 $category->delete();
-                return $this->success(null,'category request deleted successfully');
+                return $this->success(null, __('messages.category_request_controller.delete_category'));
 
 
         }
@@ -101,7 +101,7 @@ class CategoryRequestController extends Controller
                 ->get();
 
 
-            return $this->success(['category_requests'=>CategoryRequestResource::collection($categories)],'success');
+            return $this->success(['category_requests'=>CategoryRequestResource::collection($categories)],__('messages.successful_request'));
 
 
         }
@@ -117,7 +117,7 @@ class CategoryRequestController extends Controller
             $status=[RequestType::Pending,RequestType::Accepted,RequestType::Rejected];
             $categories=Category_Request::orderByRaw('FIELD(status,?,?,?)',$status)->get();
 
-                return $this->success(['category_requests'=>CategoryRequestResource::collection($categories)],'success');
+                return $this->success(['category_requests'=>CategoryRequestResource::collection($categories)],__('messages.successful_request'));
 
         }
         catch (\Throwable $th)
@@ -142,13 +142,13 @@ class CategoryRequestController extends Controller
                     $category=Category::create(['category'=>$request->admin_name,
                         'parent_category'=>$parent->id,'priority'=>$request->priority]);
                     DB::commit();
-                    return $this->success(['category'=>CategoryResource::make($category)],'category request accepted');
+                    return $this->success(['category'=>CategoryResource::make($category)], __('messages.category_request_controller.accept_category'));
                 }
                 else
                 {
                     $category=Category::create(['category'=>$request->admin_name,'priority'=>$request->priority]);
                     DB::commit();
-                    return $this->success(['category'=>CategoryResource::make($category)],'category request accepted');
+                    return $this->success(['category'=>CategoryResource::make($category)], __('messages.category_request_controller.accept_category'));
                 }
 
 
@@ -162,13 +162,13 @@ class CategoryRequestController extends Controller
                     $category=Category::create(['category'=>$request->category,
                         'parent_category'=>$parent->id,'priority'=>$request->priority]);
                     DB::commit();
-                    return $this->success(['category'=>CategoryResource::make($category)],'category request accepted');
+                    return $this->success(['category'=>CategoryResource::make($category)], __('messages.category_request_controller.accept_category'));
                 }
                 else
                 {
                     $category=Category::create(['category'=>$request->category,'priority'=>$request->priority]);
                     DB::commit();
-                    return $this->success(['category'=>CategoryResource::make($category)],'category request accepted');
+                    return $this->success(['category'=>CategoryResource::make($category)], __('messages.category_request_controller.accept_category'));
                 }
 
             }
@@ -187,7 +187,7 @@ class CategoryRequestController extends Controller
             $category_request=Category_Request::find($request_id);
 //            $category_request=Category_Request::where('id',$request_id)->first();
             $category_request->update(['status'=>RequestType::Rejected]);
-            return $this->success(null,'category request rejected');
+            return $this->success(null, __('messages.category_request_controller.reject_category'));
         }
         catch (\Throwable $th)
         {

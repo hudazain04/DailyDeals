@@ -23,7 +23,7 @@ class VerificationController extends Controller
             $user=$request->user();
             $verification_request=Verification::create(['commercial_record'=>AuthController::UploadImage($request),
                 'merchant_id'=>$user->id,'store_id'=>$request->store_id,'status'=>RequestType::Pending]);
-            return $this->success(['verification_request'=>VerificationResource::make($verification_request)],'verification requested successfully');
+            return $this->success(['verification_request'=>VerificationResource::make($verification_request)],__('messages.verification_controller.create_verification'));
 
         }
         catch (\Throwable $th)
@@ -44,7 +44,7 @@ class VerificationController extends Controller
             $store->update(['verified'=>true]);
             DB::commit();
             return $this->success(['verification_request'=>VerificationResource::make($verification_request)],
-                'verification request accepted');
+                __('messages.verification_controller.accept_verification'));
 
         }
         catch (\Throwable $th)
@@ -65,7 +65,7 @@ class VerificationController extends Controller
             $store->update(['verified'=>false]);
             DB::commit();
             return $this->success(['verification_request'=>VerificationResource::make($verification_request)],
-                'verification request rejected');
+                __('messages.verification_controller.reject_verification'));
 
         }
         catch (\Throwable $th)
@@ -81,7 +81,7 @@ class VerificationController extends Controller
             $verification_request=Verification::find($request_id);
 //            $verification_request=Verification::where('id',$request_id)->first();
 
-            return $this->success(['verification_request'=>VerificationResource::make($verification_request)],'success');
+            return $this->success(['verification_request'=>VerificationResource::make($verification_request)],__('messages.successful_request'));
 
         }
         catch (\Throwable $th)
@@ -100,7 +100,7 @@ class VerificationController extends Controller
                 ->orderByRaw('FIELD(status,?,?,?)',$status)
                 ->get();
 
-            return $this->success(['verification_requests'=>VerificationResource::collection($verification_requests)],'success');
+            return $this->success(['verification_requests'=>VerificationResource::collection($verification_requests)],__('messages.successful_request'));
 
 
         }
@@ -115,7 +115,7 @@ class VerificationController extends Controller
         try {
             $status=[RequestType::Pending,RequestType::Accepted,RequestType::Rejected];
             $verification_requests=Verification::orderByRaw('FIELD(status,?,?,?)',$status)->get();
-            return $this->success(['verification_requests'=>VerificationResource::collection($verification_requests)],'success');
+            return $this->success(['verification_requests'=>VerificationResource::collection($verification_requests)],__('messages.successful_request'));
 
         }
         catch (\Throwable $th)

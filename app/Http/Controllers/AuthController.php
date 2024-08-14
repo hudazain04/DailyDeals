@@ -62,7 +62,7 @@ class AuthController extends Controller
             }
             $code=$this->SendVerificationCode($user,VerificationCodeType::register_code);
             DB::commit();
-            return $this->success(['user' => UserResource::make($user)],trans('messages.auth_controller.register'));
+            return $this->success(['user' => UserResource::make($user)],__('messages.auth_controller.register'));
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -91,12 +91,12 @@ class AuthController extends Controller
             DB::beginTransaction();
             $user = User::where('email', $request->email)->first();
             if (!$user){
-                return $this->error('user not found',404);
+                return $this->error(__('messages.email_not_found'),404);
             }
             $code = Verification_Code::where('user_id', $user->id)->where('used', false)->where('type', VerificationCodeType::register_code)
                 ->where('code' , $request->code)->first();
             if (!$code){
-                return $this->error('incorrect code', 400);
+                return $this->error(__('messages.auth_controller.code_incorrect'), 400);
             }
             $user->update(['verified'=>true]);
             $code->update(['used'=>true]);
@@ -121,7 +121,7 @@ class AuthController extends Controller
             }
 
             DB::commit();
-            return $this->success(['user'=> UserResource::make($user)/*,'access_token' =>$token*/] ,trans('messages.auth_controller.verified_successfully'));
+            return $this->success(['user'=> UserResource::make($user)/*,'access_token' =>$token*/] ,__('messages.auth_controller.verified_successfully'));
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -131,7 +131,7 @@ class AuthController extends Controller
         try {
             $user = User::where('email' , $request->email)->first();
             if (!$user){
-                return $this->error('user not found',404);
+                return $this->error(__('messages.email_not_found'),404);
             }
             $code=$this->sendVerificationCode($user,VerificationCodeType::register_code);
             return $this->success(['user' => UserResource::make($user)/*,'verification_code'=>$code*/] ,__('messages.auth_controller.resend_code'));
@@ -146,17 +146,17 @@ class AuthController extends Controller
             $user = User::where('email', $request->email)->first();
 
             if (!$user) {
-                return $this->error('user not found', 404);
+                return $this->error(__('messages.auth_controller.user_not_found'), 404);
             }
             if (!Auth::attempt($request->only(['email','password']))) {
-                return $this->error('invalid credentials', 401);
+                return $this->error(__('messages.auth_controller.login_credentials_error'), 401);
             }
             if ($user->blocked) {
-                return $this->error('this user is blocked', 403);
+                return $this->error(__('messages.error.blocked_account'), 403);
             }
             if (($user->role==UserType::Merchant||$user->role==UserType::Customer)&&!$user->verified) {
                 $this->sendVerificationCode($user, 'Register');
-                return $this->error('account is not verified', 403);
+                return $this->error(__('messages.auth_controller.account_not_verified'), 403);
             }
 
             $user = Auth::user();
@@ -180,7 +180,7 @@ class AuthController extends Controller
                 }
             }
 
-            return $this->success(['user' => UserResource::make($user), "access_token" => $token] ,'user logged in successfully' );
+            return $this->success(['user' => UserResource::make($user)/*, "access_token" => $token*/] ,__('messages.auth_controller.login_successfully'));
         }
         catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
@@ -194,7 +194,7 @@ class AuthController extends Controller
         $employee=Employee::where('code',$request->code)->first();
         if (! $employee)
         {
-            return $this->error('employee not found', 404);
+            return $this->error(__('messages.auth_controller.user_not_found'), 404);
         }
             $user=User::find($employee->user_id);
 //        $user=User::where('id',$employee->user_id)->first();
@@ -215,7 +215,7 @@ class AuthController extends Controller
 //                "notification_token"=>$request->notification_token,
 //            ]);
 //        }
-        return $this->success(['user' => UserResource::make($user), "access_token" => $token] ,'employee logged in successfully' );
+        return $this->success(['user' => UserResource::make($user)/*, "access_token" => $token*/] ,__('messages.auth_controller.login_successfully') );
     }
         catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
@@ -243,16 +243,16 @@ class AuthController extends Controller
                         PersonalAccessToken::where('id', $tokenId)->delete();
                     }
 
-                    return $this->success(null, 'user logged out successfully');
+                    return $this->success(null, __('messages.auth_controller.logout_successfully'));
 
 
                 }
                 else {
-                    return $this->error('Device not found', 404);
+                    return $this->error(__('messages.auth_controller.device_not_found'), 404);
                 }
             }
             $request->user()->token()->revoke();
-            return $this->success(null, 'user logged out successfully');
+            return $this->success(null,  __('messages.auth_controller.logout_successfully'));
 
 
 
@@ -290,12 +290,12 @@ class AuthController extends Controller
                     }
                 }
 
-                return $this->success(['user'=>UserResource::make($user)], 'password changed successfully');
+                return $this->success(['user'=>UserResource::make($user)],  __('messages.auth_controller.password_changed'));
 
             }
 
         else{
-        return $this->error('wrong current password', 400);}
+        return $this->error(__('messages.auth_controller.wrong_current_password'), 400);}
 
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
@@ -307,10 +307,10 @@ class AuthController extends Controller
         try {
             $user = User::where('email' , $request->email)->first();
             if (!$user){
-                return $this->error('user not found',404);
+                return $this->error(__('messages.auth_controller.user_not_found'),404);
             }
             $code = $this->SendVerificationCode($user , VerificationCodeType::password_code);
-            return $this->success(['user' => UserResource::make($user),'verification_code'=>$code] , 'reset password code sent');
+            return $this->success(['user' => UserResource::make($user)/*,'verification_code'=>$code*/],__('messages.auth_controller.resend_code'));
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }
@@ -319,10 +319,10 @@ class AuthController extends Controller
         try {
             $user = User::where('email' , $request->email)->first();
             if (!$user){
-                return $this->error('user not found',404);
+                return $this->error(__('messages.auth_controller.user_not_found'),404);
             }
            $code= $this->SendVerificationCode($user,VerificationCodeType::password_code);
-            return $this->success(['user' => UserResource::make($user),'verification_code'=>$code] ,'code sent');
+            return $this->success(['user' => UserResource::make($user)/*,'verification_code'=>$code*/] ,__('messages.auth_controller.resend_code'));
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }
@@ -332,16 +332,16 @@ class AuthController extends Controller
             DB::beginTransaction();
             $user = User::where('email', $request->email)->first();
             if (!$user){
-                return $this->error('user not found',404);
+                return $this->error(__('messages.auth_controller.user_not_found'),404);
             }
             $code = Verification_Code::where('code' , $request->code)->where('user_id' , $user->id)->where('used' , false)
                 ->where('type' , VerificationCodeType::password_code)->first();
             if (!$code){
-                return $this->error('incorrect code', 400);
+                return $this->error(__('messages.auth_controller.code_incorrect'), 400);
             }
             $code->update(['used'=>true]);
             DB::commit();
-            return $this->success(['user' => UserResource::make($user)] , 'forget password verified');
+            return $this->success(['user' => UserResource::make($user)] , __('messages.auth_controller.verified_successfully'));
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -352,10 +352,10 @@ class AuthController extends Controller
         try {
             $user = User::where('email', $request->email)->first();
             if (!$user){
-                return $this->error('user not found',404);
+                return $this->error(__('messages.auth_controller.user_not_found'),404);
             }
             $user->update($request->only(['password']));
-            return $this->success(['user'=>UserResource::make($user)] ,'password changed');
+            return $this->success(['user'=>UserResource::make($user)] ,__('messages.auth_controller.password_changed'));
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }

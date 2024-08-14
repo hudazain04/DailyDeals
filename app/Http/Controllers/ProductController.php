@@ -31,7 +31,7 @@ class ProductController extends Controller
                 'visible' => true,
                 'store_id' => $request->store_id,
             ]);
-            return $this->success(['product'=>ProductResource::make($product)],'created product');
+            return $this->success(['product'=>ProductResource::make($product)],__('messages.product_controller.create_product'));
         }
         catch (\Throwable $th)
         {
@@ -55,7 +55,7 @@ class ProductController extends Controller
                 ]);
             }
             DB::commit();
-            return $this->success(['colors'=>ColorResource::collection($colors)],'colors added');
+            return $this->success(['colors'=>ColorResource::collection($colors)],__('messages.product_controller.create_colors'));
 
 
         }
@@ -90,7 +90,7 @@ class ProductController extends Controller
 
             }
             DB::commit();
-            return $this->success(['sizes'=>SizeResource::collection($sizes)->additional(['product_id' => $product_id])],'sizes created');
+            return $this->success(['sizes'=>SizeResource::collection($sizes)->additional(['product_id' => $product_id])],__('messages.product_controller.create_sizes'));
         }
         catch (\Throwable $th)
         {
@@ -105,7 +105,7 @@ class ProductController extends Controller
         {
             $product=Product::find($product_id);
             $product->delete();
-            return $this->success(null,'deleted product');
+            return $this->success(null,__('messages.product_controller.delete_product'));
         }
         catch (\Throwable $th)
         {
@@ -117,7 +117,7 @@ class ProductController extends Controller
         try
         {
             $product=Product::find($product_id);
-            return $this->success(['product'=>ProductResource::make($product)],'product');
+            return $this->success(['product'=>ProductResource::make($product)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -129,7 +129,7 @@ class ProductController extends Controller
         try
         {
          $products=Product::where('store_id',$store_id)->get();
-         return $this->success(['products'=>ProductResource::collection($products)],'products');
+         return $this->success(['products'=>ProductResource::collection($products)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
