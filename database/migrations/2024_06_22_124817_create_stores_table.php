@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('stores', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->enum('type', ['free vendor', 'verified vendor']);
             $table->string('description');
             $table->boolean('visible')->default(true);
             $table->boolean('verified')->default(false);

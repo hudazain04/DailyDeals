@@ -25,8 +25,6 @@ class StoreRequest extends FormRequest
             'name' => 'sometimes',
             'description' => 'sometimes',
             'visible' => 'sometimes|boolean',
-            'merchant_id' => 'numeric|exists:merchants,id',
-            'type' => 'sometimes|in:"free vendor","verified vendor"',
         ];
     }
 }
