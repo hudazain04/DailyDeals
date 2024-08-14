@@ -23,6 +23,7 @@ use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\NotifiedController;
 use App\Http\Controllers\AdvertisementController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\RateController;
 
 Route::get('/user', function (Request $request) {
@@ -43,6 +44,8 @@ Route::middleware(['check.blocked'])->group(function () {
         Route::post('forgetPasswordChange',[AuthController::class, 'ForgetPasswordChange']);
         Route::post('loginEmployee',[AuthController::class,'LoginEmployee']);
         Route::post('restore_my_account',[ProfileController::class,'restore_my_account']);
+        Route::post('sendNotification', [NotificationController::class, 'sendNotification']);
+        Route::post('storeFcmToken', [NotificationController::class, 'storeFcmToken']);
 
     });
 });
@@ -68,6 +71,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('get_faq',[FaqController::class ,'get_faq']);
         Route::get('show_faq',[FaqController::class ,'show_faq']);
         Route::post('store_byID',[StoreController::class ,'store_byID']);
+        Route::get('show_store',[StoreController::class ,'show_store']);
         Route::post('Branch_byID',[BranchController::class ,'Branch_byID']);
 
     });
