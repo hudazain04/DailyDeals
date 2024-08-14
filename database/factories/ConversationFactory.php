@@ -17,8 +17,8 @@ class ConversationFactory extends Factory
     public function definition(): array
     {
         return [
-            'employee_id' => $this->faker->numberBetween(1, 10),
-            'customer_id' => $this->faker->numberBetween(1, 10),
+            'user1_id' => $this->faker->numberBetween(1, 10),
+            'user2_id' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

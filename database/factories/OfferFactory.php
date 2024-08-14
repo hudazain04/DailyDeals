@@ -21,8 +21,8 @@ class OfferFactory extends Factory
 
             'image' => $this->faker->word() . '.jpg',
             'type' => $this->faker->randomElement([OfferType::Percentage, OfferType::Discount, OfferType::Gift, OfferType::Extra]),
-            'price_before' => $this->faker->numberBetween(10, 100),
-            'price_after' => $this->faker->numberBetween(10, 100),
+//            'price_before' => $this->faker->numberBetween(10, 100),
+//            'price_after' => $this->faker->numberBetween(10, 100),
             'period' => $this->faker->numberBetween(1, 10),
             'active' => 1,
 

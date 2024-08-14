@@ -22,7 +22,7 @@ class UpdateRateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'rate'=>'required',
+            'rate'=>'required|numeric',
         ];
     }
 }

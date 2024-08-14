@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use App\Models\Merchant;
 use App\Models\Store;
+use App\Models\User;
 use App\Types\UserType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -27,13 +28,13 @@ class VerificationResource extends JsonResource
         if (Auth::user()->role === UserType::Admin)
 
         {
-            $merchant=Merchant::where('id',$this->merchant_id)->first();
+            $merchant=User::where('id',$this->merchant_id)->first();
             $fullName = $merchant->full_name;
-            $store=Store::where('id',$this->store_id)->first();
-            $baseData=array_merge($baseData,['merchant_id'=>$this->merchant_id,'merchant_name'=>$fullName,
+        $store=Store::where('id',$this->store_id)->first();
+        $baseData=array_merge($baseData,['merchant_id'=>$this->merchant_id,'merchant_name'=>$fullName,
             'store_id'=>$this->store_id,'store_name'=>$store->name]);
-        }
-        return $baseData;
+    }
+   return $baseData;
 
     }
 }

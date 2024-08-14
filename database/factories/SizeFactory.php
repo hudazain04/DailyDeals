@@ -21,8 +21,9 @@ class SizeFactory extends Factory
         return [
             'size' => Str::random(10),
             'unit' => Str::random(10),
-           // 'size' => $this->faker->numberBetween(1, 100),
-            //'unit' => $this->faker->word(), 
+            'price' => $this->faker->numberBetween(1, 100),
+            // 'size' => $this->faker->numberBetween(1, 100),
+            //'unit' => $this->faker->word(),
 
         ];
     }

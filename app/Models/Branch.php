@@ -72,7 +72,7 @@ class Branch extends Model
         if ($image && $image->isValid()) {
             $filename = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('BranchImage'),$filename);
-            $this->attributes['image'] = public_path('BranchImage').$filename;
+            $this->attributes['image'] = '/BranchImage/'.$filename;
         }
     }
 

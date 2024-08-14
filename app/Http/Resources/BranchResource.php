@@ -22,7 +22,7 @@ class BranchResource extends JsonResource
             'visible' => $this->visible,
             'store' => $this->store ? $this->store->name : null,
             'category' => $this->category ? $this->category->category : null,
-            'image' => $this->image,
+            'image' => $this->image ? asset($this->image) : null,
             'rate'=> $this->rate,
             'numbers' => NumberResource::collection($this->numbers),
             'qr' => QrResource::collection($this->qrs)

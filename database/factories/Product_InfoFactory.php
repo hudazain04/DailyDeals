@@ -17,7 +17,6 @@ class Product_InfoFactory extends Factory
     public function definition(): array
     {
         return [
-            'price' => $this->faker->numberBetween(1, 100),
             'color_id' => $this->faker->numberBetween(1, 10),
             'size_id' => $this->faker->numberBetween(1, 10),
             'product_id' => $this->faker->numberBetween(1, 10),

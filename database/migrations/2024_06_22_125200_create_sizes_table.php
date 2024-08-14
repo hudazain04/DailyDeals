@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->id();
+            $table->integer('price');
             $table->string('size');
             $table->string('unit')->nullable();
             $table->timestamps();

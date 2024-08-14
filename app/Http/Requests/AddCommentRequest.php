@@ -23,7 +23,7 @@ class AddCommentRequest extends FormRequest
     {
         return [
             'comment'=>'required|string',
-            'offer_id'=>'required|integer',
+            'offer_id'=>'required|exists:branches,id',
         ];
     }
 }

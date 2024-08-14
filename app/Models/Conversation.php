@@ -13,7 +13,7 @@ class Conversation extends Model
     use HasFactory;
     protected $table ="conversations";
     protected $primaryKey="id";
-    protected $fillable = ['customer_id','employee_id'];
+    protected $fillable = ['user1_id','user2_id'];
 
     public function customer()
     {

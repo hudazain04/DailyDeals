@@ -22,7 +22,18 @@ class AddProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'product_name'=>'required|string',
+            'name'=>'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'store_id' => 'required|exists:stores,id',
+//            'price' => 'required|numeric',
+//            'colors' => 'required|array',
+//            'colors.*.color' => 'required|exists:colors,id',
+//            'colors.*.image' => 'required|image',
+//            'sizes' => 'required|array',
+//            'sizes.*.size' => 'required|numeric',
+//            'sizes.*.unit' => 'required|string',
         ];
+
+
     }
 }

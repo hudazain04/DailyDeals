@@ -23,7 +23,7 @@ class AddRateRequest extends FormRequest
     {
         return [
             'rate'=>'required',
-            'branch_id'=>'required',
+            'branch_id'=>'required|exists:branches,id',
         ];
     }
 }

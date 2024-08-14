@@ -3,16 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AddCommentRequest;
+use App\Http\Requests\AddDiscountOfferRequest;
+use App\Http\Requests\AddExtraOfferRequest;
+use App\Http\Requests\AddGiftOfferRequest;
 use App\Http\Requests\AddOfferTypeRequestRequest;
+use App\Http\Requests\AddPercentageOfferRequest;
 use App\Http\Requests\UpdateCommentRequest;
 use App\Http\Resources\CommentResource;
+use App\Http\Resources\DiscountOfferResource;
+use App\Http\Resources\ExtraOfferResource;
+use App\Http\Resources\GiftOfferResource;
+use App\Http\Resources\OfferResource;
 use App\Http\Resources\OfferTypeResource;
+use App\Http\Resources\PercentageOfferResource;
+use App\Http\Resources\ProductResource;
 use App\HttpResponse\HttpResponse;
 use App\Models\Comment;
 use App\Models\Offer;
+use App\Models\Product;
 use App\Models\Type_Of_Offer_Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Types\OfferType;
+use Illuminate\Support\Facades\DB;
 
 class OfferController extends Controller
 {
@@ -39,6 +52,7 @@ class OfferController extends Controller
     public function UpdateOfferTypeRequest($request_id,AddOfferTypeRequestRequest $request)
     {
         try {
+
             $offer_type=Type_Of_Offer_Request::find($request_id);
 //            $offer_type=Type_Of_Offer_Request::where('id',$request_id)->first();
             $offer_type->update(
@@ -99,9 +113,9 @@ class OfferController extends Controller
     {
         try {
             $comment=Comment::create([
-               'comment'=>$request->comment,
-               'offer_id'=>$request->offer_id,
-               'customer_id'=>Auth::user()->id,
+                'comment'=>$request->comment,
+                'offer_id'=>$request->offer_id,
+                'customer_id'=>Auth::user()->id,
             ]);
             return $this->success(CommentResource::make($comment),'comment added successfully');
         }
@@ -167,6 +181,300 @@ class OfferController extends Controller
             return $this->error($th->getMessage(),500);
         }
     }
+    public function AddPercentageOffer(AddPercentageOfferRequest $request)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offer=Offer::create([
+                'type'=>OfferType::Percentage,
+                'image'=>$request->image,
+                'period'=>'2',
+            ]);
+            $offer->branches()->attach($offer->id,$request->branch_id);
+            $offer->percenatge_offer()->attach($offer->id,['percentage'=>$request->percentage]);
+            foreach($request->products as $product_id)
+            {
+                $offer->products()->attach($product_id);
+            }
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+        }
+        catch (\Throwable $th)
+        {
+            DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function UpdatePercentageOffer(Request $request,$offer_id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offerData = $request->only(['image']);
+            $offer=Offer::find($offer_id);
+            $offer->update([$offerData]);
+            $percentageData= $request->only(['percentage']);
+            $offer->percenatge_offer()->update($percentageData);
+            foreach($request->products as $product_id)
+            {
+                $offer->products()->delete();
+                $offer->products()->attach($product_id);
+            }
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'updateed successfully');
+        }
+        catch (\Throwable $th)
+        {
+            DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
 
+    public function AddDiscountOffer(AddDiscountOfferRequest $request)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offer=Offer::create([
+                'type'=>OfferType::Discount,
+                'image'=>$request->image,
+                'period'=>'2',
+            ]);
+            $offer->branches()->attach($offer->id,$request->branch_id);
+            $offer->discount_offer()->attach($offer->id,['discount'=>$request->discount]);
+            foreach( $request->products as $product_id)
+            {
+                $offer->products()->attach($product_id);
+            }
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+        }
+        catch (\Throwable $th)
+        {
+            DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function UpdateDiscountOffer(Request $request,$offer_id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offerData = $request->only(['image', 'period']);
+            $offer=Offer::find($offer_id);
+            $offer->update([$offerData]);
+            $discountData= $request->only(['discount']);
+            $offer->discount_offer()->update($discountData);
+            foreach($request->products as $product_id )
+            {
+                $offer->products()->delete();
+                $offer->products()->attach($product_id);
+            }
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'updated successfully');
+        }
+        catch (\Throwable $th)
+        {
+            DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function AddGiftOffer(AddGiftOfferRequest $request)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offer=Offer::create([
+                'type'=>OfferType::Gift,
+                'image'=>$request->image,
+                'period'=>'2',
+            ]);
+            $offer->branches()->attach($offer->id,$request->branch_id);
+            $offer->gift_offer()->attach($offer->id,['product_id'=>$request->product_id]);
+            foreach($request->products as $product_id)
+            {
+                $offer->products()->attach($product_id );
+            }
+
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+        }
+        catch (\Throwable $th)
+        {
+            DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function UpdateGiftOffer(Request $request,$offer_id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offerData = $request->only(['image']);
+            $offer=Offer::find($offer_id);
+            $offer->update([$offerData]);
+            $giftData= $request->only(['product_id']);
+            $offer->gift_offer()->update($giftData);
+            if($request->products)
+            {
+                foreach($request->products as $product_id)
+                {
+                    $offer->products()->delete();
+                    $offer->products()->attach($product_id);
+                }
+            }
+
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'updated successfully');
+        }
+        catch (\Throwable $th)
+        {
+            DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function AddExtraOffer(AddExtraOfferRequest $request)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offer=Offer::create([
+                'type'=>OfferType::Extra,
+                'image'=>$request->image,
+                'period'=>'2',
+            ]);
+            $offer->branches()->attach($offer->id,$request->branch_id);
+            $offer->extra_offer()->attach($offer->id,['product_id'=>$request->product_id,
+                'product_count'=>$request->product_count,
+                'extra_count'=>$request->extra_count,
+            ]);
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'added successfully');
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function UpdateExtraOffer(Request $request,$offer_id)
+    {
+        try
+        {
+            DB::beginTransaction();
+            $offerData = $request->only(['image']);
+            $offer=Offer::find($offer_id);
+            $offer->update([$offerData]);
+            $extraData= $request->only(['product_id','product_count','extra_count']);
+            $offer->extra_offer()->update($extraData);
+            DB::commit();
+            return $this->success(['offer'=>OfferResource::make($offer)],'updated successfully');
+        }
+        catch (\Throwable $th)
+        {
+            DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function DeleteOffer(Request $request,$offer_id)
+    {
+        try
+        {
+            $offer=Offer::find($offer_id)->delete();
+            return $this->success(null,'deleted successfully');
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+
+    }
+    public function UnactivateOffer($offer_id)
+    {
+        try
+        {
+            $offer=Offer::find($offer_id);
+            $offer->update(['active'=>false]);
+            return $this->success(['offer'=>OfferResource::make($offer)],'archived');
+
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function ActivateOffer($offer_id)
+    {
+        try
+        {
+            $offer=Offer::find($offer_id);
+            $offer->update(['active'=>true]);
+            return $this->success(['offer'=>OfferResource::make($offer)],'activated');
+
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+
+    public function GetOffers()
+    {
+        try
+        {
+            $offers=Offer::where('active',true)
+                ->orderBy('verified')
+                ->get();
+            return $this->success(['offes'=>OfferResource::collection($offers)],'offers');
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function GetOffersOfBranch($branch_id)
+    {
+        try
+        {
+            $offers=Offer::where(['branch_id'=>$branch_id,'active'=>true])->get();
+            return $this->success(['offers'=>OfferResource::collection($offers)],'offers');
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function GetBranchArchive($branch_id)
+    {
+        try
+        {
+            $offers=Offer::where(['active'=>false])->get();
+            return $this->success(['archived_offers'=>OfferResource::collection($offers)],'archived offers');
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+
+        }
+    }
+    public function GetOffer($offer_id)
+    {
+        try
+        {
+           $offer=Offer::find($offer_id);
+           $offer_products=$offer->products();
+           $products=[];
+           foreach ($offer_products as $offer_product)
+           {
+               $product=Product::find($offer_product);
+               array_push($products,$product);
+           }
+           return $this->success(['products'=>ProductResource::collection($products)],'products');
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
 
 }
