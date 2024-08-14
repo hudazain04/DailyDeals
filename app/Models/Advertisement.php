@@ -26,14 +26,13 @@ class Advertisement extends Model
     {
         if ($image && $image->isValid()) {
             $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('AdvertisementImage'),$filename);
-            $this->attributes['image'] = public_path('AdvertisementImage').$filename;
+            $image->move(public_path('AdvertisementImage'), $filename);
+            $this->attributes['image'] = $filename; 
         }
     }
 
-
     public function getImageUrlAttribute()
     {
-        return $this->attributes['image'];
+        return url('/AdvertisementImage' . '/' . $this->attributes['image']);
     }
 }

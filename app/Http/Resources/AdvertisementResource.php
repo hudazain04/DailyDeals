@@ -23,7 +23,7 @@ class AdvertisementResource extends JsonResource
             'price' => $this->price,
             'shown' => $this->shown,
             'status' => $this->status,
-            'image' => $this->image,
+            'image' => url('/AdvertisementImage'.'/' . $this->image),
             'accepted_at' => $this->accepted_at,
         ];
     }
