@@ -84,7 +84,18 @@ class StoreController extends Controller
 
     public function store_byID (Request $request)
     {
-        $stores = Store::where('id',$request->id)->get();
+        $stores = Store::where('merchant_id',$request->merchant_id )->get();
         return $this->success(StoreResource::collection($stores),'list stores by id');
     }
+
+    public function show_store (Request $request)
+    {
+        $store = Store::where('id',$request->store_id)->get();
+        return $this->success(StoreResource::collection($store),'store details');
+    }
+
+    
 }
+
+
+
