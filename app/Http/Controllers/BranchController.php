@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\HttpResponse\HttpResponse;
 use App\Models\QR;
 use Illuminate\Http\Request;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BranchController extends Controller
 {
@@ -35,14 +36,33 @@ class BranchController extends Controller
                     'branch_id' => $branch->id,
                 ]);
             }
+///////////////////
+        for ($rating = 1; $rating <= 5; $rating++) {
+            $url = route('rateBranch', ['branch_id' => $branch->id, 'rate' => $rating]);
 
-            for ($i=1; $i <= 5; $i++) {
-                QR::create([
-                    'rate' => $i,
-                    'branch_id' => $branch->id,
-                    'image' =>  $request->file('rate' . $i),
-                ]);
-            }
+            $qrCode = QrCode::format('png')->size(300)->generate($url);
+
+            $fileName = 'branch_' . $branch->id . '_rating_' . $rating . '.png';
+
+             QR::create([
+                 'branch_id' => $branch->id,
+                 'rate' => $rating,
+                 'image' =>$request->file($qrCode,$fileName),
+             ]);
+        }
+
+
+
+
+
+            //////////////
+//            for ($i=1; $i <= 5; $i++) {
+//                QR::create([
+//                    'rate' => $i,
+//                    'branch_id' => $branch->id,
+//                    'image' =>  $request->file('rate' . $i),
+//                ]);
+//            }
 
             return $this->success(new BranchResource($branch) ,'branch added successfully');
     }

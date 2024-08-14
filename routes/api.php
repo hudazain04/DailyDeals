@@ -171,7 +171,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
 
     });
     Route::prefix('rate')->group(function (){
-        Route::post('addRate',[RateController::class,'AddRate'])->middleware('Customer');
+        Route::post('addRate',[RateController::class,'AddRate'])->middleware('Customer')->name('rateBranch');
         Route::get('getBranchRates/{branch_id}',[RateController::class,'GetBranchRates'])->middleware('Role:Merchant-Employee');
         Route::get('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs'])->middleware('Role:Merchant-Admin-Employee');
 
