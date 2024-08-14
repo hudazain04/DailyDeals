@@ -44,12 +44,29 @@ class BranchController extends Controller
 
             $fileName = 'branch_' . $branch->id . '_rating_' . $rating . '.png';
 
+
+
+
+            $filePath = public_path('QrImage/' . $fileName);
+
+            file_put_contents($filePath, $qrCode);
+
+            $uploadedFile = new \Illuminate\Http\UploadedFile(
+                $filePath,
+                $fileName,
+                'image/png',
+                null,
+                true
+            );
              QR::create([
                  'branch_id' => $branch->id,
                  'rate' => $rating,
-                 'image' =>$request->file($qrCode,$fileName),
+                 'image' =>$request->file($uploadedFile),
              ]);
         }
+
+
+
 
 
 

@@ -17,10 +17,10 @@ class QR extends Model
         return $this->belongsTo(Branch::class);
     }
 
-    public function setImageAttribute($image,$filename)
+    public function setImageAttribute($image)
     {
         if ($image && $image->isValid()) {
-//            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('QrImage'),$filename);
             $this->attributes['image'] = public_path('QrImage').$filename;
         }
