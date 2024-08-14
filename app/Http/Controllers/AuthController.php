@@ -62,7 +62,7 @@ class AuthController extends Controller
             }
             $code=$this->SendVerificationCode($user,VerificationCodeType::register_code);
             DB::commit();
-            return $this->success(['user' => UserResource::make($user)],"registered successfully");
+            return $this->success(['user' => UserResource::make($user)],trans('messages.auth_controller.register'));
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -121,7 +121,7 @@ class AuthController extends Controller
             }
 
             DB::commit();
-            return $this->success(['user'=> UserResource::make($user),'access_token' =>$token] ,'user verified successfully');
+            return $this->success(['user'=> UserResource::make($user)/*,'access_token' =>$token*/] ,trans('messages.auth_controller.verified_successfully'));
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -134,7 +134,7 @@ class AuthController extends Controller
                 return $this->error('user not found',404);
             }
             $code=$this->sendVerificationCode($user,VerificationCodeType::register_code);
-            return $this->success(['user' => UserResource::make($user),'verification_code'=>$code] ,'code sent');
+            return $this->success(['user' => UserResource::make($user)/*,'verification_code'=>$code*/] ,__('messages.auth_controller.resend_code'));
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }

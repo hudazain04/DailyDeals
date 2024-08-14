@@ -28,6 +28,7 @@ use App\Http\Controllers\RateController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+Route::middleware('language')->group(function (){
 
 Route::middleware(['check.blocked'])->group(function () {
 
@@ -249,5 +250,7 @@ Route::middleware('auth:sanctum','Role:Merchant-Employee','check.blocked')->grou
 
 Route::middleware('auth:sanctum','Role:Merchant-Customer','check.blocked')->group(function () {
     Route::post('add_advertisement', [AdvertisementController::class, 'add_advertisement']);
+
+});
 
 });
