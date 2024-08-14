@@ -25,10 +25,10 @@ class BranchRequest extends FormRequest
             'name' => 'sometimes',
             'location' => 'sometimes',
             'google_maps' => 'sometimes',
-            'image' => 'file',
+            'image' => 'required|image',
             'visible' => 'boolean',
             'store_id' => 'sometimes|numeric|exists:stores,id',
-            'category_id' => 'sometimes|numeric|exists:categories,id',         
+            'category_id' => 'sometimes|numeric|exists:categories,id',
         ];
     }
 }
