@@ -31,6 +31,7 @@ class OfferFactory extends Factory
             true // Ensure that the file is marked as "uploaded"
         );
         return [
+            'name' => fake()->company(),
 
             'image' => $uploadedFile,
             'type' => $this->faker->randomElement([OfferType::Percentage, OfferType::Discount, OfferType::Gift, OfferType::Extra]),
