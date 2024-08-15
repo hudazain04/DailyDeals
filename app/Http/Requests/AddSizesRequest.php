@@ -26,7 +26,8 @@ class AddSizesRequest extends FormRequest
             'sizes.*.size'=>'required',
             'sizes.*.unit'=>'required|string',
             'sizes.*.price'=>'required|numeric',
-            'sizes.*.colors'=>'exists:colors,id'
+            'sizes.*.colors.*'=>'exists:colors,id',
+            'product_id'=>'required|exists:products,id',
         ];
     }
 }

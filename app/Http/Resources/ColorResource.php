@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use function Symfony\Component\VarExporter\Internal\f;
 
 class ColorResource extends JsonResource
 {
@@ -12,21 +13,30 @@ class ColorResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    protected $productId;
+
+    public function __construct($resource, $productId = null)
+    {
+        parent::__construct($resource);
+        $this->productId = $productId;
+    }
+
     public function toArray(Request $request): array
     {
-        $product_id = $this->additional['product_id'];
 
-        if (! $this->image)
-        {
-            $image= $this->image()->where(['product_id'=>$product_id]);
-        }
-        else
-        {
-            $image=$this->image;
-        }
+
+
+            $images = $this->resource->images()
+                ->where(['product_id'=> $this->productId,'color_id'=>$this->id])
+                ->get();
+
+            $firstImage = $images->first();
+
+
         return [
-          'color'=>$this->color,
-          'image'=>$image,
+            'id'=>$this->id,
+          'color'=>$this->resource->color,
+          'image'=> $firstImage ? asset($firstImage->image) : null,
         ];
     }
 }

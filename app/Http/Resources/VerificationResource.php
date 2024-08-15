@@ -24,6 +24,7 @@ class VerificationResource extends JsonResource
           'id'=>$this->id,
           'commercial_record'=>$this->commercial_record,
           'status'=>$this->status,
+            'description'=>$this->description,
         ];
         if (Auth::user()->role === UserType::Admin)
 

@@ -16,13 +16,18 @@ class ProductResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $sizes=$this->product_info()->size();
+
         $baseData=[
             'id'=>$this->id,
             'name'=>$this->name,
             'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
-            'sizes'=>SizeResource::collection($sizes),
+
         ];
+        if ($this->additional['size'] != null)
+        {
+            $sizes=$this->product_info()->size();
+            array_merge($baseData,['sizes'=>SizeResource::collection($sizes),]);
+        }
 
         return $baseData;
     }

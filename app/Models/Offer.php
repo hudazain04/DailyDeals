@@ -20,18 +20,18 @@ class Offer extends Model
 
     public function branches()
     {
-        return $this->belongsToMany(Branch::class, 'offer__branches');
+        return $this->belongsToMany(Branch::class, 'offer_branches');
     }
 
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'offer__products');
+        return $this->belongsToMany(Product::class, 'offer_products');
     }
     public function comments()
     {
         return $this->hasMany(Comment::class);
     }
- /*   public function discount_offer()
+    public function discount_offer()
     {
         return $this->hasOne(Discount_Offer::class);
     }
@@ -46,6 +46,16 @@ class Offer extends Model
     public function percentage_offer()
     {
         return $this->hasOne(Percentage_Offer::class);
-    }*/
+    }
+
+    public function setImageAttribute($image)
+    {
+        if ($image && $image->isValid()) {
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('OfferImage'),$filename);
+            $this->attributes['image'] = '/OfferImage/'.$filename;
+        }
+    }
+
 }
 

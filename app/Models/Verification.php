@@ -19,10 +19,19 @@ class Verification extends Model
     {
         return $this->belongsTo(User::class,'merchant_id');
     }
-    
+
 
     public function store()
     {
         return $this->belongsTo(Store::class);
     }
+    public function setImageAttribute($image)
+    {
+        if ($image && $image->isValid()) {
+            $filename = uniqid() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('CommercialImage'),$filename);
+            $this->attributes['image'] = '/CommercialImage/'.$filename;
+        }
+    }
+
 }
