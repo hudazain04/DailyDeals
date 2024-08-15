@@ -73,7 +73,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('show_faq',[FaqController::class ,'show_faq']);
         Route::post('store_byID',[StoreController::class ,'store_byID']);
         Route::get('show_store',[StoreController::class ,'show_store']);
-        Route::post('Branch_byID',[BranchController::class ,'Branch_byID']);
+        Route::get('Branch_byID',[BranchController::class ,'Branch_byID']);
 
     });
 
