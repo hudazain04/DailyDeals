@@ -16,7 +16,7 @@ class FaqController extends Controller
     public function get_faq()
     {
         $faq = FAQ::get();
-        return $this->success(FaqResource::collection($faq) ,'all Faq');
+        return $this->success(FaqResource::collection($faq) ,__('messages.FaqController.List_All_Faq'));
 
     }
 
@@ -27,7 +27,7 @@ class FaqController extends Controller
             'answer' => $request->answer,
         ]);
 
-        return $this->success(new FaqResource($faq) ,'Faq addes successfully');
+        return $this->success(new FaqResource($faq) ,__('messages.FaqController.Faq_Added_Successfully'));
 
     }
 
@@ -41,7 +41,7 @@ class FaqController extends Controller
         ]));
         $faq->save();
 
-        return $this->success(new FaqResource($faq) ,'Faq updated successfully');
+        return $this->success(new FaqResource($faq) ,__('messages.FaqController.Faq_Updated_Successfully'));
 
     }
 
@@ -49,13 +49,13 @@ class FaqController extends Controller
     {
         $faq = FAQ::where('id', $request->faq_id)->first();
         $faq->delete();
-        return $this->success(null ,'Faq deleted successfully');
+        return $this->success(null ,__('messages.FaqController.Faq_Deleted_Successfully'));
 
     }
 
     public function show_faq(Request $request)
     {
         $faq = FAQ::where('id', $request->faq_id)->first();
-        return $this->success(new FaqResource($faq) ,'show Faq');
+        return $this->success(new FaqResource($faq) ,__('messages.FaqController.Show_Faq_Details'));
     }
 }

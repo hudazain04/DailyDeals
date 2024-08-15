@@ -17,7 +17,7 @@ class NotifiedController extends Controller
     {
         $user = auth()->user();
         $notifieds = Notified::where('customer_id' , $user->id)->get();
-        return $this->success(NotifiedResource::collection($notifieds) ,'list my notifieds');
+        return $this->success(NotifiedResource::collection($notifieds) ,__('messages.NotifiedController.List_My_Notifieds'));
     }
 
     
@@ -30,7 +30,7 @@ class NotifiedController extends Controller
             'branch_id' => $request->branch_id,
         ]);
 
-        return $this->success(new NotifiedResource($notified) ,'notified added successfully');
+        return $this->success(new NotifiedResource($notified) ,__('messages.NotifiedController.Notified_Added_Successfully'));
         }
 
 
@@ -39,7 +39,7 @@ class NotifiedController extends Controller
             $user = auth()->user();
             $notified = Notified::where('customer_id',$user->id)->where('branch_id',$request->branch_id)->first();
             $notified->delete();
-            return $this->success(null ,'notified deleted successfully');
+            return $this->success(null ,__('messages.NotifiedController.Notified_Deleted_Successfully'));
         }
         
 

@@ -16,13 +16,13 @@ class ComplaintController extends Controller
     public function list_all_complaints()
     {
         $complaints = Complaint::get();
-        return $this->success(ComplaintResource::collection($complaints) ,'list all complaints');
+        return $this->success(ComplaintResource::collection($complaints) ,__('messages.ComplaintController.List_All_Complaints'));
     }
 
     public function complaint_details(Request $request)
     {
         $complaint = Complaint::findOrFail($request->complaint_id);
-        return $this->success(new ComplaintResource($complaint) ,'show complaint details');
+        return $this->success(new ComplaintResource($complaint) ,__('messages.ComplaintController.Show_Complaint_Details'));
     }
     
     public function add_complaint(ComplaintRequest $request)
@@ -35,7 +35,7 @@ class ComplaintController extends Controller
             'complaint' => $request->complaint,
         ]);
 
-        return $this->success(new ComplaintResource($complaint) ,'complaint added successfully');
+        return $this->success(new ComplaintResource($complaint) ,__('messages.ComplaintController.Complaint_Added_Successfully'));
         }
 
     }
