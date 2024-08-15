@@ -121,7 +121,7 @@ class AuthController extends Controller
             }
 
             DB::commit();
-            return $this->success(['user'=> UserResource::make($user)/*,'access_token' =>$token*/] ,__('messages.auth_controller.verified_successfully'));
+            return $this->success(['user'=> UserResource::make($user),'access_token' =>$token] ,__('messages.auth_controller.verified_successfully'));
         }catch (\Throwable $th){
             DB::rollBack();
             return $this->error($th->getMessage(),500);
@@ -180,7 +180,7 @@ class AuthController extends Controller
                 }
             }
 
-            return $this->success(['user' => UserResource::make($user)/*, "access_token" => $token*/] ,__('messages.auth_controller.login_successfully'));
+            return $this->success(['user' => UserResource::make($user), "access_token" => $token] ,__('messages.auth_controller.login_successfully' , ['user_name' => $user->full_name]));
         }
         catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
@@ -215,7 +215,7 @@ class AuthController extends Controller
 //                "notification_token"=>$request->notification_token,
 //            ]);
 //        }
-        return $this->success(['user' => UserResource::make($user)/*, "access_token" => $token*/] ,__('messages.auth_controller.login_successfully') );
+        return $this->success(['user' => UserResource::make($user), "access_token" => $token] ,__('messages.auth_controller.login_successfully' , ['user_name' => $user->full_name] );
     }
         catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
