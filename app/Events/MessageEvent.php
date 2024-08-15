@@ -31,6 +31,8 @@ class MessageEvent implements ShouldBroadcast
      *
      * @return array<int, \Illuminate\Broadcasting\Channel>
      */
+
+
     public function broadcastOn(): array
     {
         return [

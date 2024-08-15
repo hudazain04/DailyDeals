@@ -28,4 +28,3 @@ database/migrations/2024_07_03_120413_create_logs_table.php
 /public/ProductImage
 /public/QrImage
 /public/AdvertisementImage
-composer.lock
