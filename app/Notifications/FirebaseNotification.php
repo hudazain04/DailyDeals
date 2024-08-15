@@ -2,37 +2,36 @@
 
 namespace App\Notifications;
 
-use Kreait\Firebase\Factory;
-use Kreait\Firebase\Messaging\CloudMessage;
-use Kreait\Firebase\Messaging\Notification;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+use NotificationChannels\Fcm\FcmChannel;
+use NotificationChannels\Fcm\FcmMessage;
 
-class FirebaseNotification
+class FirebaseNotification extends Notification implements ShouldQueue
 {
-    protected $messaging;
+    use Queueable;
 
-    public function __construct()
+    protected $title;
+    protected $body;
+
+    public function __construct($title, $body)
     {
-
-        $firebase = (new Factory())
-            ->withServiceAccount(config_path('firebase_credentials.json'));
-
-        $this->messaging = $firebase->createMessaging();
-    }
-    public function BasicSendNotification($title ,$body, $FcmToken , $data)
-    {
-        $notification = Notification::create($title, $body);
-        foreach ($FcmToken as $token) {
-            $message = CloudMessage::withTarget('token', $token)
-                ->withNotification($notification)
-                ->withData($data);
-            try {
-                $this->messaging->send($message);
-            } catch (\Exception $e) {
-                // Log or handle the exception as needed
-                Log::error('Failed to send notification: ' . $e->getMessage());
-            }
-        }
+        $this->title = $title;
+        $this->body = $body;
     }
 
+    public function via($notifiable)
+    {
+        return [FcmChannel::class];
+    }
+
+    public function toFcm($notifiable)
+    {
+        return (new FcmMessage)
+            ->setNotification([
+                'title' => $this->title,
+                'body' => $this->body,
+            ]);
+    }
 }
