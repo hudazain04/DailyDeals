@@ -4,6 +4,7 @@ use App\Http\Controllers\AppInformationController;
 use App\Http\Controllers\CategoryRequestController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\EmployeeMiddleware;
@@ -180,12 +181,20 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs'])->middleware('Role:Merchant-Admin-Employee');
 
 
+
     });
 
     Route::prefix('chat')->group(function (){
        Route::get('conversations',[ChatController::class,'Conversations']);
        Route::get('getMessages/{conversation_id}',[ChatController::class,'GetMessages']);
        Route::post('sendMessage',[ChatController::class,'SendMessage']);
+    });
+
+
+    Route::prefix('product')->group(function (){
+        Route::post('addProduct',[ProductController::class,'AddProduct']);
+        Route::post('addColors',[ProductController::class,'AddColors']);
+        Route::post('addSizes',[ProductController::class,'AddSizes']);
     });
 
 });

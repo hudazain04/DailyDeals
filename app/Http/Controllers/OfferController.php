@@ -20,6 +20,7 @@ use App\Http\Resources\ProductResource;
 use App\HttpResponse\HttpResponse;
 use App\Models\Comment;
 use App\Models\Offer;
+use App\Models\Percentage_Offer;
 use App\Models\Product;
 use App\Models\Type_Of_Offer_Request;
 use Illuminate\Http\Request;
@@ -188,11 +189,16 @@ class OfferController extends Controller
             DB::beginTransaction();
             $offer=Offer::create([
                 'type'=>OfferType::Percentage,
-                'image'=>$request->image,
+                'image'=>$request->file('image'),
                 'period'=>'2',
             ]);
-            $offer->branches()->attach($offer->id,$request->branch_id);
-            $offer->percenatge_offer()->attach($offer->id,['percentage'=>$request->percentage]);
+            $offer->branches()->attach($request->branch_id);
+            $offer->percentage_offer()->create([
+                'percentage' => $request->percentage,
+            ]);
+
+
+
             foreach($request->products as $product_id)
             {
                 $offer->products()->attach($product_id);

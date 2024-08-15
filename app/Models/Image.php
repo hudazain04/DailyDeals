@@ -27,14 +27,12 @@ class Image extends Model
         if ($image && $image->isValid()) {
             $filename = uniqid() . '.' . $image->getClientOriginalExtension();
             $image->move(public_path('ProductImage'),$filename);
-            $this->attributes['image'] = public_path('ProductImage').$filename;
+            $this->attributes['image'] = '/ProductImage/'.$filename;
         }
     }
 
 
 
-    public function getImageUrlAttribute()
-    {
-        return $this->attributes['image'];
-    }
+
+
 }

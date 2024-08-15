@@ -25,6 +25,7 @@ class AddProductRequest extends FormRequest
             'name'=>'required|string',
             'category_id' => 'required|exists:categories,id',
             'store_id' => 'required|exists:stores,id',
+            'visible'=>'boolean',
 //            'price' => 'required|numeric',
 //            'colors' => 'required|array',
 //            'colors.*.color' => 'required|exists:colors,id',

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId('merchant_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('store_id')->constrained('stores')->onDelete('cascade');
             $table->string('commercial_record');
+            $table->string('description')->nullable();
             $table->enum('status',[RequestType::Accepted,RequestType::Rejected,RequestType::Pending]);
             $table->timestamps();
         });

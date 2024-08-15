@@ -21,8 +21,12 @@ class VerificationController extends Controller
     {
         try {
             $user=$request->user();
-            $verification_request=Verification::create(['commercial_record'=>AuthController::UploadImage($request),
+            $verification_request=Verification::create(['commercial_record'=>file('image'),
                 'merchant_id'=>$user->id,'store_id'=>$request->store_id,'status'=>RequestType::Pending]);
+            if($request->description)
+            {
+                $verification_request->update(['description'=>$request->description]);
+            }
             return $this->success(['verification_request'=>VerificationResource::make($verification_request)],__('messages.verification_controller.create_verification'));
 
         }

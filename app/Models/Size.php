@@ -10,7 +10,7 @@ class Size extends Model
     use HasFactory;
     protected $table ="sizes";
     protected $primaryKey="id";
-    protected $fillable = ['size', 'unit'];
+    protected $fillable = ['size', 'unit','price'];
 
     public function product_infos()
     {
