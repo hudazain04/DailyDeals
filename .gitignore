@@ -30,3 +30,4 @@ database/migrations/2024_07_03_120413_create_logs_table.php
 /public/OfferImage
 /public/AdvertisementImage
 /config/firebase_credentials.json
+composer.lock

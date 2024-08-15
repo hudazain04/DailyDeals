@@ -44,8 +44,7 @@ Route::middleware(['check.blocked'])->group(function () {
         Route::post('forgetPasswordChange',[AuthController::class, 'ForgetPasswordChange']);
         Route::post('loginEmployee',[AuthController::class,'LoginEmployee']);
         Route::post('restore_my_account',[ProfileController::class,'restore_my_account']);
-        Route::post('sendNotification', [NotificationController::class, 'sendNotification']);
-        Route::post('storeFcmToken', [NotificationController::class, 'storeFcmToken']);
+        Route::post('fcm', [NotificationController::class, 'store']);
 
     });
 });

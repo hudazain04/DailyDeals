@@ -35,9 +35,5 @@ return [
         ],
     ],
 
-    'fcm' => [
-    'key' => env('FCM_SERVER_KEY'),
-    'sender_id' => env('FCM_SENDER_ID'),
-    ],
-
+'firebase_credentials' => config_path('firebase_credentials.json'),
 ];
