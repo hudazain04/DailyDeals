@@ -16,7 +16,7 @@ class Offer extends Model
     use HasFactory;
     protected $table ="offers";
     protected $primaryKey="id";
-    protected $fillable = ['type','price_before','price_after','image','active','period'];
+    protected $fillable = ['type','name','image','active','period'];
 
     public function branches()
     {
