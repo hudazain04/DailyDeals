@@ -4,7 +4,6 @@ use App\Http\Controllers\AppInformationController;
 use App\Http\Controllers\CategoryRequestController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\OfferController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\EmployeeMiddleware;
@@ -74,6 +73,9 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::post('store_byID',[StoreController::class ,'store_byID']);
         Route::get('show_store',[StoreController::class ,'show_store']);
         Route::get('Branch_byID',[BranchController::class ,'Branch_byID']);
+        Route::get('branch_info',[BranchController::class ,'branch_info']);
+        Route::get('recent_products',[BranchController::class ,'recent_products']);
+        Route::get('yearly_rate',[BranchController::class ,'yearly_rate']);
 
     });
 
@@ -179,7 +181,6 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::post('addRate',[RateController::class,'AddRate'])->middleware('Customer')->name('rateBranch');
         Route::get('getBranchRates/{branch_id}',[RateController::class,'GetBranchRates'])->middleware('Role:Merchant-Employee');
         Route::get('getBranchQRs/{branch_id}',[RateController::class,'GetBranchQRs'])->middleware('Role:Merchant-Admin-Employee');
-
 
 
     });

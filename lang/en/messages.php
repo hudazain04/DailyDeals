@@ -132,5 +132,100 @@ Congratulations! You have been successfully enrolled in the course :course_name 
     ],
     "video_controller" => [
         "link_not_correct" => "⚠️ Error: Invalid link! ⚠️ The link you provided is not correct or is broken. Please double-check the URL and try again. If you continue to experience issues, please contact support for assistance. Thank you! ",
-    ]
+    ],
+
+    "AdvertisementController" => [
+        "Advertisement_Added_Successfully" => "Advertisement Added Successfully",
+        "All_Advertisement_Requests" => "All Advertisement Requests",
+        "Advertisement_Details" => "Advertisement Details",
+        "Advertisement_Accepted" => "Advertisement Accepted",
+        "Advertisement_Rejected" => "Advertisement Rejected",
+        "List_Advertisements" => "List Advertisements",
+    ],
+
+"BranchController" => [
+        "Branch_Added_Successfully" => "Branch Added Successfully",
+        "Branch_Updated_Successfully" => "Branch Updated Successfully",
+        "Branch_Deleted_Successfully" => "Branch Deleted Successfully",
+        "List_Branches" => "List Branches",
+        "You_Are_Not_Authorized" => "You_Are_Not_Authorized",
+        "Branch_Info" => "Branch Info",
+        "List_Recent_Products" => "List Recent Products",
+        "List_Yearly_Rates" => "List Yearly Rates",
+    ],
+
+    "CategoryController" => [
+        "List_All_Categories" => "List All Categories",
+        "Category_Added_Successfully" => "Category Added Successfully",
+        "Category_Updated_Successfully" => "Category Updated Successfully",
+        "Category_Deleted_Successfully" => "Category Deleted Successfully",
+        "Show_Category" => "Show Category",
+    ],
+
+    "ComplaintController" => [
+        "List_All_Complaints" => "List All Complaints",
+        "Show_Complaint_Details" => "Show Complaint Details",
+        "Complaint_Added_Successfully" => "Complaint Added Successfully",
+    ],
+
+    "EmployeeController" => [
+        "Employee_Added_Successfully" => "Employee Added Successfully",
+        "Employee_Updated_Successfully" => "Employee Updated Successfully",
+        "Code_Updated_Successfully" => "Code Updated Successfully",
+        "Employee_Deleted_Successfully" => "Employee Deleted Successfully",
+        "List_Employees" => "List Employees",
+        "Store_Not_Found" => "Store Not Found",
+        "You_Are_Not_Authorized" => "You Are Not Authorized",
+    ],
+    
+    "FaqController" => [
+        "List_All_Faq" => "List All Faq",
+        "Faq_Added_Successfully" => "Faq Added Successfully",
+        "Faq_Updated_Successfully" => "Faq Updated Successfully",
+        "Faq_Deleted_Successfully" => "Faq Deleted Successfully",
+        "Show_Faq_Details" => "Show Faq Details",
+    ],
+
+    "FavoriteController" => [
+        "List_All_Favorites" => "List All Favorites",
+        "Branch_Already_In_Your_Favorites" => "Branch Already In Your Favorites",
+        "Branch_Added_To_Your_Favorites" => "Branch Added To Your Favorites",
+    ],
+
+    "NotifiedController" => [
+        "List_My_Notifieds" => "List My Notifieds",
+        "Notified_Added_Successfully" => "Notified Added Successfully",
+        "Notified_Deleted_Successfully" => "Notified Deleted Successfully",
+    ],
+
+    "ProfileController" => [
+        "My_Profile" => "My Profile",
+        "Profile_Updated_Successfully" => "Profile Updated Successfully",
+        "User_Not_Found" => "User Not Found",
+        "Account_Deleted_Successfully" => "Account Deleted Successfully",
+        "Account_Restored_Successfully" => "Account Restored Successfully",
+        "Account_Deleted_For_Ever" => "Account Deleted For Ever",
+        "Password_Is_Wrong" => "Password Is Wrong",
+        "Account_Blocked" => "Account Blocked Successfully",
+        "Account_Active_Now" => "Account Active Now",
+        "List_All_Customers" => "List All Customers",
+        "List_All_Merchants" => "List All Merchants",
+        "Merchant_Details" => "Merchant Details",
+        "List_All_Employees" => "List All Employees",
+        "List_All_Admins" => "List All Admins",
+    ],
+
+    "StoreController" => [
+        "Store_Added_Successfully" => "Store Added Successfully",
+        "Not_Authurized" => "Not Authurized",
+        "Store_Updated_Successfully" => "Store Updated Successfully",
+        "Store_Deleted_Successfully" => "Store Deleted Successfully",
+        "List_visible_Stores" => "List visible Stores",
+        "List_Merchant_Stores" => "List Merchant Stores",
+        "List_All_Stores" => "List All Stores",
+        "list_stores" => "list stores",
+        "Store_Details" => "Store Details",
+    ],
+
+
 ];

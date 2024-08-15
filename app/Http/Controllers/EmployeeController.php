@@ -54,7 +54,7 @@ class EmployeeController extends Controller
             $results['password_text'] = $rand_password;
 
 
-        return $this->success($results ,'employee added successfully');
+        return $this->success($results ,__('messages.EmployeeController.Employee_Added_Successfully'));
 
     }
     
@@ -66,7 +66,7 @@ class EmployeeController extends Controller
 
 
             if ($employee->merchant_id != auth()->user()->id) {
-                return $this->error('not authorized',403);
+                return $this->error(__('messages.EmployeeController.You_Are_Not_Authorized'),403);
             } else {
 
                 $user->fill($request->only([
@@ -87,7 +87,7 @@ class EmployeeController extends Controller
                     $user->save();
                 }
                 
-                return $this->success(new EmployeeResource($user) ,'Employee updated successfully');
+                return $this->success(new EmployeeResource($user) ,__('messages.EmployeeController.Employee_Updated_Successfully'));
             }
     }
     public function create_new_code(Request $request)
@@ -98,7 +98,7 @@ class EmployeeController extends Controller
             $rand_password = Str::random(8);
 
             if ($employee->merchant_id !=  auth()->user()->id) {
-                return $this->error('not authorized',403);
+                return $this->error(__('messages.EmployeeController.You_Are_Not_Authorized'),403);
             } else {
                 $employee->update([
                     'code' => $this->generateUniqueCode(),
@@ -112,7 +112,7 @@ class EmployeeController extends Controller
                 $results['code'] = $employee->code;
                 $results['password_text'] = $rand_password;
 
-                return $this->success($results ,'Code updated successfully');
+                return $this->success($results ,__('messages.EmployeeController.Code_Updated_Successfully'));
             }
     }
 
@@ -122,11 +122,11 @@ class EmployeeController extends Controller
             $user = User::where('id',$employee->user_id)->first();
 
             if ($employee->merchant_id !=  auth()->user()->id) {
-                return $this->error('not authorized',403);
+                return $this->error(__('messages.EmployeeController.You_Are_Not_Authorized'),403);
             } else {
                 $employee->delete();
                 $user->delete();
-                return $this->success(null ,'employee deleted successfully');
+                return $this->success(null ,__('messages.EmployeeController.Employee_Deleted_Successfully'));
             }
     }
 
@@ -136,16 +136,16 @@ class EmployeeController extends Controller
         $store = Store::find($request->store_id);
     
         if (!$store) {
-          return $this->error('store not found',404);
+          return $this->error(__('messages.EmployeeController.Store_Not_Found'),404);
         } elseif($store->merchant_id != auth()->user()->id) {
-            return $this->error('not authorized',403);
+            return $this->error(__('messages.EmployeeController.You_Are_Not_Authorized'),403);
         } else {
             $branches = $store->branches;
             $employees = collect();
             foreach ($branches as $branch) {
                 $employees = $employees->merge($branch->employees);
             }
-            return $this->success(ListEmployeeResource::collection($employees),'List Employees');
+            return $this->success(ListEmployeeResource::collection($employees),__('messages.EmployeeController.List_Employees'));
         }
 
     }

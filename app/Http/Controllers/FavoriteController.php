@@ -15,7 +15,7 @@ class FavoriteController extends Controller
     public function list_favorite()
     {
         $favorites = Favorite::where('customer_id',auth()->user()->id)->get();
-        return $this->success(FavoriteResource::collection($favorites) ,'list favorites');
+        return $this->success(FavoriteResource::collection($favorites) ,__('messages.FavoriteController.List_All_Favorites'));
 
     }
     
@@ -25,14 +25,14 @@ class FavoriteController extends Controller
         
         $favorite = Favorite::where('customer_id', $user->id)->where('branch_id', $request->branch_id)->first();
         if ($favorite) {
-        return $this->error('Branch already in favorites',400);
+        return $this->error(__('messages.FavoriteController.Branch_Already_In_Your_Favorites'),400);
         } else {
         $favorite = Favorite::create([
             'customer_id' => $user->id,
             'branch_id' => $request->branch_id,
         ]);
 
-        return $this->success(new FavoriteResource($favorite) ,'Branch added to favorites');
+        return $this->success(new FavoriteResource($favorite) ,__('messages.FavoriteController.Branch_Added_To_Your_Favorites'));
         }
 
     }

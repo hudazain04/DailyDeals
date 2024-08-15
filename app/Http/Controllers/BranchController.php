@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BranchRequest;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\NumberResource;
+use App\Http\Resources\RecentProductResource;
 use App\Models\Branch;
 use App\Models\Number;
 use App\Models\Employee;
@@ -15,6 +16,9 @@ use Illuminate\Http\Request;
 //use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Support\Facades\File;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+
 
 class BranchController extends Controller
 {
@@ -88,7 +92,7 @@ class BranchController extends Controller
 //                ]);
 //            }
 
-            return $this->success(new BranchResource($branch) ,'branch added successfully');
+return $this->success(new BranchResource($branch) ,__('messages.BranchController.Branch_Added_Successfully'));
     }
 
 
@@ -96,7 +100,7 @@ class BranchController extends Controller
     public function update_branch(BranchRequest $request)
     {
         if (auth()->user()->role != 'Merchant' && auth()->user()->role != 'Employee') {
-            return $this->error('not authorized',403);
+            return $this->error(__('messages.BranchController.You_Are_Not_Authorized'),403);
 
             } else {
                 $branch = Branch::where('id',$request->branch_id)->first();
@@ -141,7 +145,7 @@ class BranchController extends Controller
                     }
 
 
-                    return $this->success(new BranchResource($branch) ,'branch updated successfully');
+                    return $this->success(new BranchResource($branch) ,__('messages.BranchController.Branch_Updated_Successfully'));
             }
         }
     }
@@ -153,10 +157,10 @@ class BranchController extends Controller
             $store = Store::where('id',$branch->store_id)->first();
 
             if ($store->merchant_id != auth()->user()->id) {
-                return $this->error('not authorized',403);
+                return $this->error(__('messages.BranchController.You_Are_Not_Authorized'),403);
             } else {
                 $branch->delete();
-                return $this->success(null ,'branch deleted successfully');
+                return $this->success(null ,__('messages.BranchController.Branch_Deleted_Successfully'));
             }
     }
 
@@ -165,10 +169,10 @@ class BranchController extends Controller
     {
             $store = Store::where('id',$request->store_id)->first();
             if ($store->merchant_id != auth()->user()->id) {
-                return $this->error('not authorized',403);
+                return $this->error(__('messages.BranchController.You_Are_Not_Authorized'),403);
             } else {
                 $branches = Branch::where('store_id',$request->store_id)->get();
-                return $this->success(BranchResource::collection($branches) ,'list branches');
+                return $this->success(BranchResource::collection($branches) ,__('messages.BranchController.List_Branches'));
             }
     }
 
@@ -177,26 +181,78 @@ class BranchController extends Controller
     {
             $employee = Employee::where('user_id',auth()->user()->id)->first();
             $branches = Branch::where('id',$employee->branch_id)->get();
-            return $this->success(BranchResource::collection($branches) ,'list branches');
+            return $this->success(BranchResource::collection($branches) ,__('messages.BranchController.List_Branches'));
     }
 
 
     public function list_customer_branches(Request $request)
     {
             $branches = Branch::where('visible',1)->where('store_id',$request->store_id)->get();
-            return $this->success(BranchResource::collection($branches) ,'list branches');
+            return $this->success(BranchResource::collection($branches) ,__('messages.BranchController.List_Branches'));
     }
 
     public function list_admin_branches(Request $request)
     {
             $branches = Branch::where('store_id',$request->store_id)->get();
-            return $this->success(BranchResource::collection($branches) ,'list branches');
+            return $this->success(BranchResource::collection($branches) ,__('messages.BranchController.List_Branches'));
     }
 
     public function Branch_byID (Request $request)
     {
         $branches = Branch::where('id',$request->id)->get();
-        return $this->success(BranchResource::collection($branches) ,'list branches');
+        return $this->success(BranchResource::collection($branches) ,__('messages.BranchController.List_Branch'));
+    }
+
+    public function branch_info (Request $request)
+    {
+        $branch = Branch::where('id',$request->id)->first();
+        $rates = $branch->rates()->pluck('rate')->toArray();
+        $complaints = $branch->complaints()->count();
+        $products = $branch->products()->count();
+        $offers = $branch->offers()->count();
+
+         $data = [
+            'products' => $products,
+            'offers' => $offers,
+            'rate' => array_sum($rates) / count($rates),
+            'complaints' => $complaints,
+        ];
+
+        return $this->success($data ,__('messages.BranchController.Branch_Info'));
+    }
+
+
+    public function recent_products (Request $request)
+    {
+        $branch = Branch::where('id',$request->id)->first();
+        $products = $branch->products()->orderBy('created_at','desc')->take(5)->get();
+
+        return $this->success(RecentProductResource::collection($products) ,__('messages.BranchController.List_Recent_Products'));
+    }
+
+    public function yearly_rate(Request $request) {
+
+        $currentYear = Carbon::now()->year;
+
+        $monthlyAverages = DB::table('rates')
+            ->select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('ROUND(AVG(rate)) as average_rate')
+            )
+            ->where('branch_id', $request->id)
+            ->whereYear('created_at', $currentYear)
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'), 'asc')
+            ->pluck('average_rate', 'month')
+            ->toArray();
+    
+        $data = [];
+        for ($month = 1; $month <= 12; $month++) {
+            $data[] = $monthlyAverages[$month] ?? 0;
+        }
+    
+        return $this->success($data ,__('messages.BranchController.List_Yearly_Rates'));
+
     }
 
 }

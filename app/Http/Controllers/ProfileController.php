@@ -17,7 +17,7 @@ class ProfileController extends Controller
     public function get_my_profile()
     {
         $user = auth()->user();
-        return $this->success(new ProfileResource($user) ,'my profile');
+        return $this->success(new ProfileResource($user) ,__('messages.ProfileController.My_Profile'));
     }
 
 
@@ -38,17 +38,17 @@ class ProfileController extends Controller
                 $user->save();
             }
         
-            return $this->success(new ProfileResource($user) ,'profile updated successfully');
+            return $this->success(new ProfileResource($user) ,__('messages.ProfileController.Profile_Updated_Successfully'));
     }
 
     public function soft_delete_users_accounts(Request $request)
     {
         $user = User::find($request->id);
         if (!$user) {
-            return $this->error('user not found',404);
+            return $this->error(__('messages.ProfileController.User_Not_Found'),404);
         } else {
             $user->delete();
-            return $this->success(null ,'account deleted successfully');
+            return $this->success(null ,__('messages.ProfileController.Account_Deleted_Successfully'));
         }
     }
 
@@ -57,10 +57,10 @@ class ProfileController extends Controller
     {
         $user = User::withTrashed()->find($request->id);
         if (!$user) {
-            return $this->error('user not found',404);
+            return $this->error(__('messages.ProfileController.User_Not_Found'),404);
         } else {
             $user->restore();
-            return $this->success(null ,'account restored successfully');
+            return $this->success(null ,__('messages.ProfileController.Account_Restored_Successfully'));
         }
     }
 
@@ -69,10 +69,10 @@ class ProfileController extends Controller
     {
         $user = User::withTrashed()->find($request->id);
         if (!$user) {
-            return $this->error('user not found',404);
+            return $this->error(__('messages.ProfileController.User_Not_Found'),404);
         } else {
             $user->forceDelete();
-            return $this->success(null ,'account deleted for ever');
+            return $this->success(null ,__('messages.ProfileController.Account_Deleted_For_Ever'));
         }
     }
 
@@ -80,7 +80,7 @@ class ProfileController extends Controller
     {
         $user = User::find(auth()->user()->id);
             $user->delete();
-            return $this->success(null ,'account deleted successfully');
+            return $this->success(null ,__('messages.ProfileController.Account_Deleted_Successfully'));
     }
 
 
@@ -90,13 +90,13 @@ class ProfileController extends Controller
         $user = User::withTrashed()->where('email', $request->email)->first();
 
         if (!$user) {
-            return $this->error('user not found',404);
+            return $this->error(__('messages.ProfileController.User_Not_Found'),404);
         }else {
             if (!Hash::check($request->password, $user->password)) {
-                return $this->error('password is wrong',403);
+                return $this->error(__('messages.ProfileController.Password_Is_Wrong'),403);
             } else {
                 $user->restore();
-                return $this->success(null ,'account restored successfully');
+                return $this->success(null ,__('messages.ProfileController.Account_Restored_Successfully'));
             }
         }
     }
@@ -105,7 +105,7 @@ class ProfileController extends Controller
     {
         $user = User::withTrashed()->find(auth()->user()->id);
         $user->forceDelete();
-        return $this->success(null ,'account deleted for ever');
+        return $this->success(null ,__('messages.ProfileController.Account_Deleted_For_Ever'));
     }
 
 
@@ -113,12 +113,12 @@ class ProfileController extends Controller
     {
         $user = User::find($request->id);
             if (!$user) {
-                return $this->error('user not found',404);
+                return $this->error(__('messages.ProfileController.User_Not_Found'),404);
             }
             else {
                 $user->blocked = 1;
                 $user->save();
-                return $this->success(null ,'account blocked');
+                return $this->success(null ,__('messages.ProfileController.Account_Blocked'));
             }
     }
 
@@ -127,46 +127,46 @@ class ProfileController extends Controller
     {
         $user = User::find($request->id);
             if (!$user) {
-                return $this->error('user not found',404);
+                return $this->error(__('messages.ProfileController.User_Not_Found'),404);
             }
             else {
                 $user->blocked = 0;
                 $user->save();
-                return $this->success(null ,'account unblocked');
+                return $this->success(null ,__('messages.ProfileController.Account_Active_Now'));
             }
     }
 
     public function get_all_customers()
     {
         $customers = User::where('role','Customer')->get();
-        return $this->success(ProfileResource::collection($customers) ,'all customers');
+        return $this->success(ProfileResource::collection($customers) ,__('messages.ProfileController.List_All_Customers'));
     }
 
 
     public function get_all_merchants()
     {
         $merchants = User::where('role','Merchant')->get();
-        return $this->success(ProfileResource::collection($merchants) ,'all merchants');
+        return $this->success(ProfileResource::collection($merchants) ,__('messages.ProfileController.List_All_Merchants'));
     }
 
     public function get_merchant_detail(Request $request)
     {
         $merchant = User::where('role','Merchant')->where('id',$request->id)->get();
-        return $this->success(ProfileResource::collection($merchant) ,'merchant detail');
+        return $this->success(ProfileResource::collection($merchant) ,__('messages.ProfileController.Merchant_Details'));
     }
 
 
     public function get_all_employees()
     {
         $employees = User::where('role','Employee')->get();
-        return $this->success(ProfileResource::collection($employees) ,'all employees');
+        return $this->success(ProfileResource::collection($employees) ,__('messages.ProfileController.List_All_Employees'));
     }
 
 
     public function get_all_admins()
     {
         $admins = User::where('role','Admin')->get();
-        return $this->success(ProfileResource::collection($admins) ,'all admins');
+        return $this->success(ProfileResource::collection($admins) ,__('messages.ProfileController.List_All_Admins'));
     }
     
 }

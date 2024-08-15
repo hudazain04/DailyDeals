@@ -206,4 +206,99 @@ return [
         "link_not_correct" => "⚠️ خطأ: الرابط غير صحيح! ⚠️ الرابط الذي قدمته غير صحيح أو مكسور. يرجى التحقق مرة أخرى من عنوان URL والمحاولة مرة أخرى. إذا واجهت مشكلة مستمرة ، يرجى الاتصال بالدعم للحصول على المساعدة. شكرًا لك! ",
     ],
 
+
+    
+    "AdvertisementController" => [
+        "Advertisement_Added_Successfully" => "تم إضافةالإعلان بنجاح",
+        "All_Advertisement_Requests" => "عرض جميع طلبات الإعلانات",
+        "Advertisement_Details" => "تفاصيل الإعلان",
+        "Advertisement_Accepted" => "تم قبول الإعلان بتجاح",
+        "Advertisement_Rejected" => "تم رفض الإعلان",
+        "List_Advertisements" => "عرض جميع الإعلانات",
+    ],
+
+"BranchController" => [
+        "Branch_Added_Successfully" => "تم إضافة فرع جديد بنجاح",
+        "Branch_Updated_Successfully" => "تم تعديل بيانات الفرع بنجاح",
+        "Branch_Deleted_Successfully" => "تم حذف الفرع بنجاح",
+        "List_Branches" => "عرض جميع الفروع",
+        "You_Are_Not_Authorized" => "ليس لديك الصلاحية للقيام بذلك",
+        "Branch_Info" => "احصائيات الفرع",
+        "List_Recent_Products" => "عرض أحدث المنتجات",
+        "List_Yearly_Rates" => "عرض التقييمات الشهرية خلال العام الحالي",
+    ],
+
+    "CategoryController" => [
+        "List_All_Categories" => "عرض جميع الأقسام",
+        "Category_Added_Successfully" => "تم إضافة قسم جديد بنجاح",
+        "Category_Updated_Successfully" => "تم تعديل القسم بنجاح",
+        "Category_Deleted_Successfully" => "تم حذف القسم بنجاح",
+        "Show_Category" => "عرض القسم",
+    ],
+
+    "ComplaintController" => [
+        "List_All_Complaints" => "عرض جميع الشكاوى",
+        "Show_Complaint_Details" => "عرض تفاصيل الشكوى",
+        "Complaint_Added_Successfully" => "تم إرسال الشكوى بنجاح",
+    ],
+
+    "EmployeeController" => [
+        "Employee_Added_Successfully" => "تم إضافة موظف جديد بنجاح",
+        "Employee_Updated_Successfully" => "تم تعديل بيانات الموظف بنجاح",
+        "Code_Updated_Successfully" => "تم تعديل الكود بنجاح",
+        "Employee_Deleted_Successfully" => "تم حذف الموظف بنجاح",
+        "List_Employees" => "عرض الموظفين",
+        "Store_Not_Found" => "المتجر غير موجود",
+        "You_Are_Not_Authorized" => "ليس لديك الصلاحية للقيام بذلك",
+    ],
+    
+    "FaqController" => [
+        "List_All_Faq" => "عرض جميع الأسئلة والأجوبة الشائعة",
+        "Faq_Added_Successfully" => "تم إضافة سؤال وجواب بنجاح",
+        "Faq_Updated_Successfully" => "تم تعديل السؤال والجواب بنجاح",
+        "Faq_Deleted_Successfully" => "تم حذف السؤال والجواب",
+        "Show_Faq_Details" => "عرض تفاصيل السؤال والجواب",
+    ],
+
+    "FavoriteController" => [
+        "List_All_Favorites" => "عرض المفضلة",
+        "Branch_Already_In_Your_Favorites" => "الفرع موجود بالفعل في المفضلة",
+        "Branch_Added_To_Your_Favorites" => "تم إضافة الفرع إلى المفضلة الخاصة بك",
+    ],
+
+    "NotifiedController" => [
+        "List_My_Notifieds" => "عرض جميع الاشعارات",
+        "Notified_Added_Successfully" => "تم إرسال اشعار بنجاح",
+        "Notified_Deleted_Successfully" => "تم حذف الاشعار بنجاح",
+    ],
+
+    "ProfileController" => [
+        "My_Profile" => "بيانات حسابي",
+        "Profile_Updated_Successfully" => "تم تعديل بيانات الحساب بنجاح",
+        "User_Not_Found" => "المستخدم غير موجود",
+        "Account_Deleted_Successfully" => "تم حذف الحساب بنجاح",
+        "Account_Restored_Successfully" => "تم إستعادة الحساب بنجاح",
+        "Account_Deleted_For_Ever" => "تم حذف الحساب بشكل نهائي، ولا يمكن استرجاعه مرة أخرى",
+        "Password_Is_Wrong" => "كلمة المرور خاطئة",
+        "Account_Blocked" => "تم حظر الحساب بنجاح",
+        "Account_Active_Now" => "الحساب نشط الآن",
+        "List_All_Customers" => "عرض جميع العملاء",
+        "List_All_Merchants" => "عرض جميع التجار",
+        "Merchant_Details" => "تفاصيل بيانات التاجر",
+        "List_All_Employees" => "عرض جميع الموظفين",
+        "List_All_Admins" => "عرض جميع المديرين",
+    ],
+
+    "StoreController" => [
+        "Store_Added_Successfully" => "تم إضافة متجر جديد بنجاح",
+        "Not_Authurized" => "ليس لديك الصلاحية للقيام بذلك",
+        "Store_Updated_Successfully" => "تم تعديل بيانات المتجر بنجاح",
+        "Store_Deleted_Successfully" => "تم حذف المتجر بنجاح",
+        "List_visible_Stores" => "عرض المتاجر",
+        "List_Merchant_Stores" => "عرض المتاجر الخاصة بالتاجر",
+        "List_All_Stores" => "عرض جميع المتاجر",
+        "list_stores" => "عرض المتاجر",
+        "Store_Details" => "تفاصيل المتجر",
+    ],
+
 ];
