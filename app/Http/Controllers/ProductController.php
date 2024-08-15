@@ -16,6 +16,7 @@ use App\Models\Product_Info;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use function Symfony\Component\VarExporter\Internal\p;
 
 class ProductController extends Controller
 {
@@ -131,6 +132,10 @@ class ProductController extends Controller
         try
         {
             $product=Product::find($product_id);
+            if (!$product)
+            {
+                return $this->error(__('messages.product_controller.not_found'),404);
+            }
             $product->delete();
             return $this->success(null,__('messages.product_controller.delete_product'));
         }
@@ -144,6 +149,10 @@ class ProductController extends Controller
         try
         {
             $product=Product::find($product_id);
+            if(! $product)
+            {
+                return $this->error(__('messages.product_controller.not_found'),404);
+            }
             return $this->success(['product'=>ProductResource::make($product)],__('messages.successful_request'));
         }
         catch (\Throwable $th)

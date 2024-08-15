@@ -23,10 +23,20 @@ class ProductResource extends JsonResource
             'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
 
         ];
-        if ($this->additional['size'] != null)
+
+        $hasSize = array_key_exists('size', $this->additional);
+        if ($hasSize == false)
         {
-            $sizes=$this->product_info()->size();
-            array_merge($baseData,['sizes'=>SizeResource::collection($sizes),]);
+            $sizes = $this->resource->product_info()
+                ->where(['product_id' => $this->id])
+                ->with('size')
+                ->get()
+                ->pluck('size');
+
+            $sizeResources = collect($sizes)->map(function ($size) use ($request) {
+                return new SizeResource($size, $this->id);
+            });
+            $baseData['sizes'] = $sizeResources;
         }
 
         return $baseData;

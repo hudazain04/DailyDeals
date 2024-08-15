@@ -192,9 +192,15 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
 
 
     Route::prefix('product')->group(function (){
-        Route::post('addProduct',[ProductController::class,'AddProduct']);
-        Route::post('addColors',[ProductController::class,'AddColors']);
-        Route::post('addSizes',[ProductController::class,'AddSizes']);
+        Route::middleware('Merchant')->group(function (){
+            Route::post('addProduct',[ProductController::class,'AddProduct']);
+            Route::post('addColors',[ProductController::class,'AddColors']);
+            Route::post('addSizes',[ProductController::class,'AddSizes']);
+            Route::get('getStoreProducts/{store_id}',[ProductController::class,'GetStoreProducts']);
+            Route::delete('deleteProduct/{product_id}',[ProductController::class,'DeleteProduct']);
+        });
+        Route::get('getProduct/{product_id}',[ProductController::class,'GetProduct']);
+
     });
 
 });
