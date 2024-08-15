@@ -40,21 +40,21 @@ class BranchController extends Controller
             }
 ///////////////////
         for ($rating = 1; $rating <= 5; $rating++) {
-            $url = route('rateBranch', ['branch_id' => $branch->id, 'rate' => $rating]);
 
+            $qrCodeData = json_encode(['branch_id' => $branch->id, 'rate' => $rating]);
 
-//            add some styles to the qr code generated
             $from = [255, 0, 0];
             $to = [0, 0, 255];
-            $qrCode =QrCode::size(200)
+            $qrCode =QrCode::format('svg')
+                ->size(200)
                 ->style('dot')
                 ->eye('circle')
                 ->gradient($from[0], $from[1], $from[2], $to[0], $to[1], $to[2], 'diagonal')
                 ->margin(1)
-                ->generate($url);
+                ->generate($qrCodeData);
 
 //            make it unique by uuid or timestamp
-            $fileName =  'branch_' . $branch->id . '_rating_' . $rating . '.png';
+            $fileName =  'branch_' . $branch->id . '_rating_' . $rating . '.svg';
             $filePath = public_path('QrImage/' . $fileName);
             file_put_contents($filePath, $qrCode);
             $uploadedFile = new \Illuminate\Http\UploadedFile(
