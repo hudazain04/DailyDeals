@@ -22,6 +22,7 @@ class AddGiftOfferRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name'=>'required|string',
             'image'=>'required|image',
             'branch_id'=>'required|exists:branches,id',
             'products'=>'required|array',

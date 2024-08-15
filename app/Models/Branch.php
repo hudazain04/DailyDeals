@@ -62,7 +62,7 @@ class Branch extends Model
     }
     public function offers()
     {
-        return $this->belongsToMany(Offer::class, 'offer__branches');
+        return $this->belongsToMany(Offer::class, 'offer_branches');
     }
 
 

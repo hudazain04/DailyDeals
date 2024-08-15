@@ -188,6 +188,7 @@ class OfferController extends Controller
         {
             DB::beginTransaction();
             $offer=Offer::create([
+                'name'=>$request->name,
                 'type'=>OfferType::Percentage,
                 'image'=>$request->file('image'),
                 'period'=>'2',
@@ -217,17 +218,25 @@ class OfferController extends Controller
         try
         {
             DB::beginTransaction();
-            $offerData = $request->only(['image']);
+            $offerData = $request->only(['name','image']);
             $offer=Offer::find($offer_id);
-            $offer->update([$offerData]);
+            $offer->update($offerData);
             $percentageData= $request->only(['percentage']);
-            $offer->percenatge_offer()->update($percentageData);
-            foreach($request->products as $product_id)
+            $offer->percentage_offer()->update($percentageData);
+            if($request->products)
             {
-                $offer->products()->delete();
-                $offer->products()->attach($product_id);
+                $offer->products()->sync($request->products);
+
+//                foreach($request->products as $product_id)
+//                {
+//
+//                    $offer->products()->delete();
+//                    $offer->products()->attach($product_id);
+//                }
             }
+
             DB::commit();
+//            dd($offer);
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.update_offer'));
         }
         catch (\Throwable $th)
@@ -243,12 +252,13 @@ class OfferController extends Controller
         {
             DB::beginTransaction();
             $offer=Offer::create([
+                'name'=>$request->name,
                 'type'=>OfferType::Discount,
                 'image'=>$request->image,
                 'period'=>'2',
             ]);
-            $offer->branches()->attach($offer->id,$request->branch_id);
-            $offer->discount_offer()->attach($offer->id,['discount'=>$request->discount]);
+            $offer->branches()->attach($request->branch_id);
+            $offer->discount_offer()->create(['discount'=>$request->discount]);
             foreach( $request->products as $product_id)
             {
                 $offer->products()->attach($product_id);
@@ -267,16 +277,17 @@ class OfferController extends Controller
         try
         {
             DB::beginTransaction();
-            $offerData = $request->only(['image', 'period']);
+            $offerData = $request->only(['image', 'period','name']);
             $offer=Offer::find($offer_id);
-            $offer->update([$offerData]);
+            $offer->update($offerData);
             $discountData= $request->only(['discount']);
             $offer->discount_offer()->update($discountData);
-            foreach($request->products as $product_id )
+            if ($request->products)
             {
-                $offer->products()->delete();
-                $offer->products()->attach($product_id);
+                $offer->products()->sync($request->products);
+
             }
+
             DB::commit();
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.update_offer'));
         }
@@ -292,12 +303,13 @@ class OfferController extends Controller
         {
             DB::beginTransaction();
             $offer=Offer::create([
+                'name'=>$request->name,
                 'type'=>OfferType::Gift,
                 'image'=>$request->image,
                 'period'=>'2',
             ]);
-            $offer->branches()->attach($offer->id,$request->branch_id);
-            $offer->gift_offer()->attach($offer->id,['product_id'=>$request->product_id]);
+            $offer->branches()->attach($request->branch_id);
+            $offer->gift_offer()->create(['product_id'=>$request->product_id]);
             foreach($request->products as $product_id)
             {
                 $offer->products()->attach($product_id );
@@ -317,18 +329,20 @@ class OfferController extends Controller
         try
         {
             DB::beginTransaction();
-            $offerData = $request->only(['image']);
+            $offerData = $request->only(['image','name']);
             $offer=Offer::find($offer_id);
-            $offer->update([$offerData]);
+            $offer->update($offerData);
             $giftData= $request->only(['product_id']);
             $offer->gift_offer()->update($giftData);
             if($request->products)
             {
-                foreach($request->products as $product_id)
-                {
-                    $offer->products()->delete();
-                    $offer->products()->attach($product_id);
-                }
+                $offer->products()->sync($request->products);
+
+//                foreach($request->products as $product_id)
+//                {
+//                    $offer->products()->delete();
+//                    $offer->products()->attach($product_id);
+//                }
             }
 
             DB::commit();
@@ -346,12 +360,13 @@ class OfferController extends Controller
         {
             DB::beginTransaction();
             $offer=Offer::create([
+//                'name'=>$request->name,
                 'type'=>OfferType::Extra,
                 'image'=>$request->image,
                 'period'=>'2',
             ]);
-            $offer->branches()->attach($offer->id,$request->branch_id);
-            $offer->extra_offer()->attach($offer->id,['product_id'=>$request->product_id,
+            $offer->branches()->attach($request->branch_id);
+            $offer->extra_offer()->create(['product_id'=>$request->product_id,
                 'product_count'=>$request->product_count,
                 'extra_count'=>$request->extra_count,
             ]);
@@ -368,9 +383,9 @@ class OfferController extends Controller
         try
         {
             DB::beginTransaction();
-            $offerData = $request->only(['image']);
+            $offerData = $request->only(['image','name']);
             $offer=Offer::find($offer_id);
-            $offer->update([$offerData]);
+            $offer->update($offerData);
             $extraData= $request->only(['product_id','product_count','extra_count']);
             $offer->extra_offer()->update($extraData);
             DB::commit();
@@ -386,7 +401,12 @@ class OfferController extends Controller
     {
         try
         {
-            $offer=Offer::find($offer_id)->delete();
+            $offer=Offer::find($offer_id);
+            if (! $offer)
+            {
+                return $this->error(__('messages.offer_controller.not_found'),404);
+            }
+            $offer->delete();
             return $this->success(null,__('messages.offer_controller.delete_offer'));
         }
         catch (\Throwable $th)
@@ -395,11 +415,15 @@ class OfferController extends Controller
         }
 
     }
-    public function UnactivateOffer($offer_id)
+    public function DeactivateOffer($offer_id)
     {
         try
         {
             $offer=Offer::find($offer_id);
+            if (! $offer)
+            {
+                return $this->error(__('messages.offer_controller.not_found'),404);
+            }
             $offer->update(['active'=>false]);
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.archive_offer'));
 
@@ -414,6 +438,10 @@ class OfferController extends Controller
         try
         {
             $offer=Offer::find($offer_id);
+            if (! $offer)
+            {
+                return $this->error(__('messages.offer_controller.not_found'),404);
+            }
             $offer->update(['active'=>true]);
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.activate_offer'));
 
@@ -428,10 +456,15 @@ class OfferController extends Controller
     {
         try
         {
-            $offers=Offer::where('active',true)
-                ->orderBy('verified')
+            $offers = DB::table('offers')
+                ->join('offer_branches', 'offers.id', '=', 'offer_branches.offer_id')
+                ->join('branches', 'offer_branches.branch_id', '=', 'branches.id')
+                ->join('stores', 'branches.store_id', '=', 'stores.id')
+                ->select('offers.*') // Select only the columns you need from the offers table
+                ->distinct() // Ensures that each offer is returned only once
+                ->orderBy('stores.verified', 'desc') // Order by the verified status of the store
                 ->get();
-            return $this->success(['offes'=>OfferResource::collection($offers)],__('messages.successful_request'));
+            return $this->success(['offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
@@ -468,6 +501,10 @@ class OfferController extends Controller
         try
         {
            $offer=Offer::find($offer_id);
+            if (! $offer)
+            {
+                return $this->error(__('messages.offer_controller.not_found'),404);
+            }
            $offer_products=$offer->products();
            $products=[];
            foreach ($offer_products as $offer_product)

@@ -18,7 +18,7 @@ class OfferResource extends JsonResource
     {
         $baseData=[
             'id'=>$this->id,
-            'name'=>$this->name,
+//            'name'=>$this->name,
             'image'=>$this->image ? asset($this->image) : null,
             'type'=>$this->type,
         ];

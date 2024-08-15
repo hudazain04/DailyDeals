@@ -11,7 +11,7 @@ class AddExtraOfferRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,6 +22,7 @@ class AddExtraOfferRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name'=>'required|string',
             'image'=>'required|image',
             'branch_id'=>'required|exists:branches,id',
             'product_id'=>'required|exists:products,id',

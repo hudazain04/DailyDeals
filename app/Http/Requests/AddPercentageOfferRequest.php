@@ -22,6 +22,7 @@ class AddPercentageOfferRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name'=>'required|string',
             'image'=>'required|image',
             'branch_id'=>'required|exists:branches,id',
             'percentage'=>'required|numeric',
