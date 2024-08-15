@@ -14,13 +14,13 @@ class CategoryController extends Controller
     public function list_all_categories()
     {
         $categories = Category::orderBy('priority')->get();
-        return $this->success(ListCategoryResource::collection($categories),'all categories');
+        return $this->success(ListCategoryResource::collection($categories),__('messages.CategoryController.List_All_Categories'));
     }
 
     public function list_visible_categories()
     {
         $categories = Category::where('visible',1)->orderBy('priority')->get();
-        return $this->success(ListCategoryResource::collection($categories),'all categories');
+        return $this->success(ListCategoryResource::collection($categories),__('messages.CategoryController.List_All_Categories'));
     }
 
     public function add_category(CategoryRequest $request)
@@ -31,7 +31,7 @@ class CategoryController extends Controller
             'visible' => $request->visible,
             'priority' => $request->priority,
         ]);
-        return $this->success(new ListCategoryResource($category),'category added successfully');
+        return $this->success(new ListCategoryResource($category),__('messages.CategoryController.Category_Added_Successfully'));
     }
 
     public function update_category(CategoryRequest $request)
@@ -47,7 +47,7 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return $this->success(new ListCategoryResource($category),'category updated successfully');
+        return $this->success(new ListCategoryResource($category),__('messages.CategoryController.Category_Updated_Successfully'));
     }
 
     public function delete_category(Request $request)
@@ -61,12 +61,12 @@ class CategoryController extends Controller
             }
         }
         $category->delete();
-        return $this->success(null,'category deleted successfully');
+        return $this->success(null,__('messages.CategoryController.Category_Deleted_Successfully'));
     }
 
     public function show_category(Request $request)
     {
         $category = Category::findOrFail($request->category_id);
-        return $this->success(new ListCategoryResource($category),'show category');
+        return $this->success(new ListCategoryResource($category),__('messages.CategoryController.Show_Category'));
     }
 }

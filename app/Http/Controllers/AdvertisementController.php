@@ -29,20 +29,20 @@ class AdvertisementController extends Controller
             'image' => $request->file('image'),
         ]);
 
-        return $this->success(new AdvertisementResource($advertisement) ,'Advertisement added successfully');
+        return $this->success(new AdvertisementResource($advertisement) ,__('messages.AdvertisementController.Advertisement_Added_Successfully'));
 
     }
 
     public function all_advertisement_requests()
     {
         $advertisements = Advertisement::where('status','Pending')->get();
-        return $this->success( AdvertisementResource::collection($advertisements) ,'All Advertisement Requests');
+        return $this->success( AdvertisementResource::collection($advertisements) ,__('messages.AdvertisementController.All_Advertisement_Requests'));
     }
 
     public function advertisement_details(Request $request)
     {
         $advertisement = Advertisement::where('id',$request->advertisement_id)->first();
-        return $this->success(new AdvertisementResource($advertisement) ,'Advertisement details');
+        return $this->success(new AdvertisementResource($advertisement) ,__('messages.AdvertisementController.Advertisement_Details'));
     }
 
     public function accept_advertisement(Request $request)
@@ -54,7 +54,7 @@ class AdvertisementController extends Controller
         $advertisement->accepted_at = Carbon::now();
         $advertisement->save();
 
-        return $this->success(new AdvertisementResource($advertisement) ,'Advertisement Accepted');
+        return $this->success(new AdvertisementResource($advertisement) ,__('messages.AdvertisementController.Advertisement_Accepted'));
     }
 
     public function reject_advertisement(Request $request)
@@ -64,7 +64,7 @@ class AdvertisementController extends Controller
         $advertisement->shown = 0;
         $advertisement->save();
 
-        return $this->success(new AdvertisementResource($advertisement) ,'Advertisement Rejected');
+        return $this->success(new AdvertisementResource($advertisement) ,__('messages.AdvertisementController.Advertisement_Rejected'));
     }
 
     public function list_advertisement()
@@ -76,13 +76,13 @@ class AdvertisementController extends Controller
             $query->whereRaw("DATE_ADD(accepted_at, INTERVAL period DAY) >= ?", [$currentDate]);
         })
         ->get();
-        return $this->success(ListAdvertisementResource::collection($advertisements) ,'List Advertisements');
+        return $this->success(ListAdvertisementResource::collection($advertisements) ,__('messages.AdvertisementController.List_Advertisements'));
     }
 
     public function advertisement_accepted_details(Request $request)
     {
         $advertisement = Advertisement::where('id',$request->advertisement_id)->where('status','Accepted')
         ->where('shown',1)->first();
-        return $this->success(new ListAdvertisementResource($advertisement) ,'Advertisement details');
+        return $this->success(new ListAdvertisementResource($advertisement) ,__('messages.AdvertisementController.Advertisement_Details'));
     }
 }

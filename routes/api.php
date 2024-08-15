@@ -73,6 +73,9 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::post('store_byID',[StoreController::class ,'store_byID']);
         Route::get('show_store',[StoreController::class ,'show_store']);
         Route::post('Branch_byID',[BranchController::class ,'Branch_byID']);
+        Route::get('branch_info',[BranchController::class ,'branch_info']);
+        Route::get('recent_products',[BranchController::class ,'recent_products']);
+        Route::get('yearly_rate',[BranchController::class ,'yearly_rate']);
 
     });
 
