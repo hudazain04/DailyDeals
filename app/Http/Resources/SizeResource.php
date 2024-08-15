@@ -22,17 +22,6 @@ class SizeResource extends JsonResource
 
     public function toArray(Request $request): array
     {
-//        dd($this->resource);
-//        if(! $this->resource->colors)
-//        {
-//            $infos=$this->resource->product_infos()
-//                ->where(['product_id'=> $this->productId])
-//                ->get();
-//        }
-//        else
-//        {
-//            $colors=$this->resource->colors;
-//        }
 
         $colors = $this->resource->product_infos()
             ->where(['product_id' => $this->productId, 'size_id' => $this->id])
@@ -41,11 +30,10 @@ class SizeResource extends JsonResource
             ->pluck('color');
 
         $colorResources = collect($colors)->map(function ($color) use ($request) {
-//            $colorModel = Color::find($color['color']);
             return new ColorResource($color, $this->productId);
         });
-//        dd($colorResources);
         return [
+            'id'=>$this->id,
           'size'=>$this->size,
           'unit'=>$this->unit,
           'price'=>$this->price,
