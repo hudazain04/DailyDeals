@@ -12,6 +12,8 @@ use App\Http\Controllers\Controller;
 use App\HttpResponse\HttpResponse;
 use App\Models\QR;
 use Illuminate\Http\Request;
+//use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\File;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class BranchController extends Controller
@@ -52,15 +54,9 @@ class BranchController extends Controller
                 ->generate($url);
 
 //            make it unique by uuid or timestamp
-            $fileName = 'branch_' . $branch->id . '_rating_' . $rating . '.png';
-
-
-
-
+            $fileName =  'branch_' . $branch->id . '_rating_' . $rating . '.png';
             $filePath = public_path('QrImage/' . $fileName);
-
             file_put_contents($filePath, $qrCode);
-
             $uploadedFile = new \Illuminate\Http\UploadedFile(
                 $filePath,
                 $fileName,
@@ -68,10 +64,11 @@ class BranchController extends Controller
                 null,
                 true
             );
+
              QR::create([
                  'branch_id' => $branch->id,
                  'rate' => $rating,
-                 'image' =>$request->file($uploadedFile),
+                 'image' => '/QrImage/' . $fileName
              ]);
         }
 
