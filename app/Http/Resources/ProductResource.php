@@ -40,18 +40,22 @@ class ProductResource extends JsonResource
             $sizeResources = collect($sizes)->map(function ($size) use ($request) {
                 return new SizeResource($size, $this->id);
             });
+            $baseData=[
+                'id'=>$this->id,
+                'name'=>$this->name,
+                'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
+                'sizes'=>$sizeResources
+//            'sizes' => SizeResource::collection(Size::whereIn('id' , $this->product_info->pluck('size_id'))->get())
+//        'sizes' => $sizes
+            ];
+//            $baseData['sizes'] = $sizeResources;
 
         }
         $baseData=[
             'id'=>$this->id,
             'name'=>$this->name,
             'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
-            'sizes'=>$sizeResources
-//            'sizes' => SizeResource::collection(Size::whereIn('id' , $this->product_info->pluck('size_id'))->get())
-//        'sizes' => $sizes
         ];
-//            $baseData['sizes'] = $sizeResources;
-
         return $baseData;
     }
 }
