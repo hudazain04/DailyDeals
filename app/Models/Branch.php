@@ -72,20 +72,21 @@ class Branch extends Model
 
     public function setImageAttribute($image)
     {
-        if ($image && $image->isValid()) {
+        if ($image instanceof \Illuminate\Http\UploadedFile && $image->isValid()) {
             $filename = uniqid() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('BranchImage'),$filename);
-            $this->attributes['image'] = '/BranchImage/'.$filename;
+            $image->move(public_path('BranchImage'), $filename);
+            $this->attributes['image'] = '/BranchImage/' . $filename;
+        } else {
+            $this->attributes['image'] = $image;
         }
     }
-
+    
 
 
     public function getImageUrlAttribute()
     {
         return $this->attributes['image'];
     }
-
 
 
 }
