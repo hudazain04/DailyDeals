@@ -4,6 +4,7 @@ use App\Http\Controllers\AppInformationController;
 use App\Http\Controllers\CategoryRequestController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\EmployeeMiddleware;

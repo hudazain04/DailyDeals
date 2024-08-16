@@ -16,7 +16,6 @@ use App\Models\Product_Info;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use function Symfony\Component\VarExporter\Internal\p;
 
 class ProductController extends Controller
 {
