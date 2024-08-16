@@ -4,6 +4,7 @@ use App\Http\Controllers\AppInformationController;
 use App\Http\Controllers\CategoryRequestController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\OfferController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VerificationController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\EmployeeMiddleware;
@@ -197,7 +198,9 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
             Route::post('addColors',[ProductController::class,'AddColors']);
             Route::post('addSizes',[ProductController::class,'AddSizes']);
             Route::get('getStoreProducts/{store_id}',[ProductController::class,'GetStoreProducts']);
+            Route::get('getRecentProducts/{store_id}',[ProductController::class,'GetRecentProducts']);
             Route::delete('deleteProduct/{product_id}',[ProductController::class,'DeleteProduct']);
+            Route::get('getColors',[ProductController::class,'GetColors']);
         });
         Route::get('getProduct/{product_id}',[ProductController::class,'GetProduct']);
 

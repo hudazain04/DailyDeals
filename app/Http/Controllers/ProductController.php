@@ -16,7 +16,6 @@ use App\Models\Product_Info;
 use App\Models\Size;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use function Symfony\Component\VarExporter\Internal\p;
 
 class ProductController extends Controller
 {
@@ -51,6 +50,7 @@ class ProductController extends Controller
             foreach ($colors as $index => $color)
             {
                 $color1=Color::find($color['color']);
+//                dd($color1);
                 $image=Image::create([
                 'color_id'=>$color1->id,
                     'product_id'=>$request->product_id,
@@ -166,6 +166,33 @@ class ProductController extends Controller
         {
          $products=Product::where('store_id',$store_id)->get();
          return $this->success(['products'=>ProductResource::collection($products)],__('messages.successful_request'));
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function GetRecentProducts($store_id)
+    {
+        try
+        {
+            $products=Product::where('store_id',$store_id)
+//            ->latest(5)
+//            ->take(5)
+            ->get();
+            return $this->success(['products'=>ProductResource::collection($products)],__('messages.successful_request'));
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function GetColors()
+    {
+        try
+        {
+            $colors=Color::all();
+            return $this->success(['colors'=>ColorResource::collection($colors)],__('mesaages.successful_request'));
         }
         catch (\Throwable $th)
         {
