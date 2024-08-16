@@ -7,13 +7,25 @@ use App\Http\Resources\AdvertisementResource;
 use App\Http\Resources\ListAdvertisementResource;
 use App\HttpResponse\HttpResponse;
 use App\Models\Advertisement;
+use App\Models\User;
+use App\Notifications\FirebaseNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Kreait\Firebase\Factory;
+
 
 
 class AdvertisementController extends Controller
 {
     use HttpResponse;
+    protected $firebase;
+
+    public function __construct()
+    {
+        $this->firebase = (new Factory)
+        ->withServiceAccount(config_path('firebase_credentials.json'))
+        ->createMessaging();
+    }
     
     public function add_advertisement(AdvertisementRequest $request)
     {
@@ -54,6 +66,12 @@ class AdvertisementController extends Controller
         $advertisement->accepted_at = Carbon::now();
         $advertisement->save();
 
+        $user = User::where('id',$advertisement->user_id)->first();
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
+        
+        $user->notify(new FirebaseNotification('Advertisement Accepted','your Advertisement Has Been Accepted'));
+
         return $this->success(new AdvertisementResource($advertisement) ,__('messages.AdvertisementController.Advertisement_Accepted'));
     }
 
@@ -63,6 +81,13 @@ class AdvertisementController extends Controller
         $advertisement->status = 'Rejected';
         $advertisement->shown = 0;
         $advertisement->save();
+
+        $user = User::where('id',$advertisement->user_id)->first();
+        $user->fcm_token = $request->fcm_token;
+        $user->save();
+        
+        $user->notify(new FirebaseNotification('Advertisement Rejected','your Advertisement Has Been Rejected'));
+
 
         return $this->success(new AdvertisementResource($advertisement) ,__('messages.AdvertisementController.Advertisement_Rejected'));
     }
