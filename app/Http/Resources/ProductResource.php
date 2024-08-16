@@ -51,11 +51,15 @@ class ProductResource extends JsonResource
 //            $baseData['sizes'] = $sizeResources;
 
         }
-        $baseData=[
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
-        ];
+        else
+        {
+            $baseData=[
+                'id'=>$this->id,
+                'name'=>$this->name,
+                'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
+            ];
+        }
+
         return $baseData;
     }
 }
