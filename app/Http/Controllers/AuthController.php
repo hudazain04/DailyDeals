@@ -134,7 +134,7 @@ class AuthController extends Controller
                 return $this->error(__('messages.email_not_found'),404);
             }
             $code=$this->sendVerificationCode($user,VerificationCodeType::register_code);
-            return $this->success(['user' => UserResource::make($user),/*'verification_code'=>$code*/] ,__('messages.auth_controller.resend_code'));
+            return $this->success(['user' => UserResource::make($user),'verification_code'=>$code] ,__('messages.auth_controller.resend_code'));
         }catch (\Throwable $th){
             return $this->error($th->getMessage(),500);
         }
