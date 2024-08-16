@@ -32,11 +32,11 @@ class ProductResource extends JsonResource
                 ->with('size')
                 ->get()
                 ->pluck('size')
-                ->unique('id');
+                ->unique('id')
+                 ->values();
 //
 //            $sizes=$this->resources
 //           return [$sizes];
-
             $sizeResources = collect($sizes)->map(function ($size) use ($request) {
                 return new SizeResource($size, $this->id);
             });
