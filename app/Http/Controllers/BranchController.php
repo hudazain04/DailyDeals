@@ -24,34 +24,75 @@ class BranchController extends Controller
 {
     use HttpResponse;
 
-    public function create_branch(BranchRequest $request)
+public function create_branch(BranchRequest $request)
     {
-        $branch = Branch::create([
-            'name' => $request->name,
-            'location' => $request->location,
-            'google_maps' => $request->google_maps,
-            'store_id' => $request->store_id,
-            'category_id' => $request->category_id,
-            'visible' => $request->visible,
-            'image' => $request->file('image'),
-        ]);
-    
-        foreach ($request->phone_numbers as $phone_number) {
-            Number::create([
-                'phone_number' => $phone_number,
-                'branch_id' => $branch->id,
+            $branch = Branch::create([
+                'name' => $request->name,
+                'location' => $request->location,
+                'google_maps' => $request->google_maps,
+                'store_id' => $request->store_id,
+                'category_id' => $request->category_id,
+                'visible' => $request->visible,
+                'image' => $request->file('image'),
             ]);
+
+            foreach ($request->phone_numbers as $phone_number) {
+                Number::create([
+                    'phone_number' => $phone_number,
+                    'branch_id' => $branch->id,
+                ]);
+            }
+///////////////////
+        for ($rating = 1; $rating <= 5; $rating++) {
+
+            $qrCodeData = json_encode(['branch_id' => $branch->id, 'rate' => $rating]);
+
+            $from = [255, 0, 0];
+            $to = [0, 0, 255];
+            $qrCode =QrCode::format('svg')
+                ->size(200)
+                ->style('dot')
+                ->eye('circle')
+                ->gradient($from[0], $from[1], $from[2], $to[0], $to[1], $to[2], 'diagonal')
+                ->margin(1)
+                ->generate($qrCodeData);
+
+//            make it unique by uuid or timestamp
+            $fileName =  'branch_' . $branch->id . '_rating_' . $rating . '.svg';
+            $filePath = public_path('QrImage/' . $fileName);
+            file_put_contents($filePath, $qrCode);
+            $uploadedFile = new \Illuminate\Http\UploadedFile(
+                $filePath,
+                $fileName,
+                'image/png',
+                null,
+                true
+            );
+
+             QR::create([
+                 'branch_id' => $branch->id,
+                 'rate' => $rating,
+                 'image' => '/QrImage/' . $fileName
+             ]);
         }
-    
-        for ($i = 1; $i <= 5; $i++) {
-            QR::create([
-                'rate' => $i,
-                'branch_id' => $branch->id,
-                'image' => $request->file('rate'.$i),
-            ]);
-        }
-    
-        return $this->success(new BranchResource($branch), __('messages.BranchController.Branch_Added_Successfully'));
+
+
+
+
+
+
+
+
+            //////////////
+//            for ($i=1; $i <= 5; $i++) {
+//                QR::create([
+//                    'rate' => $i,
+//                    'branch_id' => $branch->id,
+//                    'image' =>  $request->file('rate' . $i),
+//                ]);
+//            }
+
+return $this->success(new BranchResource($branch) ,__('messages.BranchController.Branch_Added_Successfully'));
     }
 
     public function update_branch(BranchRequest $request)
