@@ -22,13 +22,7 @@ class ProductResource extends JsonResource
     public function toArray(Request $request): array
     {
 
-        $baseData=[
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
-//            'sizes' => SizeResource::collection(Size::whereIn('id' , $this->product_info->pluck('size_id'))->get())
-//        'sizes' => $sizes
-        ];
+
 
         $hasSize = array_key_exists('size', $this->additional);
         if ($hasSize == false)
@@ -39,14 +33,24 @@ class ProductResource extends JsonResource
                 ->get()
                 ->pluck('size')
                 ->unique('id');
+//
 //            $sizes=$this->resources
 //           return [$sizes];
 
             $sizeResources = collect($sizes)->map(function ($size) use ($request) {
                 return new SizeResource($size, $this->id);
             });
-            $baseData['sizes'] = $sizeResources;
+
         }
+        $baseData=[
+            'id'=>$this->id,
+            'name'=>$this->name,
+            'category'=>$this->category_id ? Category::find($this->category_id)->category : null,
+            'sizes'=>$sizeResources
+//            'sizes' => SizeResource::collection(Size::whereIn('id' , $this->product_info->pluck('size_id'))->get())
+//        'sizes' => $sizes
+        ];
+//            $baseData['sizes'] = $sizeResources;
 
         return $baseData;
     }

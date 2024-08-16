@@ -177,8 +177,8 @@ class ProductController extends Controller
         try
         {
             $products=Product::where('store_id',$store_id)
-            ->latest()
-            ->take(5)
+//            ->latest(5)
+//            ->take(5)
             ->get();
             return $this->success(['products'=>ProductResource::collection($products)],__('messages.successful_request'));
         }

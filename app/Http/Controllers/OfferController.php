@@ -21,6 +21,7 @@ use App\HttpResponse\HttpResponse;
 use App\Jobs\DeactivateOffer;
 use App\Models\Comment;
 use App\Models\Offer;
+use App\Models\Offer_Branch;
 use App\Models\Percentage_Offer;
 use App\Models\Product;
 use App\Models\Type_Of_Offer_Request;
@@ -472,10 +473,11 @@ class OfferController extends Controller
                 ->join('offer_branches', 'offers.id', '=', 'offer_branches.offer_id')
                 ->join('branches', 'offer_branches.branch_id', '=', 'branches.id')
                 ->join('stores', 'branches.store_id', '=', 'stores.id')
-                ->select('offers.*') // Select only the columns you need from the offers table
-                ->distinct() // Ensures that each offer is returned only once
-                ->orderBy('stores.verified', 'desc') // Order by the verified status of the store
+                ->select('offers.*')
+                ->distinct()
+                ->orderBy('stores.verified', 'desc')
                 ->get();
+//            return $offers;
             return $this->success(['offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
@@ -487,7 +489,10 @@ class OfferController extends Controller
     {
         try
         {
-            $offers=Offer::where(['branch_id'=>$branch_id,'active'=>true])->get();
+            $offers=Offer_Branch::where('branch_id',$branch_id)
+            ->with('offer')->where('active',true)
+            ->get()->pluck('offer');
+//            return $offers;
             return $this->success(['offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)

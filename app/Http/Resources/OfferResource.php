@@ -24,16 +24,17 @@ class OfferResource extends JsonResource
         ];
         switch ($this->type)
         {
+
             case OfferType::Percentage:
-                $baseData = array_merge($baseData, ['percentage' => $this->percentage_offer ? $this->percentage_offer->percentage : null]);
+                $baseData = array_merge($baseData, ['percentage' => $this->percentage_offer() ? $this->percentage_offer()->percentage : null]);
                 break;
             case OfferType::Discount:
-                $baseData = array_merge($baseData, ['discount' => $this->discount_offer ? $this->discount_offer->discount : null]);
+                $baseData = array_merge($baseData, ['discount' => $this->discount_offer() ? $this->discount_offer()->discount : null]);
                 break;
             case OfferType::Extra:
                 $baseData = array_merge($baseData, [
-                    'product_count' => $this->extra_offer ? $this->extra_offer->product_count : null,
-                    'extra_count' => $this->extra_offer ? $this->extra_offer->extra_count : null,
+                    'product_count' => $this->extra_offer() ? $this->extra_offer()->product_count : null,
+                    'extra_count' => $this->extra_offer() ? $this->extra_offer()->extra_count : null,
                 ]);
                 break;
         }
