@@ -18,15 +18,18 @@ use App\Http\Resources\OfferTypeResource;
 use App\Http\Resources\PercentageOfferResource;
 use App\Http\Resources\ProductResource;
 use App\HttpResponse\HttpResponse;
+use App\Jobs\DeactivateOffer;
 use App\Models\Comment;
 use App\Models\Offer;
 use App\Models\Percentage_Offer;
 use App\Models\Product;
 use App\Models\Type_Of_Offer_Request;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Types\OfferType;
 use Illuminate\Support\Facades\DB;
+use function Kreait\Firebase\RemoteConfig\defaultValue;
 
 class OfferController extends Controller
 {
@@ -204,6 +207,8 @@ class OfferController extends Controller
             {
                 $offer->products()->attach($product_id);
             }
+            $delay = Carbon::now()->addDays($request->period);
+            DeactivateOffer::dispatch($offer)->delay($delay);
             DB::commit();
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
@@ -263,6 +268,8 @@ class OfferController extends Controller
             {
                 $offer->products()->attach($product_id);
             }
+            $delay = Carbon::now()->addDays($request->period);
+            DeactivateOffer::dispatch($offer)->delay($delay);
             DB::commit();
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
@@ -314,7 +321,8 @@ class OfferController extends Controller
             {
                 $offer->products()->attach($product_id );
             }
-
+            $delay = Carbon::now()->addDays($request->period);
+            DeactivateOffer::dispatch($offer)->delay($delay);
             DB::commit();
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
@@ -370,6 +378,8 @@ class OfferController extends Controller
                 'product_count'=>$request->product_count,
                 'extra_count'=>$request->extra_count,
             ]);
+            $delay = Carbon::now()->addDays($request->period);
+            DeactivateOffer::dispatch($offer)->delay($delay);
             DB::commit();
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.create_offer'));
         }
@@ -443,6 +453,8 @@ class OfferController extends Controller
                 return $this->error(__('messages.offer_controller.not_found'),404);
             }
             $offer->update(['active'=>true]);
+            $delay = Carbon::now()->addDays($offer->period);
+            DeactivateOffer::dispatch($offer)->delay($delay);
             return $this->success(['offer'=>OfferResource::make($offer)],__('messages.offer_controller.activate_offer'));
 
         }

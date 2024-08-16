@@ -32,6 +32,8 @@ class ProductResource extends JsonResource
                 ->with('size')
                 ->get()
                 ->pluck('size');
+//            $sizes=$this->resources
+//            dd($sizes);
 
             $sizeResources = collect($sizes)->map(function ($size) use ($request) {
                 return new SizeResource($size, $this->id);
