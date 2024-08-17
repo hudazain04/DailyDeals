@@ -47,6 +47,7 @@ Route::middleware(['check.blocked'])->group(function () {
         Route::post('restore_my_account',[ProfileController::class,'restore_my_account']);
         Route::post('fcm', [NotificationController::class, 'store']);
 
+
     });
 });
 
@@ -55,6 +56,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('changePassword', [AuthController::class, 'ChangePassword']);
         Route::post('logout', [AuthController::class, 'Logout']);
+        Route::get('loggedInDevices',[AuthController::class,'LoggedInDevices']);
         Route::get('get_my_profile', [ProfileController::class, 'get_my_profile']);
         Route::post('update_my_profile', [ProfileController::class, 'update_my_profile']);
         Route::post('soft_delete_my_account', [ProfileController::class, 'soft_delete_my_account']);

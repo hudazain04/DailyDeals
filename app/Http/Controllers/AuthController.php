@@ -11,6 +11,7 @@ use App\Http\Requests\LogoutRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\ResendVerificationCodeRequest;
 use App\Http\Requests\VerifyRequest;
+use App\Http\Resources\DeviceResource;
 use App\Http\Resources\UserResource;
 use App\HttpResponse\HttpResponse;
 use App\Mail\VerificationMail;
@@ -361,6 +362,17 @@ class AuthController extends Controller
         }
     }
 
-
+    public function LoggedInDevices(Request $request)
+    {
+        try
+        {
+            $devices=Device::where('user_id',$request->user()->id)->get();
+            return $this->success(['devices'=>DeviceResource::collection($devices)],__('messages.successful_request'));
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
 
 }

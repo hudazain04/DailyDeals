@@ -19,11 +19,13 @@ use App\Http\Resources\PercentageOfferResource;
 use App\Http\Resources\ProductResource;
 use App\HttpResponse\HttpResponse;
 use App\Jobs\DeactivateOffer;
+use App\Models\Branch;
 use App\Models\Comment;
 use App\Models\Offer;
 use App\Models\Offer_Branch;
 use App\Models\Percentage_Offer;
 use App\Models\Product;
+use App\Models\Store;
 use App\Models\Type_Of_Offer_Request;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,6 +33,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Types\OfferType;
 use Illuminate\Support\Facades\DB;
 use function Kreait\Firebase\RemoteConfig\defaultValue;
+use function Symfony\Component\String\b;
 
 class OfferController extends Controller
 {
@@ -469,14 +472,53 @@ class OfferController extends Controller
     {
         try
         {
-            $offers = DB::table('offers')
+//            $offers = DB::table('offers')
+//                ->join('offer_branches', 'offers.id', '=', 'offer_branches.offer_id')
+//                ->join('branches', 'offer_branches.branch_id', '=', 'branches.id')
+//                ->join('stores', 'branches.store_id', '=', 'stores.id')
+//                ->select('offers.*')
+//                ->distinct()
+//                ->orderBy('stores.verified', 'desc')
+//                ->get();
+//
+//            $status=[1,0];
+//            $allOffers = collect();
+//            $stores=Store::orderBy('stores.verified', 'desc')->get();
+//            foreach ($stores as $store)
+//            {
+//                $branches=$store->branches()->get();
+//                foreach ($branches as $branch)
+//                {
+//                    $offers=$branch->offers()->get();
+//                    $allOffers = $allOffers->merge($offers);
+//
+//                }
+//
+//            }
+
+//return $allOffers;
+            $offers = Offer::select('offers.*')
                 ->join('offer_branches', 'offers.id', '=', 'offer_branches.offer_id')
                 ->join('branches', 'offer_branches.branch_id', '=', 'branches.id')
                 ->join('stores', 'branches.store_id', '=', 'stores.id')
-                ->select('offers.*')
-                ->distinct()
+//                ->with(['branches.store'])
+//                ->distinct()
+//                ->groupBy('offers.id')
+
                 ->orderBy('stores.verified', 'desc')
                 ->get();
+
+//
+//            return $offers;
+
+//            $offers = Offer::select('offers.*')
+//                ->join('offer_branches', 'offers.id', '=', 'offer_branches.offer_id')
+//                ->join('branches', 'offer_branches.branch_id', '=', 'branches.id')
+//                ->join('stores', 'branches.store_id', '=', 'stores.id')
+//                ->with(['branches.store'])
+//                ->groupBy('stores.id') // Group by store ID
+//                ->orderBy('stores.verified', 'desc') // Order by store verification
+//                ->get();
 //            return $offers;
             return $this->success(['offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
@@ -493,6 +535,7 @@ class OfferController extends Controller
             ->with('offer')->where('active',true)
             ->get()->pluck('offer');
 //            return $offers;
+
             return $this->success(['offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
@@ -504,7 +547,8 @@ class OfferController extends Controller
     {
         try
         {
-            $offers=Offer::where(['active'=>false])->get();
+
+            $offers=Branch::find($branch_id)->offers()->where(['offers.active'=>false])->get();
             return $this->success(['archived_offers'=>OfferResource::collection($offers)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
