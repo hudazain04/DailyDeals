@@ -46,6 +46,11 @@ class MessageEvent implements ShouldBroadcast
 //        ];
 //    }
 
+    public function broadcastAs()
+    {
+        return 'my-event';
+    }
+
     public function broadcastWith(){
         return [
           'message' => $this->message
