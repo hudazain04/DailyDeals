@@ -18,6 +18,6 @@ class ProductColorResource extends JsonResource
         return [
             'id'=>$this->id,
             'color'=>$this->resource->color,
-            'hex'=>$this->hex,
+            'hex_code'=>$this->hex_code,
         ];    }
 }
