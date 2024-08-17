@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\BranchRequest;
 use App\Http\Resources\BranchResource;
 use App\Http\Resources\NumberResource;
+use App\Http\Resources\RecentOffersResource;
+use App\Http\Resources\TopBranchResource;
 use App\Http\Resources\RecentProductResource;
 use App\Models\Branch;
 use App\Models\Number;
 use App\Models\Employee;
 use App\Models\Store;
+use App\Models\User;
+use App\Models\Category;
+use App\Models\Offer;
 use App\Http\Controllers\Controller;
 use App\HttpResponse\HttpResponse;
 use App\Models\QR;
@@ -24,7 +29,7 @@ class BranchController extends Controller
 {
     use HttpResponse;
 
-    public function create_branch(BranchRequest $request)
+public function create_branch(BranchRequest $request)
     {
             $branch = Branch::create([
                 'name' => $request->name,
@@ -94,8 +99,6 @@ class BranchController extends Controller
 
 return $this->success(new BranchResource($branch) ,__('messages.BranchController.Branch_Added_Successfully'));
     }
-
-
 
     public function update_branch(BranchRequest $request)
     {
@@ -255,4 +258,76 @@ return $this->success(new BranchResource($branch) ,__('messages.BranchController
 
     }
 
+    public function admin_info()
+    {
+        $stores = Store::get()->count();
+        $users = User::get()->count();
+        $offers = Offer::get()->count();
+        $categories = Category::get()->count();
+
+        $data = [
+            'stores' =>  $stores,
+            'users' => $users,
+            'offers' => $offers,
+            'categories' => $categories,
+        ];
+        return $this->success($data ,__('messages.BranchController.Info'));
+    }
+
+    public function top_rating_branches()
+    {
+        $branches = Branch::with('rates')
+        ->withAvg('rates', 'rate')
+        ->orderByDesc('rates_avg_rate')
+        ->take(9) 
+        ->get();
+
+        return $this->success(TopBranchResource::collection($branches) ,__('messages.BranchController.Top_Rating_Branches'));
+    }
+
+    public function number_of_accounts()
+    {
+        $currentYear = Carbon::now()->year;
+        
+        $monthlyRegistrations = DB::table('users')
+            ->select(DB::raw('MONTH(created_at) as month'), DB::raw('COUNT(*) as count'))
+            ->whereYear('created_at', $currentYear)
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'))
+            ->pluck('count', 'month')
+            ->toArray();
+
+            $monthlyData = array_fill(1, 12, 0);
+
+            foreach ($monthlyRegistrations as $month => $count) {
+                $monthlyData[$month] = $count;
+            }
+        
+             $data = array_values($monthlyData); 
+
+        return $this->success($data  ,__('messages.BranchController.Top_Rating_Branches'));
+    }
+
+    public function recent_five_offers()
+    {
+        $offers = Offer::orderBy('created_at','desc')->take(5)->get();
+        return $this->success(RecentOffersResource::collection($offers) ,__('messages.BranchController.Last_5_Offers'));
+    }
+
+    public function offers_types()
+    {
+        $percentage = Offer::where('type','Percentage_offer')->get()->count();
+        $discount = Offer::where('type','Discount_Offer')->get()->count();
+        $gift = Offer::where('type','Gift_Offer')->get()->count();
+        $extra = Offer::where('type','Extra_Offer')->get()->count();
+
+        $data = [
+            'percentage' =>  $percentage,
+            'discount' =>  $discount,
+            'gift' =>  $gift,
+            'extra' =>  $extra,
+        ];
+
+        return $this->success($data ,__('messages.BranchController.Offer_Types'));
+    }
 }

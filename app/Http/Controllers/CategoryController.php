@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use App\Http\Requests\CategoryRequest;
 use App\Http\Resources\ListCategoryResource;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ListCategoryProductsResource;
 use App\HttpResponse\HttpResponse;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -68,5 +70,11 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($request->category_id);
         return $this->success(new ListCategoryResource($category),__('messages.CategoryController.Show_Category'));
+    }
+
+    public function show_category_with_products(Request $request)
+    {
+        $category = Category::findOrFail($request->category_id);
+        return $this->success(new ListCategoryProductsResource($category),__('messages.CategoryController.Show_Category'));
     }
 }
