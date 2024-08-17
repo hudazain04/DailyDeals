@@ -23,10 +23,9 @@ class AddColorsRequest extends FormRequest
     {
         return [
             'colors'=>'required|array',
-            'colors.color.*'=>'required|exists:colors:id',
-            'colors.image.*'=>'required|image',
+            'colors.*.color'=>'required|exists:colors,id',
+            'colors.*.image'=>'required|image',
             'product_id'=>'required|exists:products,id',
-
         ];
     }
 }

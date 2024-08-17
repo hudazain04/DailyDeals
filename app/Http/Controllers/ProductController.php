@@ -60,7 +60,6 @@ class ProductController extends Controller
                 'color_id'=>$color1->id,
                     'product_id'=>$request->product_id,
                     'image'=>$request->file('colors.' . $index . '.image'),
-
                 ]);
 
             }

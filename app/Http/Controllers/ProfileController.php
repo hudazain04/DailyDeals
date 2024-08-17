@@ -5,8 +5,8 @@ use App\Models\User;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\profileRequest;
-use App\Http\Resources\profileResource;
+use App\Http\Requests\ProfileRequest;
+use App\Http\Resources\ProfileResource;
 use App\HttpResponse\HttpResponse;
 use Illuminate\Http\Request;
 

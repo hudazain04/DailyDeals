@@ -35,6 +35,7 @@ class ColorResource extends JsonResource
         return [
             'id'=>$this->id,
           'color'=>$this->resource->color,
+            'hex_code' => $this->hex_code,
           'image'=> $firstImage ? asset($firstImage->image) : null,
         ];
     }
