@@ -39,14 +39,12 @@ class StoreController extends Controller
                     'name', 
                     'description', 
                     'visible', 
-                    'merchant_id', 
-                ]));
-        
-                $store->save();
+            ]));
+            $store->merchant_id = $user->id;
+            $store->save();
     
-                
-                return $this->success(new StoreResource($store),__('messages.StoreController.Store_Updated_Successfully'));
-            }
+            return $this->success(new StoreResource($store), ('messages.StoreController.Store_Updated_Successfully'));
+        }
     }
 
     public function delete_store(Request $request)
