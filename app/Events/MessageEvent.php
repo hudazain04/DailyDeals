@@ -36,13 +36,24 @@ class MessageEvent implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new Channel('chat'),
+            'chat'
         ];
     }
+//    public function broadcastAs()
+//    {
+//        return [
+//            'message'=>MessageResource::make($this->message),
+//        ];
+//    }
+
     public function broadcastAs()
     {
+        return 'my-event';
+    }
+
+    public function broadcastWith(){
         return [
-            'message'=>MessageResource::make($this->message),
+            'message' => $this->message
         ];
     }
 }

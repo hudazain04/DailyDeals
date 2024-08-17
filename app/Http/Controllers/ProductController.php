@@ -6,14 +6,18 @@ use App\Http\Requests\AddColorsRequest;
 use App\Http\Requests\AddProductRequest;
 use App\Http\Requests\AddSizesRequest;
 use App\Http\Resources\ColorResource;
+use App\Http\Resources\ProductPriceResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SizeResource;
 use App\HttpResponse\HttpResponse;
 use App\Models\Color;
 use App\Models\Image;
+use App\Models\Offer;
+use App\Models\Offer_Branch;
 use App\Models\Product;
 use App\Models\Product_Info;
 use App\Models\Size;
+use App\Types\OfferType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -193,6 +197,27 @@ class ProductController extends Controller
         {
             $colors=Color::all();
             return $this->success(['colors'=>ColorResource::collection($colors)],__('mesaages.successful_request'));
+        }
+        catch (\Throwable $th)
+        {
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function GetOfferProducts($offer_id)
+    {
+        try
+        {
+            $offer=Offer::find($offer_id);
+            $products=$offer->products()->get();
+            if ($offer->type==OfferType::Percentage || $offer->type==OfferType::Discount)
+            {
+                foreach ($products as $product)
+                {
+                    $product->setRelation('offer',$offer);
+                }
+                return $this->success(['products'=>ProductPriceResource::collection($products)],__('messages.successful_request'));
+            }
+            return $this->success(['products'=>ProductResource::collection($products)],__('messages.successful_request'));
         }
         catch (\Throwable $th)
         {
