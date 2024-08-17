@@ -48,7 +48,7 @@ class ChatController extends Controller
 
             ]);
 //            event(new MessageEvent($request->receiver_id,$message));
-            broadcast(new MessageEvent($request->receiver_id, $message))->toOthers();
+            event(new MessageEvent($request->receiver_id, $message));
 
             return $this->success(MessageResource::make($message),__('messages.successful_request'));
         }

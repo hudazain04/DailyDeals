@@ -39,18 +39,6 @@ class MessageEvent implements ShouldBroadcast
             'chat'
         ];
     }
-<<<<<<< HEAD
-
-    public function broadcastAs(): string
-    {
-        return 'message.sent';
-    }
-
-    public function broadcastWith(): array
-    {
-        return [
-            'message' => MessageResource::make($this->message)->resolve(),
-=======
 //    public function broadcastAs()
 //    {
 //        return [
@@ -60,8 +48,7 @@ class MessageEvent implements ShouldBroadcast
 
     public function broadcastWith(){
         return [
-          'message' => $this->message
->>>>>>> d61ae17e5f5dd26255ad443dac24e6bdb5f30917
+            'message' => $this->message
         ];
     }
 }
