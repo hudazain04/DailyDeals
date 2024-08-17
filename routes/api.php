@@ -199,6 +199,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::middleware('Merchant')->group(function (){
             Route::post('addProduct',[ProductController::class,'AddProduct']);
             Route::post('addColors',[ProductController::class,'AddColors']);
+            Route::get('getProductColors/{product_id}',[ProductController::class,'GetProductColors']);
             Route::post('addSizes',[ProductController::class,'AddSizes']);
             Route::get('getStoreProducts/{store_id}',[ProductController::class,'GetStoreProducts']);
             Route::get('getRecentProducts/{store_id}',[ProductController::class,'GetRecentProducts']);
