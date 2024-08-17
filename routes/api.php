@@ -79,7 +79,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
         Route::get('recent_products',[BranchController::class ,'recent_products']);
         Route::get('yearly_rate',[BranchController::class ,'yearly_rate']);
         Route::get('show_category_with_products',[CategoryController::class ,'show_category_with_products']);
-        
+
 
     });
 
@@ -156,14 +156,13 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
             Route::get('deleteOffer/{offer_id}',[OfferController::class,'DeleteOffer']);
             Route::get('activateOffer/{offer_id}',[OfferController::class,'ActivateOffer']);
             Route::get('deactivateOffer/{offer_id}',[OfferController::class,'DeactivateOffer']);
-            Route::get('getOffersOfBranch/{branch_id}',[OfferController::class,'GetOffersOfBranch']);
-            Route::get('getBranchArchive/{branch_id}',[OfferController::class,'GetBranchArchive']);
-            Route::get('getOffers',[OfferController::class,'GetOffers']);
 
 
 
         });
-
+        Route::get('getOffersOfBranch/{branch_id}',[OfferController::class,'GetOffersOfBranch']);
+        Route::get('getBranchArchive/{branch_id}',[OfferController::class,'GetBranchArchive']);
+        Route::get('getOffers',[OfferController::class,'GetOffers']);
         Route::get('getAll',[OfferController::class,'GetAll'])->middleware('Admin');
 
     });
@@ -207,6 +206,7 @@ Route::middleware('auth:sanctum','check.blocked')->group(function () {
             Route::get('getColors',[ProductController::class,'GetColors']);
         });
         Route::get('getProduct/{product_id}',[ProductController::class,'GetProduct']);
+        Route::get('getOfferProducts/{offer_id}',[ProductController::class,'GetOfferProducts']);
 
     });
 
