@@ -53,7 +53,7 @@ class MessageEvent implements ShouldBroadcast
 
     public function broadcastWith(){
         return [
-          'message' => $this->message
+            'message' => $this->message
         ];
     }
 }

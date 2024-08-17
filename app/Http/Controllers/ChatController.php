@@ -46,7 +46,9 @@ class ChatController extends Controller
                 'time' =>now(),
 
             ]);
-            event(new MessageEvent($request->receiver_id,$message));
+//            event(new MessageEvent($request->receiver_id,$message));
+            event(new MessageEvent($request->receiver_id, $message));
+
             return $this->success(MessageResource::make($message),__('messages.successful_request'));
         }
        catch (\Throwable $th)
