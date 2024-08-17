@@ -264,7 +264,11 @@ Route::middleware(['auth:sanctum','Admin','check.blocked'])->group(function ()
     Route::get('advertisement_details', [AdvertisementController::class, 'advertisement_details']);
     Route::post('accept_advertisement', [AdvertisementController::class, 'accept_advertisement']);
     Route::post('reject_advertisement', [AdvertisementController::class, 'reject_advertisement']);
-
+    Route::get('admin_info', [BranchController::class, 'admin_info']);
+    Route::get('top_rating_branches', [BranchController::class, 'top_rating_branches']);
+    Route::get('number_of_accounts', [BranchController::class, 'number_of_accounts']);
+    Route::get('recent_five_offers', [BranchController::class, 'recent_five_offers']);
+    Route::get('offers_types', [BranchController::class, 'offers_types']);
 
 });
 
