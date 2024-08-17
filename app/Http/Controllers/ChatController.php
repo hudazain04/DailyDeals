@@ -61,10 +61,10 @@ class ChatController extends Controller
         try {
             DB::beginTransaction();
             $conversation=Conversation::find($conversation_id);
-            $messages = $conversation->messages()->get();
 //            $messages = Message::where('conversation_id' , $conversation_id)->get();
 //            Message::where('conversation_id', $conversation_id)->update(['read' => true]);
             $conversation->messages()->latest()->update(['read' => true]);
+            $messages = $conversation->messages()->get();
             DB::commit();
             return $this->success(MessageResource::collection($messages),__('messages.successful_request'));
         }catch (\Throwable $th){
@@ -88,31 +88,5 @@ class ChatController extends Controller
             return $this->error($th->getMessage(),500);
         }
     }
-//    public function getMyConversation() {
-//        try {
-//            $userId = \request()->user()->id;
-//
-//            $messages = Message::where(function ($query) use ($userId) {
-//                $query->where('from', $userId)
-//                    ->orWhere('to', $userId);
-//            })->get();
-//
-//            $conversations = $messages->groupBy(function ($message) use ($userId) {
-//                return $message->from === $userId ? $message->to : $message->from;
-//            });
-//
-//            $conversations = $conversations->map(function ($messageGroup, $userId) {
-//                $user = User::find($userId);
-//                $messages = $messageGroup->all();
-//                return (object) [
-//                    'user' => $user,
-//                    'messages' => $messages,
-//                ];
-//            });
-//
-//            return $this->success($conversations);
-//        }catch (\Throwable $th){
-//            return $this->serverError();
-//        }
-//    }
+
 }
