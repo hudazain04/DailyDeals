@@ -33,7 +33,7 @@ class MessageEvent implements ShouldBroadcast
      */
 
 
-    public function broadcastOn(): channel
+    public function broadcastOn(): array
     {
         return [
             'chat'
