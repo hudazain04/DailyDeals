@@ -6,6 +6,7 @@ use App\Http\Requests\AddColorsRequest;
 use App\Http\Requests\AddProductRequest;
 use App\Http\Requests\AddSizesRequest;
 use App\Http\Resources\ColorResource;
+use App\Http\Resources\ProductColorResource;
 use App\Http\Resources\ProductPriceResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SizeResource;
@@ -59,7 +60,6 @@ class ProductController extends Controller
                 'color_id'=>$color1->id,
                     'product_id'=>$request->product_id,
                     'image'=>$request->file('colors.' . $index . '.image'),
-
                 ]);
 
             }
@@ -80,6 +80,26 @@ class ProductController extends Controller
         catch (\Throwable $th)
         {
             DB::rollBack();
+            return $this->error($th->getMessage(),500);
+        }
+    }
+    public function GetProductColors($product_id)
+    {
+        try
+        {
+            $colors = Image::where('product_id', $product_id)
+                ->with('color')
+                ->get()
+                ->pluck('color')
+                ->unique('id')
+                ->values();
+
+
+            return $this->success(['colors'=>ProductColorResource::collection($colors)],__('messages.successful_request'));
+
+        }
+        catch (\Throwable $th)
+        {
             return $this->error($th->getMessage(),500);
         }
     }
@@ -224,5 +244,6 @@ class ProductController extends Controller
             return $this->error($th->getMessage(),500);
         }
     }
+
 
 }

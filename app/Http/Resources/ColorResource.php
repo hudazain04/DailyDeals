@@ -25,7 +25,6 @@ class ColorResource extends JsonResource
     {
 
 
-
             $images = $this->resource->images()
                 ->where(['product_id'=> $this->productId,'color_id'=>$this->id])
                 ->get();
@@ -36,6 +35,7 @@ class ColorResource extends JsonResource
         return [
             'id'=>$this->id,
           'color'=>$this->resource->color,
+            'hex_code' => $this->hex_code,
           'image'=> $firstImage ? asset($firstImage->image) : null,
         ];
     }
