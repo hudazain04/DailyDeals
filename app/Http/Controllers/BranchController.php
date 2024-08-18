@@ -190,7 +190,7 @@ return $this->success(new BranchResource($branch) ,__('messages.BranchController
 
     public function list_customer_branches(Request $request)
     {
-            $branches = Branch::where('visible',1)->where('store_id',$request->store_id)->get();
+            $branches = Branch::where('visible',1)->get();
             return $this->success(BranchResource::collection($branches) ,__('messages.BranchController.List_Branches'));
     }
 
